@@ -21,7 +21,7 @@ export const Signin = () => {
   }
 
   const postLogin = () =>{
-    axios.post("http://localhost:8081/login",{
+    axios.post("http://3.39.220.142:8081/login",{
       username:info.username,
       password:info.password
     }).then(function (res){
