@@ -17,7 +17,8 @@ const colorSet = {
     GRAY_5B:'#5B5B5B',
     GRAY_CC:'#CCCCCC',
     GRAY_54:'#545454',
-    GRAY_BE:'#BEBEBE'
+    GRAY_BE:'#BEBEBE',
+    GRAY_79:'#797979',
   },
   // 근태 상태 색상
   ATTENDANCE_STATUS: {
