@@ -17,3 +17,4 @@
 ## 👩‍🎨 디자인 시안
 [Figma 바로가기 ⨠︎](https://www.figma.com/file/daCq2oaRgic44sQhAdSjJA/SSAK3?node-id=0%3A1)
 
+jenkinsTest
