@@ -3,12 +3,13 @@ import {BrowserRouter, Switch, Route } from 'react-router-dom';
 import Dashboard from 'pages/manager/dashboard';
 import EmpManagement from 'pages/admin/emp_mangement';
 import AtdcManagement from 'pages/user/attendence';
+import SignIn from 'pages/signin';
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
-        {/* <Route exact path="/" component={}/> */}
+        <Route exact path={'/'} component={SignIn}/>
         <Route path={'/admin'} render={() => <EmpManagement role={'admin'}/>}/>
         <Route path={'/manager'} render={() => <Dashboard role={'manager'}/>}/>
         <Route path={'/user'} render={() => <AtdcManagement role={'user'}/>}/>

@@ -7,7 +7,7 @@ import {MdLogout, MdSettings} from 'react-icons/md';
 export const Header = ({role}) => {
   return(
     <Container>
-      <img src={logo} alt="로고"/>
+      <img src={logo} alt="로고" width={130}/>
       <IconLayout>
         {role === 'manager' && <MdSettings size={35} />}
         <MdLogout size={35} />
