@@ -1,7 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {style} from './NavigationStyle';
 import PropTypes from 'prop-types';
-import {MdSpaceDashboard, MdAssignmentTurnedIn, MdPeople, MdAssignment, MdCreate} from 'react-icons/md';
+import {
+  MdSpaceDashboard,
+  MdAssignmentTurnedIn,
+  MdPeople,
+  MdAssignment,
+  MdCreate
+} from 'react-icons/md';
 
 export const Navigation = ({role, menu}) => {
   const [select, setSelect] = useState(menu);
@@ -14,6 +20,21 @@ export const Navigation = ({role, menu}) => {
     setSelect(change);
   };
 
+  const onClickSubMenu = (e) => {
+    const target = menu.map(value => value.sub.map(v => (v.id === Number(e.target.id) ? {
+      ...v,
+      check: true
+    } : {...v, check: false})));
+
+    const result = select.map((v, i) => v.sub.id === target[i].id && {...v, sub: target[i]});
+    setSelect(result);
+  };
+
+  useEffect(() => {
+    return () => {
+      console.log(select);
+    };
+  }, [select]);
   return (
     <>
       <Container>
@@ -55,17 +76,33 @@ export const Navigation = ({role, menu}) => {
         )}
 
         {select.map(value => (value.check && value.sub.length > 0) &&
-          <DrawerContainer key={value.id}/>)}
+          (
+            <DrawerContainer key={value.id}>
+              <div id={'title'}>{value.title}</div>
+              {value.sub.map(e => {
+                return (
+                  <SubTitle key={e.id} id={e.id} check={e.check} onClick={onClickSubMenu}>
+                    {e.title}
+                  </SubTitle>
+                );
+              })}
+
+            </DrawerContainer>
+          ))}
       </Container>
     </>
   );
 };
 Navigation.propTypes = {
   role: PropTypes.string.isRequired,
-  menu: PropTypes.arrayOf(PropTypes.objectOf).isRequired,
+  menu: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.array, PropTypes.bool])
+    )
+  ).isRequired,
 };
 
-const {Container, IconLayout, DrawerContainer} = style;
+const {Container, IconLayout, DrawerContainer, SubTitle} = style;
 
 
 
