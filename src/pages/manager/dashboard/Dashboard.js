@@ -10,6 +10,7 @@ export const Dashboard = ({role}) => {
     <>
       <Header role={role}/>
       <Navigation role={role} menu={MANAGER_MENU}/>
+
     </>
   );
 };
