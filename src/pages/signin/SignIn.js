@@ -8,7 +8,7 @@ export const SignIn = () => {
     <Container>
       <CardContainer>
         <LogoLayout>
-          <img src={Logo} alt={'로고'} />
+          <img src={Logo} alt={'로고'}/>
         </LogoLayout>
         <InputLayout autoFocus placeholder={'사원번호'}/>
         <InputLayout placeholder={'비밀번호'} type={'password'}/>

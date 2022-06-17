@@ -2,7 +2,7 @@ import styled, {keyframes} from 'styled-components';
 
 const Container = styled.div`
   position: relative;
-  width: 85px;
+  width: 65px;
   height: calc(100% - 70px);
   padding-top:50px;
   background-color: ${({theme}) => theme.colorSet.PRIMARY.BLUE_1A};
