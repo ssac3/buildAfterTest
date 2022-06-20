@@ -3,10 +3,15 @@ import React from 'react';
 import 'antd/dist/antd.min.css';
 import './index.css';
 import {Badge, Calendar} from 'antd';
+import locale from "antd/es/calendar/locale/ko_KR";
+import Data from './data.json';
+// const [listData, setListData] = useEffect([]);
 
+const getResData = () => {
+  console.log(Data);
+};
 const getListData = (value) => {
   let listData;
-
   switch (value.date()) {
     case 8:
       listData = [
@@ -41,24 +46,8 @@ const getListData = (value) => {
   return listData || [];
 };
 
-const getMonthData = (value) => {
-  if (value.month() === 8) {
-    return 1394;
-  }
-  return 0;
-};
-
 export const AtdcCalendar = () => {
-  const monthCellRender = (value) => {
-    const num = getMonthData(value);
-    return num ? (
-      <div className="notes-month">
-        <section>{num}</section>
-        <span>Backlog number</span>
-      </div>
-    ) : null;
-  };
-
+  getResData();
   const dateCellRender = (value) => {
     const listData = getListData(value);
     return (
@@ -67,14 +56,16 @@ export const AtdcCalendar = () => {
           <li key={item.content}>
             <Badge status={item.type} text={item.content}/>
           </li>
+
         ))}
       </ul>
     );
   };
   return (
     <Calendar
+      locale={locale}
       dateCellRender={dateCellRender}
-      monthCellRender={monthCellRender}
+
     />
   );
 };
