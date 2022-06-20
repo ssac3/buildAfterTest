@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {BrowserRouter, Switch, Route } from 'react-router-dom';
+import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import Dashboard from 'pages/manager/dashboard';
 import EmpManagement from 'pages/admin/emp_mangement';
 import AtdcManagement from 'pages/user/attendence';
@@ -8,6 +8,7 @@ import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
 import {ADMIN_MENU, MANAGER_MENU, USER_MENU} from 'utils/constants/menuList';
+import Setting from 'pages/manager/setting';
 
 function getMenu(role) {
   switch (role) {
@@ -19,9 +20,11 @@ function getMenu(role) {
       return USER_MENU;
   }
 }
+
 function App() {
   const roleURL = window.location.href.replace('http://localhost:3000/', ''); // url 변경
   const [select, setSelect] = useState(getMenu(roleURL) || {});
+  const [setting, setSetting] = useState(false);
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
       ...value,
@@ -39,22 +42,30 @@ function App() {
     setSelect(result);
   };
   const position = () => {
-    return select.filter(v => v.check)[0].sub.length > 0 ? (65 + 238) : 185;
+    return (select.filter(v => v.check)[0].sub.length > 0) ? (65 + 238) : 185;
   };
-
+  const onClickSetting = () => {
+    setSetting(!setting);
+  };
   useEffect(() => {
     getMenu(roleURL);
   }, [roleURL]);
+
   return (
     <>
-      <Header role={roleURL}/>
-      <Navigation
-        role={roleURL}
-        menu={select}
-        onClickMenu={onClickMenu}
-        onClickSubMenu={onClickSubMenu}
-      />
-      <Wrap p={position()} >
+      <>
+        <Header role={roleURL} setting={onClickSetting}/>
+        <Navigation
+          role={roleURL}
+          menu={select}
+          onClickMenu={onClickMenu}
+          onClickSubMenu={onClickSubMenu}
+        />
+      </>
+
+      {setting && <Setting open={onClickSetting}/>}
+
+      <Wrap p={position()}>
         <BrowserRouter>
           <Switch>
             <Route exact path={'/'} component={SignIn}/>
@@ -77,6 +88,5 @@ const Wrap = styled.div`
   left: ${({p}) => p}px; // 수정
   width: calc(100% - (65px + 238px));
   height: calc(100% - 70px);
-  background-color: blue;
 `;
 export default App;
