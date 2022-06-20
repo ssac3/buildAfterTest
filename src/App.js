@@ -7,8 +7,10 @@ import AtdcManagement from 'pages/user/attendence';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
-import {ADMIN_MENU, MANAGER_MENU, USER_MENU} from 'utils/constants/menuList';
 import Setting from 'pages/manager/setting';
+// import Alert from 'components/Alert';
+import {ADMIN_MENU, MANAGER_MENU, USER_MENU} from 'utils/constants/menuList';
+
 
 function getMenu(role) {
   switch (role) {
@@ -62,7 +64,6 @@ function App() {
           onClickSubMenu={onClickSubMenu}
         />
       </>
-
       {setting && <Setting open={onClickSetting}/>}
 
       <Wrap p={position()}>
