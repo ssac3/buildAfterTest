@@ -1,23 +1,11 @@
 import React from 'react';
-
-import PropTypes from 'prop-types';
-import Header from 'components/Header';
-import Navigation from 'components/Navigation';
 import AtdcCalendar from 'components/AtdcCalendar';
-import {USER_MENU} from 'utils/constants/menuList';
 
-export const AtdcManagement = ({role}) => {
+
+export const AtdcManagement = () => {
   return (
-    <>
-      <Header role={role}/>
-      <Navigation role={role} menu={USER_MENU}/>
+    <div style={{width:'100%', height:'100%', backgroundColor:'yellow', padding:'20px'}}>
       <AtdcCalendar />
-
-
-    </>
+    </div>
   );
-};
-
-AtdcManagement.propTypes = {
-  role: PropTypes.string.isRequired,
 };
