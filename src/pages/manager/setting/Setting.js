@@ -29,7 +29,10 @@ export const Setting = ({open}) => {
             <MdOutlineClose size={25} onClick={open} style={{cursor: 'pointer'}}/>
           </CloseLayout>
           <h2>정규 출/퇴근 시간</h2>
-          <h3>{TEAM_NAME}팀의 출/퇴근 시간입니다.</h3>
+          <h3>
+            {TEAM_NAME}
+            팀의 출/퇴근 시간입니다.
+          </h3>
           <h4>사원들이 지치지 않도록 유연하게 출/퇴근 시간을 설정할 수 있습니다.</h4>
         </TextLayout>
 
