@@ -8,15 +8,15 @@ import {MdSearch} from 'react-icons/md';
 export const Search = () => {
   const [searchValue, setSearchValue] = useState('');
   const handleInputChange = (e) => {
-    // console.log(e.target.value);
     setSearchValue(e.target.value);
   };
   return (
     <Container>
-      <input id="serchInput" type="text" value={searchValue} onChange={handleInputChange}></input>
-      <button id="searchBtn" type="submit">검색</button>
-      <MdSearch/>
+      <SearchInput autoFocus value={searchValue} onChange={handleInputChange}/>
+      <BtnContainer>
+        <MdSearch size={25}/>
+      </BtnContainer>
     </Container>
   );
 };
-const {Container} = style;
+const {Container, SearchInput, BtnContainer} = style;
