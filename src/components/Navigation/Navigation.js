@@ -49,8 +49,10 @@ export const Navigation = ({role, menu, onClickMenu, onClickSubMenu}) => {
             </IconLayout>
           </>
         )}
-        {menu?.map(value => (value.check && value.sub.length > 0) &&
-          (
+        {menu?.map(value => (value.check
+          && value.sub.length > 0)
+            &&
+            (
             <DrawerContainer key={value.id}>
               <div id={'title'}>{value.title}</div>
               {value.sub.map(e => {
@@ -60,9 +62,8 @@ export const Navigation = ({role, menu, onClickMenu, onClickSubMenu}) => {
                   </SubTitle>
                 );
               })}
-
             </DrawerContainer>
-          ))}
+            ))}
 
       </Container>
     </>
