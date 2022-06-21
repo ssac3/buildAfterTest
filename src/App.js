@@ -10,6 +10,8 @@ import Navigation from './components/Navigation';
 import {ADMIN_MENU, MANAGER_MENU, USER_MENU} from 'utils/constants/menuList';
 import {CLIENT_URL} from 'utils/constants/api';
 import Setting from 'pages/manager/setting';
+// import Alert from 'components/Alert';
+
 
 function getMenu(role) {
   switch (role) {
@@ -65,7 +67,7 @@ function App() {
           />
         </>
       )}
-
+      
       {setting && <Setting open={onClickSetting}/>}
 
       <BrowserRouter>
