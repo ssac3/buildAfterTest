@@ -30,4 +30,23 @@ export const GlobalStyles = createGlobalStyle`
         border: none;
         outline: none;
     }
+    
+    h2{
+      font-weight: bold;
+      font-size: 20px;
+    }
+    
+    h3{
+      font-weight: bold;
+      font-size: 16px;
+      color: #797979;
+    }
+    
+    h4{
+      font-weight: normal;
+      font-size: 15px;
+      color: #797979;
+    }
+    
+    
 `;

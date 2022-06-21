@@ -1,5 +1,4 @@
 import { css } from 'styled-components';
-
 const flexSet = (justify = 'center', item = 'center', direction = 'row') => css`
   display: flex;
   justify-content: ${justify};
@@ -19,6 +18,7 @@ const colorSet = {
     GRAY_54:'#545454',
     GRAY_BE:'#BEBEBE',
     GRAY_79:'#797979',
+    GRAY_E1:'#E1E1E1',
   },
   // 근태 상태 색상
   ATTENDANCE_STATUS: {

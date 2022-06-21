@@ -17,7 +17,23 @@ const IconLayout = styled.div`
   
 `;
 
+const SettingLayout = styled.div`
+  ${({theme}) => theme.flexSet()};
+  width: 50%;
+  height: 100%;
+  cursor: pointer;
+`;
+
+const SignOutLayout = styled.div`
+  ${({theme}) => theme.flexSet()};
+  width: 50%;
+  height: 100%;
+  cursor: pointer;
+`;
+
 export const style = {
   Container,
-  IconLayout
+  IconLayout,
+  SettingLayout,
+  SignOutLayout
 };
