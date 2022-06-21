@@ -67,7 +67,6 @@ function App() {
           />
         </>
       )}
-      
       {setting && <Setting open={onClickSetting}/>}
 
       <BrowserRouter>

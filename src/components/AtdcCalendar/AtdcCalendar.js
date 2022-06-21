@@ -3,10 +3,9 @@ import React from 'react';
 import 'antd/dist/antd.min.css';
 import './index.css';
 import {Badge, Calendar} from 'antd';
-import locale from "antd/es/calendar/locale/ko_KR";
+import locale from 'antd/es/calendar/locale/ko_KR';
 import Data from './data.json';
 // const [listData, setListData] = useEffect([]);
-
 const getResData = () => {
   console.log(Data);
 };

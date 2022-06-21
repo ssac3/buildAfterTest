@@ -1,6 +1,6 @@
 import React from 'react';
 import AtdcCalendar from 'components/AtdcCalendar';
-import locale from "antd/es/calendar/locale/ko_KR";
+import locale from 'antd/es/calendar/locale/ko_KR';
 
 export const AtdcManagement = () => {
   return (
