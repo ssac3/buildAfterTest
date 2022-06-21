@@ -7,9 +7,10 @@ import AtdcManagement from 'pages/user/attendence';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
+import {ADMIN_MENU, MANAGER_MENU, USER_MENU} from 'utils/constants/menuList';
+import {CLIENT_URL} from 'utils/constants/api';
 import Setting from 'pages/manager/setting';
 // import Alert from 'components/Alert';
-import {ADMIN_MENU, MANAGER_MENU, USER_MENU} from 'utils/constants/menuList';
 
 
 function getMenu(role) {
@@ -24,7 +25,7 @@ function getMenu(role) {
 }
 
 function App() {
-  const roleURL = window.location.href.replace('http://localhost:3000/', ''); // url 변경
+  const roleURL = window.location.href.replace(CLIENT_URL, ''); // url 변경
   const [select, setSelect] = useState(getMenu(roleURL) || {});
   const [setting, setSetting] = useState(false);
   const onClickMenu = (e) => {
@@ -55,27 +56,31 @@ function App() {
 
   return (
     <>
-      <>
-        <Header role={roleURL} setting={onClickSetting}/>
-        <Navigation
-          role={roleURL}
-          menu={select}
-          onClickMenu={onClickMenu}
-          onClickSubMenu={onClickSubMenu}
-        />
-      </>
+      {roleURL !== '' && (
+        <>
+          <Header role={roleURL} setting={onClickSetting}/>
+          <Navigation
+            role={roleURL}
+            menu={select}
+            onClickMenu={onClickMenu}
+            onClickSubMenu={onClickSubMenu}
+          />
+        </>
+      )}
+      
       {setting && <Setting open={onClickSetting}/>}
 
-      <Wrap p={position()}>
-        <BrowserRouter>
-          <Switch>
-            <Route exact path={'/'} component={SignIn}/>
+      <BrowserRouter>
+        <Switch>
+          <Route exact path={'/'} component={SignIn}/>
+          <Wrap p={position()}>
             <Route path={'/admin'} render={() => <EmpManagement/>}/>
             <Route path={'/manager'} render={() => <Dashboard/>}/>
             <Route path={'/user'} render={() => <AtdcManagement/>}/>
-          </Switch>
-        </BrowserRouter>
-      </Wrap>
+          </Wrap>
+        </Switch>
+      </BrowserRouter>
+
 
     </>
   );
