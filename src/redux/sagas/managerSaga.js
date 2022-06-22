@@ -1,8 +1,9 @@
 import axios from 'axios';
 import {BASE_URL, SWP_ATV_REQ, SWP_ATR_REQ} from 'utils/constants/api';
-import { all, call, fork, put, select, takeLatest } from 'redux-saga/effects';
+import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {ManagerType} from 'redux/constants';
 import {SwpAtvRes} from 'redux/actions/ManagerAction';
+import {openAlert} from 'redux/actions/AlertAction';
 
 axios.defaults.baseURL = BASE_URL;
 
@@ -33,11 +34,13 @@ function atrReq(data) {
 
 
 function* postSwpAtvReq() {
-  try{
-    const data = yield select((state) => { return state.MangerReducer; });
+  try {
+    const data = yield select((state) => {
+      return state.MangerReducer;
+    });
     const result = yield call(atvReq, data);
 
-    if(result.resCode === 0) {
+    if (result.resCode === 0) {
       const {name, startTime, endTime} = result.data;
       yield put(SwpAtvRes(name, startTime, endTime));
     }
@@ -47,11 +50,19 @@ function* postSwpAtvReq() {
 }
 
 function* postSwpAtrReq() {
-  try{
-    const data = yield select((state) => { return state.MangerReducer; });
+  try {
+    const data = yield select((state) => {
+      return state.MangerReducer;
+    });
     const result = yield call(atrReq, data);
-    console.log(result);
-  }catch (e) {
+
+    if (result.resCode === 0) {
+      console.log(result.resMsg);
+      yield put(openAlert('success', result.resMsg));
+    } else {
+      yield put(openAlert('fail', result.resMsg));
+    }
+  } catch (e) {
     console.log(e);
   }
 }

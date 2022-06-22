@@ -68,9 +68,13 @@ function App() {
     console.log(swpAtvRes);
   }, [swpAtvRes]);
 
+  useEffect(() => {
+    console.log(alert);
+  }, [alert]);
+
   return (
     <>
-      {alert.open && <Alert type={alert.type} msg={alert.msg}/>}
+      {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
       {roleURL !== '' && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>

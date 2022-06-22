@@ -1,15 +1,17 @@
 import {AlertType} from 'redux/constants/actionTypes';
 
-export const openAlert = (type, msg) => {
+export const openAlert = (status, msg) => {
   return {
-    open: AlertType.OPEN_ALERT,
-    type,
+    type: AlertType.OPEN_ALERT,
+    open: true,
+    status,
     msg
   };
 };
 
 export const closeAlert = () => {
   return {
-    open: AlertType.CLOSE_ALERT,
+    type: AlertType.CLOSE_ALERT,
+    open: false,
   };
 };

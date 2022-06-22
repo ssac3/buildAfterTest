@@ -6,12 +6,14 @@ function AlertReducer(state = INIT_STATE, action) {
   switch (action.type) {
     case AlertType.OPEN_ALERT:
       return {
-        open: true,
         type: action.type,
-        contents: action.msg,
+        open: true,
+        status: action.status,
+        msg: action.msg,
       };
     case AlertType.CLOSE_ALERT:
       return {
+        type: action.type,
         open: false,
       };
 

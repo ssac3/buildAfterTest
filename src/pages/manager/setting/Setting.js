@@ -28,6 +28,7 @@ export const Setting = ({open}) => {
 
   const onClickSubmit = () => {
     dispatch(SwpAtrReq(1, cnvrtDateTime(startTime), cnvrtDateTime(endTime)));
+    open();
   };
 
 
