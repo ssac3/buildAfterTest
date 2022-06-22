@@ -1,2 +1,2 @@
-import {AtdcMonthly} from "./AtdcMonthly";
+import {AtdcMonthly} from './AtdcMonthly';
 export default AtdcMonthly;

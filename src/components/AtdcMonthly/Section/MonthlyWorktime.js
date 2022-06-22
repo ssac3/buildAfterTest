@@ -1,4 +1,4 @@
-import {Box, Card, CardHeader} from "@mui/material";
+import {Box, Card, CardHeader} from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactECharts from 'echarts-for-react';

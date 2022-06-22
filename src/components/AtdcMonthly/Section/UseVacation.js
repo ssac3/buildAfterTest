@@ -1,7 +1,7 @@
-import {Box, Card, CardHeader} from "@mui/material";
-import PropTypes from "prop-types";
-import React from "react";
-import ReactECharts from "echarts-for-react";
+import {Box, Card, CardHeader} from '@mui/material';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactECharts from 'echarts-for-react';
 
 export const UseVacation = ({title, subheader, ...other}) => {
   const option = {
@@ -50,9 +50,9 @@ export const UseVacation = ({title, subheader, ...other}) => {
       }}
       >
         <Box>
-            <Card>
-              <CardHeader title={'ㅇㅇㅇ'}/>
-            </Card>
+          <Card>
+            <CardHeader title={'ㅇㅇㅇ'}/>
+          </Card>
         </Box>
         <Box>
           <ReactECharts option={option}/>

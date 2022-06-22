@@ -1,7 +1,7 @@
-import {Box, Card, CardHeader} from "@mui/material";
+import {Box, Card, CardHeader} from '@mui/material';
 import React from 'react';
-import PropTypes from "prop-types";
-import ReactECharts from "echarts-for-react";
+import PropTypes from 'prop-types';
+import ReactECharts from 'echarts-for-react';
 
 export const MonthlyAttendance = ({title, subheader, ...other}) => {
   const option = {

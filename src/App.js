@@ -28,11 +28,13 @@ function getMenu(role) {
 
 function App() {
   const dispatch = useDispatch();
-  const swpAtvRes = useSelector((state) => state.MangerReducer);
   const alert = useSelector((state) => state.AlertReducer);
   const roleURL = window.location.href.replace(CLIENT_URL, ''); // url 변경
   const [select, setSelect] = useState(getMenu(roleURL) || {});
   const [setting, setSetting] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(0);
+
+
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
       ...value,
@@ -49,6 +51,13 @@ function App() {
     const result = select.map((v, i) => v.sub.id === target[i].id && {...v, sub: target[i]});
     setSelect(result);
   };
+
+  const onGetTarget = () => {
+    const target = select.filter(value => value.check && value);
+    const subTarget = target[0].sub.filter(v => v.check && v);
+    setSelectedItem(subTarget[0].id);
+  };
+
   const position = () => {
     return (select.filter(v => v.check)[0].sub.length > 0) ? (65 + 238) : 185;
   };
@@ -64,14 +73,17 @@ function App() {
     getMenu(roleURL);
   }, [roleURL]);
 
-  useEffect(() => {
-    console.log(swpAtvRes);
-  }, [swpAtvRes]);
+  // useEffect(() => {
+  //   console.log(swpAtvRes);
+  // }, [swpAtvRes]);
+
+  // useEffect(() => {
+  //   console.log(alert);
+  // }, [alert]);
 
   useEffect(() => {
-    console.log(alert);
-  }, [alert]);
-
+    onGetTarget();
+  }, [select]);
   return (
     <>
       {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
@@ -94,7 +106,7 @@ function App() {
           <Wrap p={position()}>
             <Route path={'/admin'} render={() => <EmpManagement/>}/>
             <Route path={'/manager'} render={() => <Dashboard/>}/>
-            <Route path={'/user'} render={() => <AtdcManagement/>}/>
+            <Route path={'/user'} render={() => <AtdcManagement selectedId={selectedItem}/>}/>
           </Wrap>
         </Switch>
       </BrowserRouter>

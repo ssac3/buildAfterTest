@@ -1,6 +1,6 @@
-import React from "react";
-import {Container, Grid} from "@mui/material";
-import {MonthlyAttendance, MonthlyWorkDetail, MonthlyWorktime, UseVacation} from "./Section";
+import React from 'react';
+import {Container, Grid} from '@mui/material';
+import {MonthlyAttendance, MonthlyWorkDetail, MonthlyWorktime, UseVacation} from './Section';
 
 
 export const AtdcMonthly = () => {

@@ -1,6 +1,6 @@
-import {Box, Card, CardHeader} from "@mui/material";
-import PropTypes from "prop-types";
-import React from "react";
+import {Box, Card, CardHeader} from '@mui/material';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
 const columns = [
