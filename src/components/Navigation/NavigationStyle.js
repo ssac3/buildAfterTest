@@ -52,8 +52,8 @@ const DrawerContainer = styled.div`
     font-size: 20px;
     font-weight: bold;
   }
-  
 `;
+
 
 const SubTitle = styled.div`
   cursor: pointer;
