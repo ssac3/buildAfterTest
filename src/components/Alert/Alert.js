@@ -2,15 +2,23 @@ import React from 'react';
 import {style} from './AlertStyle';
 import {MdOutlineError, MdOutlineClose} from 'react-icons/md';
 import PropTypes from 'prop-types';
+import {useDispatch} from 'react-redux';
+import {closeAlert} from 'redux/actions/AlertAction';
 
-export const Alert = ({status}) => {
+export const Alert = ({status, msg}) => {
+  const dispatch = useDispatch();
+
+  const onClickClose = () => {
+    dispatch(closeAlert());
+  };
+
   return (
     <Container status={status}>
       <TextLayout>
         <MdOutlineError size={25}/>
-        {status === 'success' ? '신규 사원을 성공적으로 등록했습니다.' : '에러가 발생했습니다. 다시 시도하세요.'}
+        {msg}
       </TextLayout>
-      <IconLayout>
+      <IconLayout onClick={onClickClose}>
         <MdOutlineClose size={25}/>
       </IconLayout>
     </Container>
@@ -19,6 +27,7 @@ export const Alert = ({status}) => {
 
 Alert.propTypes = {
   status:PropTypes.string.isRequired,
+  msg:PropTypes.string.isRequired,
 };
 
 const {Container, TextLayout, IconLayout} = style;

@@ -7,9 +7,22 @@ export const EmpManagement = () => {
   // setEmps해주기 쓰려면~
   const [emps] = useState([
     {
-      id: 1,
-      username: '김윤지',
       checked: true,
+      username: '123456',
+      name: 'kimyunji',
+      img: 'qwerqwerqwer',
+      gender: '0',
+      department_id: 1,
+      department_name: 'develop',
+      department_location: 'busan',
+      position: 'team leader',
+      role: '0',
+      qr_path: 'asdfasdfasdf',
+      create_at: '2022.06.22',
+      working_status: '0',
+
+
+
     },
     {
       id: 2,
@@ -22,7 +35,6 @@ export const EmpManagement = () => {
       checked: false,
     },
   ]);
-
   return(
     <Container>
       <div id="pagename">

@@ -86,13 +86,13 @@ const BtnLayout = styled.div`
 `;
 
 const Btn = styled.button`
+  cursor: pointer;
   font-weight: bold;
   width: 100%;
   padding: 15px;
   border-radius: 5px;
   background-color: ${({bgColor}) => bgColor};
   color: white;
-
 `;
 
 

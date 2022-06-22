@@ -10,7 +10,9 @@ import Navigation from './components/Navigation';
 import {ADMIN_MENU, MANAGER_MENU, USER_MENU} from 'utils/constants/menuList';
 import {CLIENT_URL} from 'utils/constants/api';
 import Setting from 'pages/manager/setting';
-// import Alert from 'components/Alert';
+import {SwpAtvReq} from './redux/actions/ManagerAction';
+import {useDispatch, useSelector} from 'react-redux';
+import Alert from 'components/Alert';
 
 
 function getMenu(role) {
@@ -25,9 +27,14 @@ function getMenu(role) {
 }
 
 function App() {
+  const dispatch = useDispatch();
+  const alert = useSelector((state) => state.AlertReducer);
   const roleURL = window.location.href.replace(CLIENT_URL, ''); // url 변경
   const [select, setSelect] = useState(getMenu(roleURL) || {});
   const [setting, setSetting] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(0);
+
+
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
       ...value,
@@ -44,18 +51,42 @@ function App() {
     const result = select.map((v, i) => v.sub.id === target[i].id && {...v, sub: target[i]});
     setSelect(result);
   };
+
+  const onGetTarget = () => {
+    const target = select.filter(value => value.check && value);
+    const subTarget = target[0].sub.filter(v => v.check && v);
+    setSelectedItem(subTarget[0].id);
+  };
+
   const position = () => {
     return (select.filter(v => v.check)[0].sub.length > 0) ? (65 + 238) : 185;
   };
   const onClickSetting = () => {
     setSetting(!setting);
   };
+
+  useEffect(() => {
+    dispatch(SwpAtvReq(1)); // 로그인 이후 사용자(근태관리자) 부서 ID로 바인딩 필요
+  }, []);
+
   useEffect(() => {
     getMenu(roleURL);
   }, [roleURL]);
 
+  // useEffect(() => {
+  //   console.log(swpAtvRes);
+  // }, [swpAtvRes]);
+
+  // useEffect(() => {
+  //   console.log(alert);
+  // }, [alert]);
+
+  useEffect(() => {
+    onGetTarget();
+  }, [select]);
   return (
     <>
+      {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
       {roleURL !== '' && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>
@@ -75,7 +106,7 @@ function App() {
           <Wrap p={position()}>
             <Route path={'/admin'} render={() => <EmpManagement/>}/>
             <Route path={'/manager'} render={() => <Dashboard/>}/>
-            <Route path={'/user'} render={() => <AtdcManagement/>}/>
+            <Route path={'/user'} render={() => <AtdcManagement selectedId={selectedItem}/>}/>
           </Wrap>
         </Switch>
       </BrowserRouter>
