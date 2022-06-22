@@ -54,8 +54,8 @@ function App() {
 
   const onGetTarget = () => {
     const target = select.filter(value => value.check && value);
-    const subTarget = target[0].sub.filter(v => v.check && v);
-    setSelectedItem(subTarget[0].id);
+    const subTarget = target[0].sub?.filter(v => v.check && v);
+    setSelectedItem(subTarget[0]?.id);
   };
 
   const position = () => {
