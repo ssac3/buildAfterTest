@@ -29,3 +29,12 @@
 .notes-month section {
     font-size: 28px;
 }
+
+
+.ant-picker-calendar-full .ant-picker-panel .ant-picker-body td:first-child .ant-picker-calendar-date-value {
+    color: red;
+}
+
+.ant-picker-calendar-full .ant-picker-panel .ant-picker-body td:last-child {
+    color: blue;
+}
