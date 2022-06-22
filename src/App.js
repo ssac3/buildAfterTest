@@ -88,7 +88,7 @@ function App() {
 const Wrap = styled.div`
   ${({theme}) => theme.flexSet()};
   position: absolute;
-  padding: 12px 100px;
+  padding: 30px;
   top: 70px;
   left: ${({p}) => p}px; // 수정
   width: calc(100% - (65px + 238px));

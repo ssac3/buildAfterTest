@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import Search from 'components/Search';
+import Search from 'components/EmpListHeader';
 import {EmpList} from '../../../components/EmpList/EmpList';
-
-
+import {style} from './EmpManagementStyle';
 
 export const EmpManagement = () => {
   // setEmps해주기 쓰려면~
@@ -25,9 +24,34 @@ export const EmpManagement = () => {
   ]);
 
   return(
-    <>
-      <Search/>
+    <Container>
+      <div id="pagename">
+        <h2>사원 관리</h2>
+      </div>
+      <div id="topcomponent">
+        <div id={'wrapper'}>
+          <Search/>
+          <select id="selectbox">
+            <option key="position" value="position">직급</option>
+            <option key="email" value="email">이메일</option>
+            <option key="deptname" value="deptname">부서</option>
+            <option key="createat" value="createat">입사일</option>
+          </select>
+        </div>
+        <BtnLayout value="regBtn">추가</BtnLayout>
+      </div>
+      <ListHeader>
+        <ListItem w={100}>사원 번호</ListItem>
+        <ListItem w={100}>사원명</ListItem>
+        <ListItem w={150}>이메일</ListItem>
+        <ListItem w={100}>성별</ListItem>
+        <ListItem w={100}>부서</ListItem>
+        <ListItem w={100}>직급</ListItem>
+        <ListItem w={100}>입사일</ListItem>
+        <ListItem w={100}>상세보기</ListItem>
+      </ListHeader>
       <EmpList emps={emps}/>
-    </>
+    </Container>
   );
 };
+const {Container, BtnLayout, ListHeader, ListItem} = style;
