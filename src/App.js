@@ -10,7 +10,9 @@ import Navigation from './components/Navigation';
 import {ADMIN_MENU, MANAGER_MENU, USER_MENU} from 'utils/constants/menuList';
 import {CLIENT_URL} from 'utils/constants/api';
 import Setting from 'pages/manager/setting';
-// import Alert from 'components/Alert';
+import {SwpAtvReq} from './redux/actions/ManagerAction';
+import {useDispatch, useSelector} from 'react-redux';
+import Alert from 'components/Alert';
 
 
 function getMenu(role) {
@@ -25,6 +27,9 @@ function getMenu(role) {
 }
 
 function App() {
+  const dispatch = useDispatch();
+  const swpAtvRes = useSelector((state) => state.MangerReducer);
+  const alert = useSelector((state) => state.AlertReducer);
   const roleURL = window.location.href.replace(CLIENT_URL, ''); // url 변경
   const [select, setSelect] = useState(getMenu(roleURL) || {});
   const [setting, setSetting] = useState(false);
@@ -50,12 +55,26 @@ function App() {
   const onClickSetting = () => {
     setSetting(!setting);
   };
+
+  useEffect(() => {
+    dispatch(SwpAtvReq(1)); // 로그인 이후 사용자(근태관리자) 부서 ID로 바인딩 필요
+  }, []);
+
   useEffect(() => {
     getMenu(roleURL);
   }, [roleURL]);
 
+  useEffect(() => {
+    console.log(swpAtvRes);
+  }, [swpAtvRes]);
+
+  useEffect(() => {
+    console.log(alert);
+  }, [alert]);
+
   return (
     <>
+      {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
       {roleURL !== '' && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>
