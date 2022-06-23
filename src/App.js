@@ -14,7 +14,6 @@ import {SwpAtvReq} from './redux/actions/ManagerAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Alert from 'components/Alert';
 
-
 function getMenu(role) {
   switch (role) {
     case 'admin':
@@ -110,8 +109,6 @@ function App() {
           </Wrap>
         </Switch>
       </BrowserRouter>
-
-
     </>
   );
 }
