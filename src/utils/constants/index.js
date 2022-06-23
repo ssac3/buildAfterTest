@@ -1,3 +1,29 @@
+import storage from './storage';
+export const LOCAL_STORAGE = storage(localStorage);
+const API = {
+  ADMIN:'/admin',
+  MANAGER: '/manager',
+  USER: '/user'
+};
+
+
+export const ROUTES = {
+  CLIENT_URL: 'http://localhost:3000/',
+  BASE_URL: 'http://localhost:8081',
+  SWP_ATV_REQ: API.MANAGER.concat('/deptView'),
+  SWP_ATR_REQ: API.MANAGER.concat('/deptUpdate'),
+  SWP_VAV_REQ: API.MANAGER.concat('/vacView'),
+  SWP_VAR_REQ: API.MANAGER.concat('/vacUpdate')
+};
+
+export const LOG = (target) => {
+  return {
+    SUCCESS: `[LOG] ${target} 통신 성공`,
+    ERROR:  `[LOG] ${target} 통신 에러`
+  };
+};
+
+
 export const USER_MENU = [
   {
     id   : 0,

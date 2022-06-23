@@ -7,8 +7,7 @@ import AtdcManagement from 'pages/user/attendence';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
-import {ADMIN_MENU, MANAGER_MENU, USER_MENU} from 'utils/constants/menuList';
-import {CLIENT_URL} from 'utils/constants/api';
+import {ADMIN_MENU, MANAGER_MENU, USER_MENU, ROUTES} from 'utils/constants';
 import Setting from 'pages/manager/setting';
 import {SwpAtvReq} from './redux/actions/ManagerAction';
 import {useDispatch, useSelector} from 'react-redux';
@@ -29,7 +28,7 @@ function getMenu(role) {
 function App() {
   const dispatch = useDispatch();
   const alert = useSelector((state) => state.AlertReducer);
-  const roleURL = window.location.href.replace(CLIENT_URL, ''); // url 변경
+  const roleURL = window.location.href.replace(ROUTES.CLIENT_URL, ''); // url 변경
   const [select, setSelect] = useState(getMenu(roleURL) || {});
   const [setting, setSetting] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
