@@ -52,9 +52,9 @@ function App() {
   };
 
   const onGetTarget = () => {
-    const target = select.filter(value => value.check && value);
-    const subTarget = target[0].sub?.filter(v => v.check && v);
-    setSelectedItem(subTarget[0]?.id);
+    const target = select.filter(value => value.check && value)[0];
+    const result = target.sub.length > 0 ? target.sub.filter(v => v.check && v)[0].id : target.id;
+    setSelectedItem(result);
   };
 
   const position = () => {
@@ -104,7 +104,7 @@ function App() {
           <Route exact path={'/'} component={SignIn}/>
           <Wrap p={position()}>
             <Route path={'/admin'} render={() => <EmpManagement/>}/>
-            <Route path={'/manager'} render={() => <Dashboard/>}/>
+            <Route path={'/manager'} render={() => <Dashboard selectedId={selectedItem}/>}/>
             <Route path={'/user'} render={() => <AtdcManagement selectedId={selectedItem}/>}/>
           </Wrap>
         </Switch>

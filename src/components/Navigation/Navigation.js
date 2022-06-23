@@ -15,16 +15,16 @@ export const Navigation = ({role, menu, onClickMenu, onClickSubMenu}) => {
       <Container>
         {role === 'manager' && (
           <>
-            <IconLayout id={0} onClick={onClickMenu} status={menu[0]?.check}>
+            <IconLayout id={menu[0].id} onClick={onClickMenu} status={menu[0]?.check}>
               <MdSpaceDashboard pointerEvents={'none'} size={40}/>
             </IconLayout>
-            <IconLayout id={1} onClick={onClickMenu} status={menu[1]?.check}>
+            <IconLayout id={menu[1].id} onClick={onClickMenu} status={menu[1]?.check}>
               <MdAssignmentTurnedIn pointerEvents={'none'} size={40}/>
             </IconLayout>
-            <IconLayout id={2} onClick={onClickMenu} status={menu[2]?.check}>
+            <IconLayout id={menu[2].id} onClick={onClickMenu} status={menu[2]?.check}>
               <MdPeople pointerEvents={'none'} size={40}/>
             </IconLayout>
-            <IconLayout id={3} onClick={onClickMenu} status={menu[3]?.check}>
+            <IconLayout id={menu[3].id} onClick={onClickMenu} status={menu[3]?.check}>
               <MdAssignment pointerEvents={'none'} size={40}/>
             </IconLayout>
           </>

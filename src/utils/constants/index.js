@@ -44,13 +44,13 @@ export const MANAGER_MENU = [
   {
     id   : 1,
     title: '근태 신청 관리',
-    sub  : [{id: 0, title: '• 휴가 관리', check: true}, {id: 1, title: '• 근태 조정', check: false}],
+    sub  : [{id: 2, title: '• 휴가 관리', check: true}, {id: 3, title: '• 근태 조정', check: false}],
     check: false
   },
-  {id: 2, title: '사원별 근태 관리', sub: [], check: false},
-  {id    : 3,
+  {id: 4, title: '사원별 근태 관리', sub: [], check: false},
+  {id    : 5,
     title: '보고서',
-    sub  : [{id: 2, title: '• 사원별 근태 현황', check: true}, {id: 3, title: '• 연장 근무 현황', check: false}],
+    sub  : [{id: 6, title: '• 사원별 근태 현황', check: true}, {id: 7, title: '• 연장 근무 현황', check: false}],
     check: false
   }
 ];
