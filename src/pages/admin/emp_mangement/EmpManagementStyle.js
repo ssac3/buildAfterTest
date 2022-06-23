@@ -30,7 +30,20 @@ const Container = styled.div`
   }
 `;
 
-const BtnLayout = styled.button`
+const DelBtn = styled.button`
+  background-color: #E20000;
+  ${({theme}) => theme.flexSet()};
+  cursor: pointer;
+  width:120px;
+  height: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  margin-left: 40%;
+`;
+
+const RegBtn = styled.button`
   background-color: #1A83FE;
   ${({theme}) => theme.flexSet()};
   cursor: pointer;
@@ -55,4 +68,4 @@ const ListItem = styled.li`
   width: ${({w}) => w}px;
 `;
 
-export const style = {Container, BtnLayout, ListHeader, ListItem};
+export const style = {Container, DelBtn, RegBtn, ListHeader, ListItem};

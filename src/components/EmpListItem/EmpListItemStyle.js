@@ -1,28 +1,36 @@
 import styled from 'styled-components';
 
-const Container = styled.div`
-  //${({theme}) => theme.flexSet()};
-  border: 1px solid black;
-  width: 300px;
-  height: calc(100% - 70px);
+const ListData = styled.div`
+  //background-color: red;
+  ${({theme}) => theme.flexSet('space-around')};
+  //float: left;
   background-color: white;
-  /*padding: 2px 10px;
-  width: 300px;
-  height: 40px;
-  border: 1px solid black;
-  border-radius: 8px;
-  margin-bottom: auto;
-  margin-right: auto;*/
+  //padding: 10px;
+  border-radius: 5px;
+  //padding: 10px;
+  margin-bottom: 20px;
 `;
 
-const CheckContainer = styled.div`
+
+const ListItem = styled.div`
+  ${({theme}) => theme.flexSet('space-around')};
+  float: left;
+  width: ${({w}) => w}px;
+  //background-color: red;
   
 `;
 
-const TextContainer = styled.div`
+const BtnLayout = styled.button`
+  background-color: #5B5B5B;
+  ${({theme}) => theme.flexSet()};
+  cursor: pointer;
+  width:80px;
+  height: 40px;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  margin-right: 30px;
 `;
 
-const RemoveContainer = styled.div`
-`;
+export const style = {ListData, ListItem, BtnLayout};
 
-export const style = {Container, CheckContainer, TextContainer, RemoveContainer};

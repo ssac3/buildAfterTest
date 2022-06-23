@@ -4,35 +4,41 @@ import {EmpList} from '../../../components/EmpList/EmpList';
 import {style} from './EmpManagementStyle';
 
 export const EmpManagement = () => {
-  // setEmps해주기 쓰려면~
+  // setEmps해주기 쓰려면~db연결해서 할 땐 빈값으로 만들어주기
   const [emps] = useState([
     {
+      id: 1,
       checked: true,
       username: '123456',
-      name: 'kimyunji',
+      name: '김윤지',
+      email: 'qwer@qwer.com',
       img: 'qwerqwerqwer',
-      gender: '0',
+      gender: '여',
       department_id: 1,
-      department_name: 'develop',
+      deptname: '개발부',
       department_location: 'busan',
-      position: 'team leader',
+      position: '팀장',
       role: '0',
       qr_path: 'asdfasdfasdf',
-      create_at: '2022.06.22',
+      createAt: '2022.06.22',
       working_status: '0',
-
-
-
     },
     {
       id: 2,
-      text: '박채연',
       checked: true,
-    },
-    {
-      id: 3,
-      text: '하성록',
-      checked: false,
+      username: '789456',
+      name: '홍길동',
+      email: 'asdf@asdf.com',
+      img: 'qwerqwerqwer',
+      gender: '남',
+      department_id: 1,
+      deptname: '인사',
+      department_location: 'busan',
+      position: '사원',
+      role: '0',
+      qr_path: 'asdfasdfasdf',
+      createAt: '2022.06.32',
+      working_status: '0',
     },
   ]);
   return(
@@ -45,12 +51,16 @@ export const EmpManagement = () => {
           <Search/>
           <select id="selectbox">
             <option key="position" value="position">직급</option>
-            <option key="email" value="email">이메일</option>
-            <option key="deptname" value="deptname">부서</option>
-            <option key="createat" value="createat">입사일</option>
+            <option key="email" value="email">사원</option>
+            <option key="deptname" value="deptname">주임</option>
+            <option key="createat" value="createat">대리</option>
+            <option key="createat" value="createat">과장</option>
+            <option key="createat" value="createat">차장</option>
+            <option key="createat" value="createat">부장</option>
           </select>
         </div>
-        <BtnLayout value="regBtn">추가</BtnLayout>
+        <DelBtn value="regBtn">삭제</DelBtn>
+        <RegBtn value="regBtn">추가</RegBtn>
       </div>
       <ListHeader>
         <ListItem w={100}>사원 번호</ListItem>
@@ -66,4 +76,4 @@ export const EmpManagement = () => {
     </Container>
   );
 };
-const {Container, BtnLayout, ListHeader, ListItem} = style;
+const {Container, DelBtn, RegBtn, ListHeader, ListItem} = style;

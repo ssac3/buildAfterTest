@@ -1,16 +1,39 @@
 import React from 'react';
 import {style} from './EmpListItemStyle';
+import PropTypes from 'prop-types';
 
-export const EmpListItem = (emp) => {
-  const {text} = emp;
+
+export const EmpListItem = ({emp}) => {
+  const {username} = emp;
+  const {name} = emp;
+  const {email} = emp;
+  const {gender} = emp;
+  const {deptname} = emp;
+  const {position} = emp;
+  const {createAt} = emp;
+
   return(
-    <Container>
-      <CheckContainer>❤
-        <TextContainer>{text}</TextContainer>
-      </CheckContainer>
-      <RemoveContainer>🏝</RemoveContainer>
-    </Container>
+    <ListData>
+      <ListItem w={130}>{username}</ListItem>
+      <ListItem w={140}>{name}</ListItem>
+      <ListItem w={210}>{email}</ListItem>
+      <ListItem w={90}>{gender}</ListItem>
+      <ListItem w={200}>{deptname}</ListItem>
+      <ListItem w={70}>{position}</ListItem>
+      <ListItem w={225} id="createAt">{createAt}</ListItem>
+      <ListItem w={100}>
+        <BtnLayout w={50} value="detailBtn">보기</BtnLayout>
+      </ListItem>
+    </ListData>
   );
 };
 
-const {Container, CheckContainer, TextContainer, RemoveContainer} = style;
+const {ListData, ListItem, BtnLayout} = style;
+
+EmpListItem.propTypes = {
+  emp: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool])
+    )
+  ).isRequired,
+};
