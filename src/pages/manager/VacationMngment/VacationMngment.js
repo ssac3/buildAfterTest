@@ -36,7 +36,7 @@ const InputComponent = ({type}) => {
   );
 };
 
-const ListItemComponent = () => {
+const ListItemComponent = ({onClickDetail}) => {
   return(
     <ListItemContainer>
       <ItemContainer>54142910</ItemContainer>
@@ -45,17 +45,58 @@ const ListItemComponent = () => {
       <ItemContainer>전일 휴가</ItemContainer>
       <ItemContainer>개인 사유</ItemContainer>
       <ItemContainer>승인 대기</ItemContainer>
-      <ItemContainer><DetailBtnComponent/></ItemContainer>
+      <ItemContainer><BtnContainer onClick={onClickDetail}>상세보기</BtnContainer></ItemContainer>
     </ListItemContainer>
   );
 };
 
-const DetailBtnComponent = () => {
+const InfoInputComponent = () => {
   return(
-    <BtnContainer>상세보기</BtnContainer>
+    <InfoInputContainer></InfoInputContainer>
   );
 };
+
+const UserInfoComponent = ({detail}) => {
+  return(
+    <UserInfoContainer>
+      {detail && (
+        <>
+          <InnerInfoContainer>
+
+            <InnerInfoItem>사원번호</InnerInfoItem>
+            <InnerInfoItem>사원명</InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
+
+            <InnerInfoItem>휴가신청일</InnerInfoItem>
+            <InnerInfoItem>신청 휴가시간</InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
+
+            <InnerInfoItem>사유</InnerInfoItem>
+            <InnerInfoItem>남은 휴가시간</InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
+
+            <InnerInfoItem>상태</InnerInfoItem>
+            <InnerInfoItem/>
+            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
+          </InnerInfoContainer>
+          <StoreBtn>저장</StoreBtn>
+        </>
+
+      )}
+
+    </UserInfoContainer>
+  );
+};
+
 export const VacationMngment = () => {
+  const [detail, setDetail] = useState(false);
+  const onClickDetail = () => {
+    setDetail(true);
+  };
+
   return (
     <Wrapper>
       <TitleContainer/>
@@ -79,12 +120,18 @@ export const VacationMngment = () => {
             <InnerLayout>-</InnerLayout>
           </HeaderContainer>
 
-          <ListItemComponent/>
-          <ListItemComponent/>
-          <ListItemComponent/>
-          <ListItemComponent/>
+          <ListItemComponent onClickDetail={onClickDetail}/>
+          <ListItemComponent onClickDetail={onClickDetail}/>
+          <ListItemComponent onClickDetail={onClickDetail}/>
+          <ListItemComponent onClickDetail={onClickDetail}/>
         </ListContainer>
 
+        <SideContainer>
+          <InfoContainer h={35}/>
+          <InfoContainer h={63}>
+            <UserInfoComponent detail={detail}/>
+          </InfoContainer>
+        </SideContainer>
       </Container>
 
     </Wrapper>
@@ -93,18 +140,37 @@ export const VacationMngment = () => {
 
 const {
   Wrapper,
-  Container,
-  ListContainer,
   TitleContainer,
+
+  Container,
+  SideContainer,
+  InfoContainer,
+  ListContainer,
+
   HeaderContainer,
   InnerLayout,
   SearchContainer,
   SearchInput,
+
   ListItemContainer,
   ItemContainer,
   BtnContainer,
+
+  UserInfoContainer,
+  InnerInfoContainer,
+  InnerInfoItem,
+  InfoInputContainer,
+  StoreBtn,
 } = style;
 
 InputComponent.propTypes = {
   type:PropTypes.string.isRequired,
+};
+
+ListItemComponent.propTypes = {
+  onClickDetail:PropTypes.func.isRequired,
+};
+
+UserInfoComponent.propTypes = {
+  detail:PropTypes.bool.isRequired,
 };
