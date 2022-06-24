@@ -111,9 +111,11 @@ const BtnContainer = styled.div`
 
 
 const UserInfoContainer = styled.div`
-  ${({theme}) => theme.flexSet('space-between', 'center', 'column')};
+  ${({theme, info}) => theme.flexSet(info ? 'space-between' : 'center', 'center', 'column')};
   width: 100%;
   height: 100%;
+  font-weight: bold;
+  font-size: ${({info}) => !info && 20}px;
 `;
 
 const InnerInfoContainer = styled.div`

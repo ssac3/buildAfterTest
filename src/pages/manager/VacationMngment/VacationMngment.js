@@ -4,7 +4,7 @@ import {style} from './VacationMngmentStyle';
 import { Calendar } from 'antd';
 import {MdSearch, MdCalendarToday} from 'react-icons/md';
 import Dropbox from 'components/Dropbox';
-import {VACATION_TYPE, APPROVAL_TYPE} from 'utils/constants';
+import {VACATION_TYPE, MANAGER_APPROVAL_TYPE} from 'utils/constants';
 import {useDispatch, useSelector} from 'react-redux';
 import {SwpVavReq} from 'redux/actions/ManagerAction';
 
@@ -48,7 +48,7 @@ const ListItemComponent = ({item, onClickDetail}) => {
       <ItemContainer>{item.date}</ItemContainer>
       <ItemContainer>{VACATION_TYPE[item.type].title}</ItemContainer>
       <ItemContainer>{item.contents}</ItemContainer>
-      <ItemContainer>{APPROVAL_TYPE[item.approvalFlag].title}</ItemContainer>
+      <ItemContainer>{MANAGER_APPROVAL_TYPE[item.approvalFlag].title}</ItemContainer>
       <ItemContainer>
         <BtnContainer id={item.vId} onClick={onClickDetail}>상세보기</BtnContainer>
       </ItemContainer>
@@ -63,10 +63,33 @@ const InfoInputComponent = ({text}) => {
 };
 
 const UserInfoComponent = ({detail}) => {
-  console.log(detail);
+  const [drop, setDrop] = useState(false);
+  const [change, setChange] = useState('');
+  useEffect(() => {
+    if(detail?.approvalFlag) {
+      setChange(MANAGER_APPROVAL_TYPE[detail.approvalFlag].title);
+    }
+  }, [detail]);
+
+  const onClickDrop = () => {
+    setDrop(!drop);
+  };
+
+  const onClickItem = (e) => {
+    setChange(e.target.id);
+    onClickDrop();
+  };
+
+  const onClickStore = (e) => {
+    // SWP_VAR_REQ
+    console.log(e.target.id);
+    console.log(change);
+  };
+
+
   return(
-    <UserInfoContainer>
-      {detail?.name && (
+    <UserInfoContainer info={detail?.name}>
+      {detail?.name ? (
         <>
           <InnerInfoContainer>
 
@@ -88,13 +111,21 @@ const UserInfoComponent = ({detail}) => {
             <InnerInfoItem>상태</InnerInfoItem>
             <InnerInfoItem/>
             <InnerInfoItem>
-              <InfoInputComponent text={APPROVAL_TYPE[detail.approvalFlag].title}/>
+              <Dropbox
+                open={drop}
+                onClickDropBox={onClickDrop}
+                menu={MANAGER_APPROVAL_TYPE}
+                select={change}
+                onClickDropBoxItem={onClickItem}
+              />
             </InnerInfoItem>
           </InnerInfoContainer>
-          <StoreBtn>저장</StoreBtn>
+          <StoreBtn id={detail.vId} onClick={onClickStore}>저장</StoreBtn>
         </>
 
-      )}
+      )
+        :
+        <>사원을 선택해주세요</>}
 
     </UserInfoContainer>
   );
@@ -138,10 +169,6 @@ export const VacationMngment = () => {
     dispatch(SwpVavReq());
   }, []);
 
-  // useEffect(() => {
-  //   console.log(selector);
-  // }, [selector]);
-
   return (
     <Wrapper>
       <TitleContainer/>
@@ -161,7 +188,7 @@ export const VacationMngment = () => {
             <InnerLayout><InputComponent type={'date'}/></InnerLayout>
             <InnerLayout><Dropbox id={'vacation'} open={openDropbox} onClickDropBox={onClickType} menu={VACATION_TYPE} select={selectItem.vacation} onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'vacation')}/></InnerLayout>
             <InnerLayout><InputComponent type={'text'}/></InnerLayout>
-            <InnerLayout><Dropbox id={'status'} open={openStatusDropbox} onClickDropBox={onClickStatus} menu={APPROVAL_TYPE} select={selectItem.status} onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'status')}/></InnerLayout>
+            <InnerLayout><Dropbox id={'status'} open={openStatusDropbox} onClickDropBox={onClickStatus} menu={MANAGER_APPROVAL_TYPE} select={selectItem.status} onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'status')}/></InnerLayout>
             <InnerLayout>-</InnerLayout>
           </HeaderContainer>
 
