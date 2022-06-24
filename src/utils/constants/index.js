@@ -13,7 +13,8 @@ export const ROUTES = {
   SWP_ATV_REQ: API.MANAGER.concat('/deptView'),
   SWP_ATR_REQ: API.MANAGER.concat('/deptUpdate'),
   SWP_VAV_REQ: API.MANAGER.concat('/vacView'),
-  SWP_VAR_REQ: API.MANAGER.concat('/vacUpdate')
+  SWP_VAR_REQ: API.MANAGER.concat('/vacUpdate'),
+  SWP_SAV_REQ: API.USER.concat('/myView')
 };
 
 export const LOG = (target) => {

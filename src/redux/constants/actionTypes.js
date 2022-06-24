@@ -9,3 +9,8 @@ export const AlertType = {
   OPEN_ALERT: 'OPEN_ALERT',
   CLOSE_ALERT: 'CLOSE_ALERT'
 };
+
+export const UserType = {
+  SWP_SAV_REQ: 'SWP_SAV_REQ',
+  SWP_SAV_RES: 'SWP_SAV_RES'
+};

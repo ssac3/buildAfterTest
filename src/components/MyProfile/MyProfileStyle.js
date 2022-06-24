@@ -8,9 +8,9 @@ const Container = styled.div`
 const MyViewTop = styled.div`
   border: 0.5px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_CC};
   border-radius:7px;
-  min-width: 700px;
+  width: 1408px;
   background: white;
-  max-width: 1406px;
+  height: 357px;
   #DouZoneImg{
     width: 100%;
   }
@@ -18,38 +18,58 @@ const MyViewTop = styled.div`
 
 const InquiryTitle = styled.div`
   ${({theme}) => theme.flexSet('space-around')};
-  padding: 20px 50px;
+  padding: 20px 120px 0px 80px;
 `;
 
 const InquiryContent = styled.div`
   ${({theme}) => theme.flexSet('space-around')};
-  padding: 20px 50px;
+  padding: 10px 120px 20px 80px;
 `;
 
 const Contents = styled.div`
   width: ${({w}) => w}px;
-  font-size: ${({fs}) => fs};
+  font-size: ${({fs}) => fs}px;
   font-weight: ${({fw}) => fw};
+  color: ${({fc}) => fc};
 `;
 
 const MyViewBot = styled.div`
-  ${({theme}) => theme.flexSet('space-between', 'center', 'row')};
-  margin-top: 50px;
+  ${({theme}) => theme.flexSet('none', 'center', 'row')};
+  margin-top: 80px;
 `;
 
-const MyImg = styled.div`
-  
-`;
 
-const MyQR = styled.div`
+const BotContainer = styled.div`
+  ${({theme}) => theme.flexSet('center', 'none', 'column')};
   border: 0.5px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_CC};
   border-radius:7px;
-  width: ${({w}) => w}%;
   background: white;
+  width: auto;
+  height: 305px;
+  
+  margin-right: 100px;
 `;
 
-const MyQrImg = styled.div`
+const BotTitle = styled.div`
+  padding: 15px 0px 15px 30px;
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const BotContents = styled.div`
   ${({theme}) => theme.flexSet('center', 'center', 'row')};
+  width: 506px;
+  padding-bottom: 30px;
+`;
+
+const MyImg = styled.img`
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+`;
+
+const MyButton = styled.button`
+  
 `;
 
 export const style = {
@@ -59,7 +79,9 @@ export const style = {
   InquiryContent,
   Contents,
   MyViewBot,
-  MyQR,
+  BotContainer,
   MyImg,
-  MyQrImg
+  BotTitle,
+  BotContents,
+  MyButton
 };
