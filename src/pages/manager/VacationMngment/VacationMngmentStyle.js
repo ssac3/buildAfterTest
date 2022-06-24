@@ -53,11 +53,12 @@ const InnerLayout = styled.div`
 
 const SearchContainer = styled.div`
   ${({theme}) => theme.flexSet('space-around')};
+  color:${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
   position: relative;
   width: 90%;
   height: 40px;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_E1};
 `;
 
@@ -137,6 +138,7 @@ const InfoInputContainer = styled.input`
 `;
 
 const StoreBtn = styled.button`
+  font-weight: bold;
   cursor:pointer;
   width:100%;
   padding: 10px;

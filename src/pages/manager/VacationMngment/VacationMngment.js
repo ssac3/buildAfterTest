@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {style} from './VacationMngmentStyle';
 import { Calendar } from 'antd';
 import {MdSearch, MdCalendarToday} from 'react-icons/md';
+import Dropbox from 'components/Dropbox';
+import {VACATION_TYPE, APPROVAL_TYPE} from 'utils/constants';
 
 const InputComponent = ({type}) => {
   const [open, setOpen] = useState(false);
@@ -92,10 +94,42 @@ const UserInfoComponent = ({detail}) => {
 };
 
 export const VacationMngment = () => {
+  const [openDropbox, setOpenDropbox] = useState(false);
+  const [openStatusDropbox, setOpenStatusDropbox] = useState(false);
   const [detail, setDetail] = useState(false);
+  const [selectItem, setSelectItem] = useState({
+    vacation:'선택하세요',
+    status:'선택하세요'
+  });
+
   const onClickDetail = () => {
     setDetail(true);
   };
+
+  const onClickType = () => {
+    setOpenDropbox(!openDropbox);
+  };
+
+  const onClickStatus = () => {
+    setOpenStatusDropbox(!openStatusDropbox);
+  };
+
+  const onClickDropBoxItem = (e, target) => {
+    setSelectItem({...selectItem, [target]: e.target.id});
+
+    if(target === 'vacation') {
+      onClickType();
+    }else{
+      onClickStatus();
+    }
+  };
+
+  useEffect(() => {
+    console.log(selectItem);
+  }, [selectItem]);
+
+
+
 
   return (
     <Wrapper>
@@ -114,9 +148,9 @@ export const VacationMngment = () => {
             <InnerLayout><InputComponent type={'text'}/></InnerLayout>
             <InnerLayout><InputComponent type={'text'}/></InnerLayout>
             <InnerLayout><InputComponent type={'date'}/></InnerLayout>
-            <InnerLayout>드롭박스</InnerLayout>
+            <InnerLayout><Dropbox id={'vacation'} open={openDropbox} onClickDropBox={onClickType} menu={VACATION_TYPE} select={selectItem.vacation} onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'vacation')}/></InnerLayout>
             <InnerLayout><InputComponent type={'text'}/></InnerLayout>
-            <InnerLayout><InputComponent type={'text'}/></InnerLayout>
+            <InnerLayout><Dropbox id={'status'} open={openStatusDropbox} onClickDropBox={onClickStatus} menu={APPROVAL_TYPE} select={selectItem.status} onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'status')}/></InnerLayout>
             <InnerLayout>-</InnerLayout>
           </HeaderContainer>
 
