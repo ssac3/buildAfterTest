@@ -111,12 +111,13 @@ const BtnContainer = styled.div`
 
 
 const UserInfoContainer = styled.div`
-  ${({theme}) => theme.flexSet('space-around', 'center', 'column')};
+  ${({theme}) => theme.flexSet('space-between', 'center', 'column')};
   width: 100%;
   height: 100%;
 `;
 
 const InnerInfoContainer = styled.div`
+  width:100%;
   display: grid;
   grid-template-rows: repeat(8, 1fr);
   grid-template-columns: repeat(2, 1fr);
@@ -130,7 +131,7 @@ const InnerInfoItem = styled.div`
   font-weight: bold;
 `;
 
-const InfoInputContainer = styled.input`
+const InfoInputContainer = styled.div`
   width: 100%;
   border-radius: 5px;
   padding:10px;

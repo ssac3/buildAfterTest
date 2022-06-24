@@ -5,6 +5,8 @@ import { Calendar } from 'antd';
 import {MdSearch, MdCalendarToday} from 'react-icons/md';
 import Dropbox from 'components/Dropbox';
 import {VACATION_TYPE, APPROVAL_TYPE} from 'utils/constants';
+import {useDispatch, useSelector} from 'react-redux';
+import {SwpVavReq} from 'redux/actions/ManagerAction';
 
 const InputComponent = ({type}) => {
   const [open, setOpen] = useState(false);
@@ -38,51 +40,56 @@ const InputComponent = ({type}) => {
   );
 };
 
-const ListItemComponent = ({onClickDetail}) => {
+const ListItemComponent = ({item, onClickDetail}) => {
   return(
     <ListItemContainer>
-      <ItemContainer>54142910</ItemContainer>
-      <ItemContainer>사원</ItemContainer>
-      <ItemContainer>2022-06-22</ItemContainer>
-      <ItemContainer>전일 휴가</ItemContainer>
-      <ItemContainer>개인 사유</ItemContainer>
-      <ItemContainer>승인 대기</ItemContainer>
-      <ItemContainer><BtnContainer onClick={onClickDetail}>상세보기</BtnContainer></ItemContainer>
+      <ItemContainer>{item.username}</ItemContainer>
+      <ItemContainer>{item.name}</ItemContainer>
+      <ItemContainer>{item.date}</ItemContainer>
+      <ItemContainer>{VACATION_TYPE[item.type].title}</ItemContainer>
+      <ItemContainer>{item.contents}</ItemContainer>
+      <ItemContainer>{APPROVAL_TYPE[item.approvalFlag].title}</ItemContainer>
+      <ItemContainer>
+        <BtnContainer id={item.vId} onClick={onClickDetail}>상세보기</BtnContainer>
+      </ItemContainer>
     </ListItemContainer>
   );
 };
 
-const InfoInputComponent = () => {
+const InfoInputComponent = ({text}) => {
   return(
-    <InfoInputContainer></InfoInputContainer>
+    <InfoInputContainer>{text}</InfoInputContainer>
   );
 };
 
 const UserInfoComponent = ({detail}) => {
+  console.log(detail);
   return(
     <UserInfoContainer>
-      {detail && (
+      {detail?.name && (
         <>
           <InnerInfoContainer>
 
             <InnerInfoItem>사원번호</InnerInfoItem>
             <InnerInfoItem>사원명</InnerInfoItem>
-            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
-            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent text={detail.username}/></InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent text={detail.name}/></InnerInfoItem>
 
             <InnerInfoItem>휴가신청일</InnerInfoItem>
             <InnerInfoItem>신청 휴가시간</InnerInfoItem>
-            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
-            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent text={detail.date}/></InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent text={'6'}/></InnerInfoItem>
 
             <InnerInfoItem>사유</InnerInfoItem>
             <InnerInfoItem>남은 휴가시간</InnerInfoItem>
-            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
-            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent text={detail.contents}/></InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent text={'111'}/></InnerInfoItem>
 
             <InnerInfoItem>상태</InnerInfoItem>
             <InnerInfoItem/>
-            <InnerInfoItem><InfoInputComponent/></InnerInfoItem>
+            <InnerInfoItem>
+              <InfoInputComponent text={APPROVAL_TYPE[detail.approvalFlag].title}/>
+            </InnerInfoItem>
           </InnerInfoContainer>
           <StoreBtn>저장</StoreBtn>
         </>
@@ -94,16 +101,19 @@ const UserInfoComponent = ({detail}) => {
 };
 
 export const VacationMngment = () => {
+  const dispatch = useDispatch();
+  const selector = useSelector((state) => state.MangerReducer);
   const [openDropbox, setOpenDropbox] = useState(false);
   const [openStatusDropbox, setOpenStatusDropbox] = useState(false);
-  const [detail, setDetail] = useState(false);
+  const [detail, setDetail] = useState({});
   const [selectItem, setSelectItem] = useState({
     vacation:'선택하세요',
     status:'선택하세요'
   });
 
-  const onClickDetail = () => {
-    setDetail(true);
+  const onClickDetail = (e) => {
+    const detailData = selector?.data.filter((v) => v.vId === Number(e.target.id))[0];
+    setDetail(detailData);
   };
 
   const onClickType = () => {
@@ -125,11 +135,12 @@ export const VacationMngment = () => {
   };
 
   useEffect(() => {
-    console.log(selectItem);
-  }, [selectItem]);
+    dispatch(SwpVavReq());
+  }, []);
 
-
-
+  // useEffect(() => {
+  //   console.log(selector);
+  // }, [selector]);
 
   return (
     <Wrapper>
@@ -154,10 +165,9 @@ export const VacationMngment = () => {
             <InnerLayout>-</InnerLayout>
           </HeaderContainer>
 
-          <ListItemComponent onClickDetail={onClickDetail}/>
-          <ListItemComponent onClickDetail={onClickDetail}/>
-          <ListItemComponent onClickDetail={onClickDetail}/>
-          <ListItemComponent onClickDetail={onClickDetail}/>
+          {selector.data?.map((item) => (
+            <ListItemComponent key={item.vId} item={item} onClickDetail={onClickDetail}/>
+          ))}
         </ListContainer>
 
         <SideContainer>
@@ -202,9 +212,14 @@ InputComponent.propTypes = {
 };
 
 ListItemComponent.propTypes = {
+  item: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
   onClickDetail:PropTypes.func.isRequired,
 };
 
 UserInfoComponent.propTypes = {
-  detail:PropTypes.bool.isRequired,
+  detail:PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
+};
+
+InfoInputComponent.propTypes = {
+  text:PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 };

@@ -21,7 +21,14 @@ function MangerReducer(state = INIT_STATE, action) {
         endTime: action.endTime
       };
     case ManagerType.SWP_ATR_RES:
+      return {
+      };
+    case ManagerType.SWP_VAV_REQ:
       return {};
+    case ManagerType.SWP_VAV_RES:
+      return {
+        data: action.data
+      };
     default:
       return state;
   }

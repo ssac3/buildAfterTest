@@ -30,3 +30,17 @@ export const SwpAtrRes = () => {
     type: ManagerType.SWP_ATR_RES
   };
 };
+
+export const SwpVavReq = () => {
+  return {
+    type: ManagerType.SWP_VAV_REQ,
+  };
+};
+
+export const SwpVavRes = (data) => {
+  console.log(data);
+  return {
+    type: ManagerType.SWP_VAV_RES,
+    data,
+  };
+};
