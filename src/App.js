@@ -7,8 +7,7 @@ import AtdcManagement from 'pages/user/attendence';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
-import {ADMIN_MENU, MANAGER_MENU, USER_MENU} from 'utils/constants/menuList';
-import {CLIENT_URL} from 'utils/constants/api';
+import {ADMIN_MENU, MANAGER_MENU, USER_MENU, ROUTES} from 'utils/constants';
 import Setting from 'pages/manager/setting';
 import {SwpAtvReq} from './redux/actions/ManagerAction';
 import {useDispatch, useSelector} from 'react-redux';
@@ -28,7 +27,7 @@ function getMenu(role) {
 function App() {
   const dispatch = useDispatch();
   const alert = useSelector((state) => state.AlertReducer);
-  const roleURL = window.location.href.replace(CLIENT_URL, ''); // url 변경
+  const roleURL = window.location.href.replace(ROUTES.CLIENT_URL, ''); // url 변경
   const [select, setSelect] = useState(getMenu(roleURL) || {});
   const [setting, setSetting] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
@@ -52,9 +51,9 @@ function App() {
   };
 
   const onGetTarget = () => {
-    const target = select.filter(value => value.check && value);
-    const subTarget = target[0].sub?.filter(v => v.check && v);
-    setSelectedItem(subTarget[0]?.id);
+    const target = select.filter(value => value.check && value)[0];
+    const result = target.sub.length > 0 ? target.sub.filter(v => v.check && v)[0].id : target.id;
+    setSelectedItem(result);
   };
 
   const position = () => {
@@ -104,7 +103,7 @@ function App() {
           <Route exact path={'/'} component={SignIn}/>
           <Wrap p={position()}>
             <Route path={'/admin'} render={() => <EmpManagement/>}/>
-            <Route path={'/manager'} render={() => <Dashboard/>}/>
+            <Route path={'/manager'} render={() => <Dashboard selectedId={selectedItem}/>}/>
             <Route path={'/user'} render={() => <AtdcManagement selectedId={selectedItem}/>}/>
           </Wrap>
         </Switch>

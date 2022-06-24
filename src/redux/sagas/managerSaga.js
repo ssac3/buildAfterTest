@@ -1,19 +1,26 @@
 import axios from 'axios';
-import {BASE_URL, SWP_ATV_REQ, SWP_ATR_REQ} from 'utils/constants/api';
+import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {ManagerType} from 'redux/constants';
 import {SwpAtvRes} from 'redux/actions/ManagerAction';
 import {openAlert} from 'redux/actions/AlertAction';
 
-axios.defaults.baseURL = BASE_URL;
-
+axios.defaults.baseURL = ROUTES.BASE_URL;
+const getHeader = () => {
+  const headers = { Authorization: LOCAL_STORAGE.get('Authorization')};
+  return {
+    headers,
+  };
+};
 function atvReq(data) {
   const result = axios
-    .post(SWP_ATV_REQ, data)
+    .post(ROUTES.SWP_ATV_REQ, data, getHeader())
     .then((res) => {
+      console.log(LOG(ROUTES.SWP_ATV_REQ).SUCCESS);
       return res.data;
     })
     .catch((err) => {
+      console.log(LOG(ROUTES.SWP_ATV_REQ).ERROR);
       return err;
     });
 
@@ -22,16 +29,17 @@ function atvReq(data) {
 
 function atrReq(data) {
   const result = axios
-    .post(SWP_ATR_REQ, data)
+    .post(ROUTES.SWP_ATR_REQ, data, getHeader())
     .then((res) => {
+      console.log(LOG(ROUTES.SWP_ATR_REQ).SUCCESS);
       return res.data;
     })
     .catch((err) => {
+      console.log(LOG(ROUTES.SWP_ATR_REQ).ERROR);
       return err;
     });
   return result;
 }
-
 
 function* postSwpAtvReq() {
   try {
@@ -57,7 +65,6 @@ function* postSwpAtrReq() {
     const result = yield call(atrReq, data);
 
     if (result.resCode === 0) {
-      console.log(result.resMsg);
       yield put(openAlert('success', result.resMsg));
     } else {
       yield put(openAlert('fail', result.resMsg));
