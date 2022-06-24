@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import AtdcCalendar from 'components/AtdcCalendar';
 import locale from 'antd/es/calendar/locale/ko_KR';
 import AtdcMonthly from 'components/AtdcMonthly';
+import MyProfile from 'components/MyProfile';
+import UpdatePw from 'components/UpdatePw';
 
 export const AtdcManagement = ({selectedId}) => {
   return (
@@ -15,6 +17,16 @@ export const AtdcManagement = ({selectedId}) => {
       {selectedId === 1 &&
         (
           <AtdcMonthly></AtdcMonthly>
+        )}
+
+      {selectedId === 2 &&
+        (
+          <MyProfile />
+        )}
+
+      {selectedId === 3 &&
+        (
+          <UpdatePw />
         )}
 
     </div>

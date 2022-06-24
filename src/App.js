@@ -13,7 +13,6 @@ import {SwpAtvReq} from './redux/actions/ManagerAction';
 import {useDispatch, useSelector} from 'react-redux';
 import Alert from 'components/Alert';
 
-
 function getMenu(role) {
   switch (role) {
     case 'admin':
@@ -109,8 +108,6 @@ function App() {
           </Wrap>
         </Switch>
       </BrowserRouter>
-
-
     </>
   );
 }
@@ -118,7 +115,7 @@ function App() {
 const Wrap = styled.div`
   ${({theme}) => theme.flexSet()};
   position: absolute;
-  padding: 12px 30px;
+  padding: 30px;
   top: 70px;
   left: ${({p}) => p}px; // 수정
   width: calc(100% - (65px + 238px));

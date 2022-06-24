@@ -12,10 +12,10 @@ export const Search = () => {
   };
   return (
     <Container>
-      <SearchInput autoFocus value={searchValue} onChange={handleInputChange}/>
       <BtnContainer>
         <MdSearch size={25}/>
       </BtnContainer>
+      <SearchInput autoFocus value={searchValue} placeholder="사원번호 혹은 사원명을 입력하세요." onChange={handleInputChange}/>
     </Container>
   );
 };
