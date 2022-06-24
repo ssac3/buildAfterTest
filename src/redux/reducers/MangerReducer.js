@@ -29,6 +29,11 @@ function MangerReducer(state = INIT_STATE, action) {
       return {
         data: action.data
       };
+    case ManagerType.SWP_VAR_REQ:
+      return {
+        vId: action.vId,
+        approvalFlag: action.approvalFlag
+      };
     default:
       return state;
   }

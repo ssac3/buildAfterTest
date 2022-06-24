@@ -6,7 +6,7 @@ import {MdSearch, MdCalendarToday} from 'react-icons/md';
 import Dropbox from 'components/Dropbox';
 import {VACATION_TYPE, MANAGER_APPROVAL_TYPE} from 'utils/constants';
 import {useDispatch, useSelector} from 'react-redux';
-import {SwpVavReq} from 'redux/actions/ManagerAction';
+import {SwpVarReq, SwpVavReq} from 'redux/actions/ManagerAction';
 
 const InputComponent = ({type}) => {
   const [open, setOpen] = useState(false);
@@ -63,6 +63,7 @@ const InfoInputComponent = ({text}) => {
 };
 
 const UserInfoComponent = ({detail}) => {
+  const dispatch = useDispatch();
   const [drop, setDrop] = useState(false);
   const [change, setChange] = useState('');
   useEffect(() => {
@@ -82,8 +83,8 @@ const UserInfoComponent = ({detail}) => {
 
   const onClickStore = (e) => {
     // SWP_VAR_REQ
-    console.log(e.target.id);
-    console.log(change);
+    const approvalFlag = MANAGER_APPROVAL_TYPE.filter(v => v.title === change && v)[0].id;
+    dispatch(SwpVarReq(Number(e.target.id), approvalFlag));
   };
 
 
