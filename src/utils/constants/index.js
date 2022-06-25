@@ -3,7 +3,8 @@ export const LOCAL_STORAGE = storage(localStorage);
 const API = {
   ADMIN:'/admin',
   MANAGER: '/manager',
-  USER: '/user'
+  USER: '/user',
+  LOGIN: '/login'
 };
 
 
@@ -14,7 +15,8 @@ export const ROUTES = {
   SWP_ATR_REQ: API.MANAGER.concat('/deptUpdate'),
   SWP_VAV_REQ: API.MANAGER.concat('/vacView'),
   SWP_VAR_REQ: API.MANAGER.concat('/vacUpdate'),
-  SWP_SAV_REQ: API.USER.concat('/myView')
+  SWP_SAV_REQ: API.USER.concat('/myView'),
+  SWP_EAC_REQ: API.LOGIN.concat()
 };
 
 export const LOG = (target) => {

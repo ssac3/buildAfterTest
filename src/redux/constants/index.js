@@ -1,3 +1,3 @@
-import {ManagerType, AlertType, UserType} from './actionTypes';
+import {ManagerType, AlertType, UserType, SignInType} from './actionTypes';
 
-export {ManagerType, AlertType, UserType};
+export {ManagerType, AlertType, UserType, SignInType};
