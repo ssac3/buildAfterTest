@@ -59,3 +59,15 @@ export const ADMIN_MENU = [
   {id: 0, title: '사원 관리', sub: [], check: true}
 ];
 
+
+export const VACATION_TYPE = [
+  {id: 0, title: '전일'},
+  {id: 1, title: '오전'},
+  {id: 2, title: '오후'},
+];
+
+export const MANAGER_APPROVAL_TYPE = [
+  {id: 0, title: '승인 요청'},
+  {id: 1, title: '승인'},
+  {id: 2, title: '반려'},
+];

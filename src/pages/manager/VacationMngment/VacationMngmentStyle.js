@@ -53,11 +53,12 @@ const InnerLayout = styled.div`
 
 const SearchContainer = styled.div`
   ${({theme}) => theme.flexSet('space-around')};
+  color:${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
   position: relative;
   width: 90%;
   height: 40px;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_E1};
 `;
 
@@ -110,12 +111,15 @@ const BtnContainer = styled.div`
 
 
 const UserInfoContainer = styled.div`
-  ${({theme}) => theme.flexSet('space-around', 'center', 'column')};
+  ${({theme, info}) => theme.flexSet(info ? 'space-between' : 'center', 'center', 'column')};
   width: 100%;
   height: 100%;
+  font-weight: bold;
+  font-size: ${({info}) => !info && 20}px;
 `;
 
 const InnerInfoContainer = styled.div`
+  width:100%;
   display: grid;
   grid-template-rows: repeat(8, 1fr);
   grid-template-columns: repeat(2, 1fr);
@@ -129,7 +133,7 @@ const InnerInfoItem = styled.div`
   font-weight: bold;
 `;
 
-const InfoInputContainer = styled.input`
+const InfoInputContainer = styled.div`
   width: 100%;
   border-radius: 5px;
   padding:10px;
@@ -137,6 +141,7 @@ const InfoInputContainer = styled.input`
 `;
 
 const StoreBtn = styled.button`
+  font-weight: bold;
   cursor:pointer;
   width:100%;
   padding: 10px;

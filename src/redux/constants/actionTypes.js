@@ -2,7 +2,11 @@ export const ManagerType = {
   SWP_ATV_REQ: 'SWP_ATV_REQ',
   SWP_ATV_RES: 'SWP_ATV_RES',
   SWP_ATR_REQ: 'SWP_ATR_REQ',
-  SWP_ATR_RES: 'SWP_ATR_RES'
+  SWP_ATR_RES: 'SWP_ATR_RES',
+  SWP_VAV_REQ: 'SWP_VAV_REQ',
+  SWP_VAV_RES: 'SWP_VAV_RES',
+  SWP_VAR_REQ: 'SWP_VAR_REQ',
+  SWP_VAR_RES: 'SWP_VAR_RES',
 };
 
 export const AlertType = {
