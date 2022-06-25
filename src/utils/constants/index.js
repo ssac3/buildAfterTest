@@ -14,7 +14,8 @@ export const ROUTES = {
   SWP_ATR_REQ: API.MANAGER.concat('/deptUpdate'),
   SWP_VAV_REQ: API.MANAGER.concat('/vacView'),
   SWP_VAR_REQ: API.MANAGER.concat('/vacUpdate'),
-  SWP_SAV_REQ: API.USER.concat('/myView')
+  SWP_SAV_REQ: API.USER.concat('/myView'),
+  SWP_DAV_REQ: API.USER.concat('/getAllAttendance')
 };
 
 export const LOG = (target) => {

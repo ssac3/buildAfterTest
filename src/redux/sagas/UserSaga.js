@@ -27,6 +27,22 @@ function savReq(data) {
   return result;
 }
 
+function davReq() {
+  console.log('in');
+  const result = axios
+    .get(ROUTES.SWP_DAV_REQ, getHeader())
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_DAV_REQ).SUCCESS);
+      console.log(res);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_DAV_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
+
 function* postSwpSavReq() {
   try {
     const data = yield select((state) => {
@@ -42,12 +58,28 @@ function* postSwpSavReq() {
     console.log(e);
   }
 }
-
+function* postSwpDavReq() {
+  try {
+    // const data = yield select((state) => {
+    //   return state.UserReducer;
+    // });
+    const result = yield call(davReq);
+    console.log(result);
+    // if(result.resCode === 0) {
+    //   yield put(
+    //     SwpDavRes(info)
+    //   );
+    // } else {
+    //   yield put('fail', result.res);
+    // }
+  } catch (e) {
+    console.log(e);
+  }
+}
 function* watchAlert() {
   yield takeLatest(UserType.SWP_SAV_REQ, postSwpSavReq);
-  yield takeLatest(UserType.SWP_SAV_REQ, postSwpSavReq);
+  yield takeLatest(UserType.SWP_DAV_REQ, postSwpDavReq);
 }
-
 export default function* userSaga() {
   yield all([fork(watchAlert)]);
 }
