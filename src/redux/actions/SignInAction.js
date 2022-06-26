@@ -1,10 +1,11 @@
 import {SignInType} from 'redux/constants/actionTypes';
 
-export const SwpEacReq = (username, password) => {
+export const SwpEacReq = (username, password, history) => {
   return {
     type: SignInType.SWP_EAC_REQ,
     username,
-    password
+    password,
+    history
   };
 };
 

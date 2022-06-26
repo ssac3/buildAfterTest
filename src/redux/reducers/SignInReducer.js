@@ -6,7 +6,8 @@ function SignInReducer(state = INIT_STATE, action) {
     case SignInType.SWP_EAC_REQ:
       return {
         username: action.username,
-        password: action.password
+        password: action.password,
+        history: action.history
       };
     case SignInType.SWP_EAC_RES:
       return {

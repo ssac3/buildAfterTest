@@ -3,18 +3,20 @@ import {style} from './SignInStyle';
 import Logo from 'assets/logo.png';
 import {SwpEacReq} from 'redux/actions/SignInAction';
 import {useDispatch} from 'react-redux';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 // import PropTypes from 'prop-types';
 
 
 
 export const SignIn = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [info, setInfo] = useState({username : '', password : ''});
   const getDataHandler = (e) => {
     setInfo({...info, [e.target.id]: e.target.value});
   };
   const Login = () => {
-    dispatch(SwpEacReq(info.username, info.password));
+    dispatch(SwpEacReq(info.username, info.password, history));
   };
   return (
     <Container>

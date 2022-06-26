@@ -13,7 +13,7 @@ export const Navigation = ({role, menu, onClickMenu, onClickSubMenu}) => {
   return (
     <>
       <Container>
-        {role === 'manager' && (
+        {role === '/manager' && (
           <>
             <IconLayout id={menu[0].id} onClick={onClickMenu} status={menu[0]?.check}>
               <MdSpaceDashboard pointerEvents={'none'} size={40}/>
@@ -30,7 +30,7 @@ export const Navigation = ({role, menu, onClickMenu, onClickSubMenu}) => {
           </>
         )}
 
-        {role === 'admin' && (
+        {role === '/admin' && (
           <>
             <IconLayout id={0} onClick={onClickMenu} status={menu[0]?.check}>
               <MdPeople pointerEvents={'none'} size={40}/>
@@ -39,7 +39,7 @@ export const Navigation = ({role, menu, onClickMenu, onClickSubMenu}) => {
         )}
 
 
-        {role === 'user' && (
+        {role === '/user' && (
           <>
             <IconLayout id={0} onClick={onClickMenu} status={menu[0]?.check}>
               <MdAssignmentTurnedIn pointerEvents={'none'} size={40}/>
