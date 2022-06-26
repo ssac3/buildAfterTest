@@ -15,3 +15,21 @@ export const cnvrtDateTime = (date) => {
     .concat(':')
     .concat(formatter(date.getSeconds().toString()));
 };
+
+export const cnvrtDate = (date) => {
+  return date.getFullYear().toString()
+    .concat('.')
+    .concat(formatter(date.getMonth() + 1).toString())
+    .concat('.')
+    .concat(formatter(date.getDate().toString()));
+};
+
+export const cnvrtTime = (date) => {
+  return formatter(date.getHours().toString())
+    .concat(':')
+    .concat(formatter(date.getMinutes().toString()));
+};
+
+export const calcVacationTime = (s, e) => {
+  return Math.abs(s.getHours() - e.getHours());
+};

@@ -15,6 +15,7 @@ export const ROUTES = {
   SWP_ATR_REQ: API.MANAGER.concat('/deptUpdate'),
   SWP_VAV_REQ: API.MANAGER.concat('/vacView'),
   SWP_VAR_REQ: API.MANAGER.concat('/vacUpdate'),
+  SWP_RAV_REQ: API.MANAGER.concat('/reArrange'),
   SWP_SAV_REQ: API.USER.concat('/myView'),
   SWP_DAV_REQ: API.USER.concat('/getAllAttendance')
   SWP_EAC_REQ: API.LOGIN.concat()
@@ -71,7 +72,7 @@ export const VACATION_TYPE = [
 ];
 
 export const MANAGER_APPROVAL_TYPE = [
-  {id: 0, title: '승인 요청'},
+  {id: 0, title: '요청'},
   {id: 1, title: '승인'},
   {id: 2, title: '반려'},
 ];

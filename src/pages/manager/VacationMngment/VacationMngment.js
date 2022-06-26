@@ -7,6 +7,7 @@ import Dropbox from 'components/Dropbox';
 import {VACATION_TYPE, MANAGER_APPROVAL_TYPE} from 'utils/constants';
 import {useDispatch, useSelector} from 'react-redux';
 import {SwpVarReq, SwpVavReq} from 'redux/actions/ManagerAction';
+import {calcVacationTime} from 'utils/convertDateTime';
 
 const InputComponent = ({type}) => {
   const [open, setOpen] = useState(false);
@@ -102,12 +103,12 @@ const UserInfoComponent = ({detail}) => {
             <InnerInfoItem>휴가신청일</InnerInfoItem>
             <InnerInfoItem>신청 휴가시간</InnerInfoItem>
             <InnerInfoItem><InfoInputComponent text={detail.date}/></InnerInfoItem>
-            <InnerInfoItem><InfoInputComponent text={'6'}/></InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent text={detail.vacationTime}/></InnerInfoItem>
 
             <InnerInfoItem>사유</InnerInfoItem>
             <InnerInfoItem>남은 휴가시간</InnerInfoItem>
             <InnerInfoItem><InfoInputComponent text={detail.contents}/></InnerInfoItem>
-            <InnerInfoItem><InfoInputComponent text={'111'}/></InnerInfoItem>
+            <InnerInfoItem><InfoInputComponent text={detail.restTime}/></InnerInfoItem>
 
             <InnerInfoItem>상태</InnerInfoItem>
             <InnerInfoItem/>
@@ -145,7 +146,17 @@ export const VacationMngment = () => {
 
   const onClickDetail = (e) => {
     const detailData = selector?.data.filter((v) => v.vId === Number(e.target.id))[0];
-    setDetail(detailData);
+    let vacationTime = 0;
+    if(detailData.type === '0') {
+      vacationTime = calcVacationTime(new Date(selector.startTime), new Date(selector.endTime));
+    } else if(detailData.type === '1') {
+      vacationTime = calcVacationTime(new Date(selector.startTime), new Date(0, 0, 0, 12));
+    } else {
+      vacationTime = calcVacationTime(new Date(0, 0, 0, 13), new Date(selector.endTime));
+    }
+
+    const detailInfo = {...detailData, vacationTime};
+    setDetail(detailInfo);
   };
 
   const onClickType = () => {
