@@ -20,7 +20,6 @@ export const SwpSavRes =
       qrPath
     };
   };
-};
 export const SwpDavReq = () => {
   return {
     type: UserType.SWP_DAV_REQ

@@ -27,7 +27,6 @@ export const UserType = {
   // SWP_VC_RES: 'SWP_VC_RES',
   // SWP_AAR_REQ: 'SWP_AAR_REQ',
   // SWP_AAR_RES: 'SWP_AAR_RES'
-  SWP_SAV_RES: 'SWP_SAV_RES'
 };
 
 export const SignInType = {
