@@ -13,7 +13,7 @@ export const Header = ({role, setting}) => {
     <Container>
       <img src={logo} alt="로고" width={130}/>
       <IconLayout>
-        {role === 'manager' && <SettingLayout><MdSettings onClick={onClickSetting} size={35}/></SettingLayout>}
+        {role === '/manager' && <SettingLayout><MdSettings onClick={onClickSetting} size={35}/></SettingLayout>}
         <SignOutLayout>
           <MdLogout size={35} />
         </SignOutLayout>

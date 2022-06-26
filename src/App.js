@@ -7,17 +7,16 @@ import AtdcManagement from 'pages/user/attendence';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
-import {ADMIN_MENU, MANAGER_MENU, USER_MENU, ROUTES} from 'utils/constants';
+import {ADMIN_MENU, MANAGER_MENU, USER_MENU} from 'utils/constants';
 import Setting from 'pages/manager/setting';
-import {SwpAtvReq} from './redux/actions/ManagerAction';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
 
 function getMenu(role) {
   switch (role) {
-    case 'admin':
+    case '/admin':
       return ADMIN_MENU;
-    case 'manager':
+    case '/manager':
       return MANAGER_MENU;
     default:
       return USER_MENU;
@@ -25,13 +24,12 @@ function getMenu(role) {
 }
 
 function App() {
-  const dispatch = useDispatch();
   const alert = useSelector((state) => state.AlertReducer);
-  const roleURL = window.location.href.replace(ROUTES.CLIENT_URL, ''); // url 변경
+  const signIn = useSelector((state) => state.SignInReducer);
+  const [roleURL, setRoleURL] = useState('/');
   const [select, setSelect] = useState(getMenu(roleURL) || {});
   const [setting, setSetting] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
-
 
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
@@ -64,20 +62,17 @@ function App() {
   };
 
   useEffect(() => {
-    dispatch(SwpAtvReq(1)); // 로그인 이후 사용자(근태관리자) 부서 ID로 바인딩 필요
-  }, []);
-
-  useEffect(() => {
-    getMenu(roleURL);
-  }, [roleURL]);
-
-  // useEffect(() => {
-  //   console.log(swpAtvRes);
-  // }, [swpAtvRes]);
-
-  // useEffect(() => {
-  //   console.log(alert);
-  // }, [alert]);
+    if (signIn.data === '') {
+      setSelect(getMenu('/admin'));
+    } else if(signIn.data?.depId) {
+      setSelect(getMenu('/manager'));
+    } else {
+      setSelect(getMenu('/user'));
+    }
+    return (() => {
+      setRoleURL(window.location.pathname);
+    });
+  }, [signIn]);
 
   useEffect(() => {
     onGetTarget();
@@ -85,7 +80,7 @@ function App() {
   return (
     <>
       {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
-      {roleURL !== '' && (
+      {roleURL !== '/' && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>
           <Navigation
