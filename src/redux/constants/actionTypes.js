@@ -25,4 +25,10 @@ export const UserType = {
   // SWP_VC_RES: 'SWP_VC_RES',
   // SWP_AAR_REQ: 'SWP_AAR_REQ',
   // SWP_AAR_RES: 'SWP_AAR_RES'
+  SWP_SAV_RES: 'SWP_SAV_RES'
+};
+
+export const SignInType = {
+  SWP_EAC_REQ: 'SWP_EAC_REQ',
+  SWP_EAC_RES: 'SWP_EAC_RES'
 };

@@ -39,9 +39,7 @@ const SignInButton = styled.button`
   font-weight: bold;
   font-size: 18px;
   color: white;
-  background-color: ${({theme}) => theme.colorSet.PRIMARY.BLUE_1A};
-  
-  
+  background-color: ${({theme}) => theme.colorSet.PRIMARY.BLUE_1A};  
   &:hover{
     background-color:${({theme}) => theme.colorSet.PRIMARY.BLUE_51};;
   }
