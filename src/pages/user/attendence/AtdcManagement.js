@@ -7,6 +7,7 @@ import MyProfile from 'components/MyProfile';
 import UpdatePw from 'components/UpdatePw';
 
 export const AtdcManagement = ({selectedId}) => {
+  console.log(selectedId);
   return (
     <div style={{width:'100%', height:'100%', padding:'20px'}}>
       {selectedId === 0 &&
