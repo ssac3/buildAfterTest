@@ -51,3 +51,16 @@ export const SwpVarReq = (vId, approvalFlag) => {
     approvalFlag
   };
 };
+
+export const SwpRavReq = () => {
+  return {
+    type: ManagerType.SWP_RAV_REQ,
+  };
+};
+
+export const SwpRavRes = (data) => {
+  return {
+    type: ManagerType.SWP_RAV_RES,
+    data
+  };
+};

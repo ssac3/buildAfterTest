@@ -12,7 +12,6 @@ export const Dashboard = ({selectedId}) => {
         (
           <VacationMngment/>
         )}
-
       {selectedId === 3 && (
         <AttendenceMngment/>
       )}

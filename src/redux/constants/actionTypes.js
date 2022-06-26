@@ -7,6 +7,8 @@ export const ManagerType = {
   SWP_VAV_RES: 'SWP_VAV_RES',
   SWP_VAR_REQ: 'SWP_VAR_REQ',
   SWP_VAR_RES: 'SWP_VAR_RES',
+  SWP_RAV_REQ: 'SWP_RAV_REQ',
+  SWP_RAV_RES: 'SWP_RAV_RES',
 };
 
 export const AlertType = {

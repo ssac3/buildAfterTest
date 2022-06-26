@@ -7,5 +7,6 @@ const Container = styled.div`
   padding: 5px;
   background-color: ${({color}) => color};
   font-weight: bold;
+  color: white;
 `;
 export const style = {Container};
