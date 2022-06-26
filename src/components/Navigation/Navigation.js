@@ -1,4 +1,5 @@
 import React from 'react';
+import {API} from 'utils/constants';
 import {style} from './NavigationStyle';
 import PropTypes from 'prop-types';
 import {
@@ -13,7 +14,7 @@ export const Navigation = ({role, menu, onClickMenu, onClickSubMenu}) => {
   return (
     <>
       <Container>
-        {role === '/manager' && (
+        {role === API.MANAGER && (
           <>
             <IconLayout id={menu[0].id} onClick={onClickMenu} status={menu[0]?.check}>
               <MdSpaceDashboard pointerEvents={'none'} size={40}/>
@@ -30,7 +31,7 @@ export const Navigation = ({role, menu, onClickMenu, onClickSubMenu}) => {
           </>
         )}
 
-        {role === '/admin' && (
+        {role === API.ADMIN && (
           <>
             <IconLayout id={0} onClick={onClickMenu} status={menu[0]?.check}>
               <MdPeople pointerEvents={'none'} size={40}/>
@@ -39,7 +40,7 @@ export const Navigation = ({role, menu, onClickMenu, onClickSubMenu}) => {
         )}
 
 
-        {role === '/user' && (
+        {role === API.USER && (
           <>
             <IconLayout id={0} onClick={onClickMenu} status={menu[0]?.check}>
               <MdAssignmentTurnedIn pointerEvents={'none'} size={40}/>

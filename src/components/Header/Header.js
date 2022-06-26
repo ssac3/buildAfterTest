@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {API} from 'utils/constants';
 import {style} from './HeaderStyle';
 import logo from 'assets/logo.png';
 import {MdLogout, MdSettings} from 'react-icons/md';
@@ -13,7 +14,10 @@ export const Header = ({role, setting}) => {
     <Container>
       <img src={logo} alt="로고" width={130}/>
       <IconLayout>
-        {role === '/manager' && <SettingLayout><MdSettings onClick={onClickSetting} size={35}/></SettingLayout>}
+        {role === API.MANAGER &&
+          <SettingLayout>
+            <MdSettings onClick={onClickSetting} size={35}/>
+          </SettingLayout>}
         <SignOutLayout>
           <MdLogout size={35} />
         </SignOutLayout>

@@ -7,16 +7,16 @@ import AtdcManagement from 'pages/user/attendence';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
-import {ADMIN_MENU, MANAGER_MENU, USER_MENU} from 'utils/constants';
+import {ADMIN_MENU, MANAGER_MENU, USER_MENU, API} from 'utils/constants';
 import Setting from 'pages/manager/setting';
 import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
 
 function getMenu(role) {
   switch (role) {
-    case '/admin':
+    case API.ADMIN:
       return ADMIN_MENU;
-    case '/manager':
+    case API.MANAGER:
       return MANAGER_MENU;
     default:
       return USER_MENU;
@@ -63,11 +63,11 @@ function App() {
 
   useEffect(() => {
     if (signIn.data === '') {
-      setSelect(getMenu('/admin'));
+      setSelect(getMenu(API.ADMIN));
     } else if(signIn.data?.depId) {
-      setSelect(getMenu('/manager'));
+      setSelect(getMenu(API.MANAGER));
     } else {
-      setSelect(getMenu('/user'));
+      setSelect(getMenu(API.USER));
     }
     return (() => {
       setRoleURL(window.location.pathname);
@@ -80,7 +80,7 @@ function App() {
   return (
     <>
       {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
-      {roleURL !== '/' && (
+      {roleURL !== API.ROOT && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>
           <Navigation
@@ -95,11 +95,11 @@ function App() {
 
       <BrowserRouter>
         <Switch>
-          <Route exact path={'/'} component={SignIn}/>
+          <Route exact path={API.ROOT} component={SignIn}/>
           <Wrap p={position()}>
-            <Route path={'/admin'} render={() => <EmpManagement/>}/>
-            <Route path={'/manager'} render={() => <Dashboard selectedId={selectedItem}/>}/>
-            <Route path={'/user'} render={() => <AtdcManagement selectedId={selectedItem}/>}/>
+            <Route path={API.ADMIN} render={() => <EmpManagement/>}/>
+            <Route path={API.MANAGER} render={() => <Dashboard selectedId={selectedItem}/>}/>
+            <Route path={API.USER} render={() => <AtdcManagement selectedId={selectedItem}/>}/>
           </Wrap>
         </Switch>
       </BrowserRouter>

@@ -1,6 +1,7 @@
 import storage from './storage';
 export const LOCAL_STORAGE = storage(localStorage);
-const API = {
+export const API = {
+  ROOT:'/',
   ADMIN:'/admin',
   MANAGER: '/manager',
   USER: '/user',
