@@ -38,6 +38,7 @@ export const SwpVavReq = () => {
 };
 
 export const SwpVavRes = (data) => {
+  console.log(data);
   return {
     type: ManagerType.SWP_VAV_RES,
     data,

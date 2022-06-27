@@ -35,11 +35,14 @@ export const AttendenceMngment = () => {
   const [infos, setInfos] = useState([]);
   const selector = useSelector((state) => state.MangerReducer);
   useEffect(() => {
+    console.log('RAV');
     dispatch(SwpRavReq());
   }, []);
 
   useEffect(() => {
-    setInfos(selector.data);
+    if(selector.data.length > 0 && selector.data[0]?.rId !== undefined) {
+      setInfos(selector.data);
+    }
   }, [selector]);
 
   return (

@@ -136,6 +136,7 @@ const UserInfoComponent = ({detail}) => {
 export const VacationMngment = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.MangerReducer);
+  const [data, setData] = useState([]);
   const [openDropbox, setOpenDropbox] = useState(false);
   const [openStatusDropbox, setOpenStatusDropbox] = useState(false);
   const [detail, setDetail] = useState({});
@@ -144,8 +145,20 @@ export const VacationMngment = () => {
     status:'선택하세요'
   });
 
+  useEffect(() => {
+    console.log('VAV');
+    dispatch(SwpVavReq());
+  }, []);
+
+  useEffect(() => {
+    if(selector.data?.length > 0 && selector.data[0]?.vId !== undefined) {
+      setData(selector.data);
+    }
+  }, [selector]);
+
+
   const onClickDetail = (e) => {
-    const detailData = selector?.data.filter((v) => v.vId === Number(e.target.id))[0];
+    const detailData = data?.filter((v) => v.vId === Number(e.target.id))[0];
     let vacationTime = 0;
     if(detailData.type === '0') {
       vacationTime = calcVacationTime(new Date(selector.startTime), new Date(selector.endTime));
@@ -155,7 +168,9 @@ export const VacationMngment = () => {
       vacationTime = calcVacationTime(new Date(0, 0, 0, 13), new Date(selector.endTime));
     }
 
+    console.log(vacationTime);
     const detailInfo = {...detailData, vacationTime};
+    console.log(detailInfo);
     setDetail(detailInfo);
   };
 
@@ -176,10 +191,6 @@ export const VacationMngment = () => {
       onClickStatus();
     }
   };
-
-  useEffect(() => {
-    dispatch(SwpVavReq());
-  }, []);
 
   return (
     <Wrapper>
@@ -204,7 +215,7 @@ export const VacationMngment = () => {
             <InnerLayout>-</InnerLayout>
           </HeaderContainer>
 
-          {selector.data?.map((item) => (
+          {data?.map((item) => (
             <ListItemComponent key={item.vId} item={item} onClickDetail={onClickDetail}/>
           ))}
         </ListContainer>

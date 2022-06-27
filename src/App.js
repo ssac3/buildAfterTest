@@ -7,7 +7,7 @@ import AtdcManagement from 'pages/user/attendence';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
-import {ADMIN_MENU, MANAGER_MENU, USER_MENU, API} from 'utils/constants';
+import {ADMIN_MENU, MANAGER_MENU, USER_MENU, API, LOCAL_STORAGE} from 'utils/constants';
 import Setting from 'pages/manager/setting';
 import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
@@ -65,6 +65,7 @@ function App() {
     if (signIn.data === '') {
       setSelect(getMenu(API.ADMIN));
     } else if(signIn.data?.depId) {
+      LOCAL_STORAGE.set('depId', signIn.data.depId);
       setSelect(getMenu(API.MANAGER));
     } else {
       setSelect(getMenu(API.USER));

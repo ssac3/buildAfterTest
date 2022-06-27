@@ -87,10 +87,8 @@ function ravReq() {
 
 function* postSwpAtvReq() {
   try {
-    const data = yield select((state) => {
-      return state.MangerReducer;
-    });
-    const result = yield call(atvReq, data);
+    const packedMsg = {id: Number(LOCAL_STORAGE.get('depId'))};
+    const result = yield call(atvReq, packedMsg);
 
     if (result.resCode === 0) {
       const {name, startTime, endTime} = result.data;
