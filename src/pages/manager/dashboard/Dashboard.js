@@ -7,9 +7,8 @@ import {useDispatch} from 'react-redux';
 import {LOCAL_STORAGE} from 'utils/constants';
 
 
-export const Dashboard = ({selectedId}) => {
+export const Dashboard = ({selectedId, onClickATR}) => {
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(SwpAtvReq(LOCAL_STORAGE.get('depId')));
   }, []);
@@ -19,7 +18,9 @@ export const Dashboard = ({selectedId}) => {
       return <VacationMngment/>;
     }
     if (selectedId === 3) {
-      return <AttendenceMngment/>;
+      return <AttendenceMngment
+        onClickATR={onClickATR}
+      />;
     }
     return <></>;
   }, [selectedId]);
@@ -29,5 +30,6 @@ export const Dashboard = ({selectedId}) => {
 
 Dashboard.propTypes = {
   selectedId: PropTypes.number.isRequired,
+  onClickATR: PropTypes.func.isRequired,
 };
 

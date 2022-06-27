@@ -40,6 +40,7 @@ export const GlobalStyles = createGlobalStyle`
       font-weight: bold;
       font-size: 16px;
       color: #797979;
+      margin:0;
     }
     
     h4{

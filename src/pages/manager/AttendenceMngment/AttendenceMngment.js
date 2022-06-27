@@ -8,7 +8,7 @@ import {SwpRavReq} from 'redux/actions/ManagerAction';
 import {cnvrtDate, cnvrtTime} from 'utils/convertDateTime';
 import {MANAGER_APPROVAL_TYPE} from 'utils/constants';
 
-const ListItemComponent = ({item}) => {
+const ListItemComponent = ({item, onClickATR}) => {
   return(
     <ListItemContainer>
       <ItemContainer>{item.username}</ItemContainer>
@@ -22,7 +22,7 @@ const ListItemComponent = ({item}) => {
       </ItemContainer>
       <ItemContainer>
         <IconLayout>
-          <MdModeEditOutline size={20} />
+          <MdModeEditOutline size={20} onClick={onClickATR}/>
         </IconLayout>
       </ItemContainer>
     </ListItemContainer>
@@ -30,14 +30,16 @@ const ListItemComponent = ({item}) => {
 };
 
 
-export const AttendenceMngment = () => {
+export const AttendenceMngment = ({onClickATR}) => {
   const dispatch = useDispatch();
   const [infos, setInfos] = useState([]);
+
   const selector = useSelector((state) => state.MangerReducer);
   useEffect(() => {
     console.log('RAV');
     dispatch(SwpRavReq());
   }, []);
+
 
   useEffect(() => {
     if(selector.data.length > 0 && selector.data[0]?.rId !== undefined) {
@@ -63,17 +65,20 @@ export const AttendenceMngment = () => {
           </HeaderContainer>
 
           {infos?.map((item) => (
-            <ListItemComponent key={item.rId} item={item}/>
+            <ListItemComponent key={item.rId} item={item} onClickATR={() => onClickATR(item.rId)}/>
           ))}
         </ListContainer>
       </Container>
     </Wrapper>
   );
 };
-
+AttendenceMngment.propTypes = {
+  onClickATR: PropTypes.func.isRequired,
+};
 
 ListItemComponent.propTypes = {
   item: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
+  onClickATR: PropTypes.func.isRequired,
 };
 
 const {
