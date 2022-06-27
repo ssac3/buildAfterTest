@@ -29,7 +29,6 @@ const ListItemComponent = ({item}) => {
   );
 };
 
-
 export const AttendenceMngment = () => {
   const dispatch = useDispatch();
   const [infos, setInfos] = useState([]);

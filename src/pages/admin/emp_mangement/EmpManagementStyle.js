@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Container = styled.div`
-  background-color: lightblue;
+  //background-color: lightblue;
   width: 100%;
   height:100%;
   
@@ -67,5 +67,7 @@ const ListItem = styled.li`
   float: left;
   width: ${({w}) => w}px;
 `;
+
+
 
 export const style = {Container, DelBtn, RegBtn, ListHeader, ListItem};
