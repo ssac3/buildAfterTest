@@ -39,7 +39,8 @@ function MangerReducer(state = INIT_STATE, action) {
         startTime: state.startTime,
         endTime: state.endTime,
         vId: action.vId,
-        approvalFlag: action.approvalFlag
+        approvalFlag: action.approvalFlag,
+        detailInit: action.detailInit
       };
     case ManagerType.SWP_RAV_REQ:
       return {

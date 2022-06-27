@@ -135,11 +135,12 @@ function* postSwpVarReq() {
     const data = yield select((state) => {
       return state.MangerReducer;
     });
-
-    const result = yield call(varReq, data);
+    const packedMsg = {vId: data.vId, approvalFlag: data.approvalFlag};
+    const result = yield call(varReq, packedMsg);
     if(result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
       yield put(SwpVavReq());
+      data.detailInit();
     } else {
       yield put(openAlert('fail', result.resMsg));
     }

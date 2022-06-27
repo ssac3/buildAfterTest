@@ -63,7 +63,7 @@ const InfoInputComponent = ({text}) => {
   );
 };
 
-const UserInfoComponent = ({detail}) => {
+const UserInfoComponent = ({detail, detailInit}) => {
   const dispatch = useDispatch();
   const [drop, setDrop] = useState(false);
   const [change, setChange] = useState('');
@@ -85,7 +85,7 @@ const UserInfoComponent = ({detail}) => {
   const onClickStore = (e) => {
     // SWP_VAR_REQ
     const approvalFlag = MANAGER_APPROVAL_TYPE.filter(v => v.title === change && v)[0].id;
-    dispatch(SwpVarReq(Number(e.target.id), approvalFlag));
+    dispatch(SwpVarReq(Number(e.target.id), approvalFlag, detailInit));
   };
 
 
@@ -159,7 +159,7 @@ export const VacationMngment = () => {
 
   const onClickDetail = (e) => {
     const detailData = data?.filter((v) => v.vId === Number(e.target.id))[0];
-    let vacationTime = 0;
+    let vacationTime;
     if(detailData.type === '0') {
       vacationTime = calcVacationTime(new Date(selector.startTime), new Date(selector.endTime));
     } else if(detailData.type === '1') {
@@ -167,11 +167,12 @@ export const VacationMngment = () => {
     } else {
       vacationTime = calcVacationTime(new Date(0, 0, 0, 13), new Date(selector.endTime));
     }
-
-    console.log(vacationTime);
     const detailInfo = {...detailData, vacationTime};
-    console.log(detailInfo);
     setDetail(detailInfo);
+  };
+
+  const detailInit = () => {
+    setDetail({});
   };
 
   const onClickType = () => {
@@ -223,7 +224,7 @@ export const VacationMngment = () => {
         <SideContainer>
           <InfoContainer h={35}/>
           <InfoContainer h={63}>
-            <UserInfoComponent detail={detail}/>
+            <UserInfoComponent detail={detail} detailInit={detailInit}/>
           </InfoContainer>
         </SideContainer>
       </Container>
@@ -268,6 +269,7 @@ ListItemComponent.propTypes = {
 
 UserInfoComponent.propTypes = {
   detail:PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
+  detailInit:PropTypes.func.isRequired,
 };
 
 InfoInputComponent.propTypes = {
