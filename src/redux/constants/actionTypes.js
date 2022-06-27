@@ -19,6 +19,8 @@ export const AlertType = {
 export const UserType = {
   SWP_SAV_REQ: 'SWP_SAV_REQ',
   SWP_SAV_RES: 'SWP_SAV_RES',
+  SWP_SAPR_REQ: 'SWP_SAPR_REQ',
+  SWP_SAPR_RES: 'SWP_SAPR_RES',
   SWP_DAV_REQ: 'SWP_DAV_REQ',
   SWP_DAV_RES: 'SWP_DAV_RES',
   // SWP_VA_REQ: 'SWP_VA_REQ',
