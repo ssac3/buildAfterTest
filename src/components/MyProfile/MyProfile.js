@@ -13,11 +13,16 @@ export const MyProfile = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.UserReducer);
   const [detail, setDetail] = useState({});
+
   useEffect(() => {
     dispatch(SwpSavReq());
-    setDetail(selector);
   }, []);
-  console.log(detail);
+
+  useEffect(() => {
+    if(selector?.name !== undefined) {
+      setDetail(selector);
+    }
+  }, [selector]);
   return(
     <>
       {detail ? (
