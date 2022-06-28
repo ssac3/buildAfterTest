@@ -69,7 +69,7 @@ export const AttendenceMngment = () => {
 
 
 ListItemComponent.propTypes = {
-  item: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
+   item: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
 };
 
 const {
