@@ -9,8 +9,9 @@ function AdminReducer(state = INIT_STATE, action) {
       };
     case AdminType.SWP_EMPIN_RES:
       return {
-        data: action.data
       };
+    default:
+      return state;
   }
 }
 
