@@ -29,7 +29,6 @@ const ListItemComponent = ({item, onClickATR}) => {
   );
 };
 
-
 export const AttendenceMngment = ({onClickATR}) => {
   const dispatch = useDispatch();
   const [infos, setInfos] = useState([]);

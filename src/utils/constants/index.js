@@ -20,7 +20,8 @@ export const ROUTES = {
   SWP_RAR_REQ: API.MANAGER.concat('/rarUpdate'),
   SWP_SAV_REQ: API.USER.concat('/myView'),
   SWP_DAV_REQ: API.USER.concat('/getAllAttendance'),
-  SWP_EAC_REQ: API.LOGIN.concat()
+  SWP_EAC_REQ: API.LOGIN.concat(),
+  SWP_SAPR_REQ: API.USER.concat('/updatePw')
 };
 
 export const LOG = (target) => {

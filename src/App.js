@@ -12,6 +12,7 @@ import Setting from 'pages/manager/setting';
 import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
 import RearrangeMngment from 'pages/manager/rearrangeMngment';
+import {EmpInsert} from 'pages/admin/emp_insert/EmpInsert';
 
 function getMenu(role) {
   switch (role) {
@@ -31,6 +32,7 @@ function App() {
   const [roleURL, setRoleURL] = useState('/');
   const [select, setSelect] = useState(getMenu(roleURL) || {});
   const [setting, setSetting] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
   const [openATR, setOpenATR] = useState(0);
 
@@ -76,6 +78,10 @@ function App() {
     return '';
   }, [rearrange, openATR]);
 
+  const onClickInsertEmp = () => {
+    setOpenModal(!openModal);
+  };
+  
   useEffect(() => {
     if (signIn.data === '') {
       setSelect(getMenu(API.ADMIN));
@@ -111,12 +117,12 @@ function App() {
         </>
       )}
       {setting && <Setting open={onClickSetting}/>}
-
+      {openModal && <EmpInsert/>}
       <BrowserRouter>
         <Switch>
           <Route exact path={API.ROOT} component={SignIn}/>
           <Wrap p={position()}>
-            <Route path={API.ADMIN} render={() => <EmpManagement/>}/>
+            <Route path={API.ADMIN} render={() => <EmpManagement onClickInsertEmp={onClickInsertEmp}/>}/>
             <Route
               path={API.MANAGER}
               render={() => (
