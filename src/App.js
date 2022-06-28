@@ -81,7 +81,6 @@ function App() {
   const onClickInsertEmp = () => {
     setOpenModal(!openModal);
   };
-  
   useEffect(() => {
     if (signIn.data === '') {
       setSelect(getMenu(API.ADMIN));
@@ -122,7 +121,10 @@ function App() {
         <Switch>
           <Route exact path={API.ROOT} component={SignIn}/>
           <Wrap p={position()}>
-            <Route path={API.ADMIN} render={() => <EmpManagement onClickInsertEmp={onClickInsertEmp}/>}/>
+            <Route
+              path={API.ADMIN}
+              render={() => <EmpManagement onClickInsertEmp={onClickInsertEmp}/>}
+            />
             <Route
               path={API.MANAGER}
               render={() => (
