@@ -11,6 +11,11 @@ export const ManagerType = {
   SWP_RAV_RES: 'SWP_RAV_RES',
 };
 
+export const AdminType = {
+  SWP_EMPIN_REQ: 'SWP_EMPIN_REQ',
+  SWP_EMPIN_RES: 'SWP_EMPIN_RES',
+};
+
 export const AlertType = {
   OPEN_ALERT: 'OPEN_ALERT',
   CLOSE_ALERT: 'CLOSE_ALERT'

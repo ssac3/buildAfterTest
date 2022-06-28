@@ -29,7 +29,6 @@ const ListItemComponent = ({item}) => {
   );
 };
 
-
 export const AttendenceMngment = () => {
   const dispatch = useDispatch();
   const [infos, setInfos] = useState([]);
@@ -70,7 +69,7 @@ export const AttendenceMngment = () => {
 
 
 ListItemComponent.propTypes = {
-  item: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
+   item: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
 };
 
 const {

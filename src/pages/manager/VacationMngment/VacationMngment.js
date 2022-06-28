@@ -124,7 +124,6 @@ const UserInfoComponent = ({detail}) => {
           </InnerInfoContainer>
           <StoreBtn id={detail.vId} onClick={onClickStore}>저장</StoreBtn>
         </>
-
       )
         :
         <>사원을 선택해주세요</>}
