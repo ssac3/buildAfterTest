@@ -16,6 +16,7 @@ function MangerReducer(state = INIT_STATE, action) {
       };
     case ManagerType.SWP_ATR_REQ:
       return {
+        name: state.name,
         id: action.id,
         startTime: action.startTime,
         endTime: action.endTime
@@ -29,19 +30,32 @@ function MangerReducer(state = INIT_STATE, action) {
       };
     case ManagerType.SWP_VAV_RES:
       return {
-        ...state,
+        startTime: state.startTime,
+        endTime: state.endTime,
         data: action.data
       };
     case ManagerType.SWP_VAR_REQ:
       return {
+        startTime: state.startTime,
+        endTime: state.endTime,
         vId: action.vId,
-        approvalFlag: action.approvalFlag
+        approvalFlag: action.approvalFlag,
+        detailInit: action.detailInit
       };
     case ManagerType.SWP_RAV_REQ:
-      return {};
+      return {
+        ...state
+      };
     case ManagerType.SWP_RAV_RES:
       return {
+        startTime: state.startTime,
+        endTime: state.endTime,
         data: action.data,
+      };
+    case ManagerType.SWP_RAR_REQ:
+      return {
+        data: action.data,
+        closePage: action.closePage
       };
     default:
       return state;

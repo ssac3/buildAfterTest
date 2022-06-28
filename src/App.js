@@ -7,10 +7,11 @@ import AtdcManagement from 'pages/user/attendence';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
-import {ADMIN_MENU, MANAGER_MENU, USER_MENU, API} from 'utils/constants';
+import {ADMIN_MENU, MANAGER_MENU, USER_MENU, API, LOCAL_STORAGE} from 'utils/constants';
 import Setting from 'pages/manager/setting';
 import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
+import RearrangeMngment from 'pages/manager/rearrangeMngment';
 import {EmpInsert} from 'pages/admin/emp_insert/EmpInsert';
 
 function getMenu(role) {
@@ -27,11 +28,13 @@ function getMenu(role) {
 function App() {
   const alert = useSelector((state) => state.AlertReducer);
   const signIn = useSelector((state) => state.SignInReducer);
+  const rearrange = useSelector((state) => state.MangerReducer);
   const [roleURL, setRoleURL] = useState('/');
   const [select, setSelect] = useState(getMenu(roleURL) || {});
   const [setting, setSetting] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
+  const [openATR, setOpenATR] = useState(0);
 
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
@@ -62,6 +65,19 @@ function App() {
   const onClickSetting = () => {
     setSetting(!setting);
   };
+  const onClickATR = (target) => {
+    setOpenATR(target);
+  };
+
+  const atvDetail = React.useMemo(() => {
+    if(openATR > 0 && (
+      rearrange.data?.length > 0 && rearrange.data[0].rId !== undefined
+    )) {
+      return (rearrange.data.filter((v) => v.rId === openATR)[0]);
+    }
+    return '';
+  }, [rearrange, openATR]);
+
   const onClickInsertEmp = () => {
     setOpenModal(!openModal);
   };
@@ -69,6 +85,7 @@ function App() {
     if (signIn.data === '') {
       setSelect(getMenu(API.ADMIN));
     } else if(signIn.data?.depId) {
+      LOCAL_STORAGE.set('depId', signIn.data.depId);
       setSelect(getMenu(API.MANAGER));
     } else {
       setSelect(getMenu(API.USER));
@@ -83,6 +100,9 @@ function App() {
   }, [select]);
   return (
     <>
+
+      {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
+
       {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
       {roleURL !== API.ROOT && (
         <>
@@ -105,7 +125,14 @@ function App() {
               path={API.ADMIN}
               render={() => <EmpManagement onClickInsertEmp={onClickInsertEmp}/>}
             />
-            <Route path={API.MANAGER} render={() => <Dashboard selectedId={selectedItem}/>}/>
+            <Route
+              path={API.MANAGER}
+              render={() => (
+                <Dashboard
+                  selectedId={selectedItem}
+                  onClickATR={onClickATR}
+                />)}
+            />
             <Route path={API.USER} render={() => <AtdcManagement selectedId={selectedItem}/>}/>
           </Wrap>
         </Switch>
