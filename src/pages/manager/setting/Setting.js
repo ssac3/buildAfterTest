@@ -11,6 +11,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import theme from 'styles/theme';
 import {cnvrtDateTime} from 'utils/convertDateTime';
 import {SwpAtrReq} from 'redux/actions/ManagerAction';
+import {LOCAL_STORAGE} from 'utils/constants';
 
 export const Setting = ({open}) => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ export const Setting = ({open}) => {
 
 
   const onClickSubmit = () => {
-    dispatch(SwpAtrReq(1, cnvrtDateTime(startTime), cnvrtDateTime(endTime)));
+    dispatch(SwpAtrReq(LOCAL_STORAGE.get('depId'), cnvrtDateTime(startTime), cnvrtDateTime(endTime)));
     open();
   };
 

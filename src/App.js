@@ -82,13 +82,14 @@ function App() {
     setOpenModal(!openModal);
   };
   useEffect(() => {
-    if (signIn.data === '') {
+    console.log(signIn);
+    if (signIn?.data === 'ADMIN') {
       setSelect(getMenu(API.ADMIN));
-    } else if(signIn.data?.depId) {
-      LOCAL_STORAGE.set('depId', signIn.data.depId);
-      setSelect(getMenu(API.MANAGER));
-    } else {
+    } else if (signIn?.data === 'USER') {
       setSelect(getMenu(API.USER));
+    } else {
+      LOCAL_STORAGE.set('depId', signIn.data);
+      setSelect(getMenu(API.MANAGER));
     }
     return (() => {
       setRoleURL(window.location.pathname);

@@ -2,7 +2,7 @@ import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {ManagerType} from 'redux/constants';
-import {SwpAtvRes, SwpRavReq, SwpRavRes, SwpVavReq, SwpVavRes} from 'redux/actions/ManagerAction';
+import {SwpAtvReq, SwpAtvRes, SwpRavReq, SwpRavRes, SwpVavReq, SwpVavRes} from 'redux/actions/ManagerAction';
 import {openAlert} from 'redux/actions/AlertAction';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -122,6 +122,7 @@ function* postSwpAtrReq() {
 
     if (result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
+      yield put(SwpAtvReq(LOCAL_STORAGE.get('depId')));
     } else {
       yield put(openAlert('fail', result.resMsg));
     }
