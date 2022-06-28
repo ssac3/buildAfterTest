@@ -9,6 +9,8 @@ export const ManagerType = {
   SWP_VAR_RES: 'SWP_VAR_RES',
   SWP_RAV_REQ: 'SWP_RAV_REQ',
   SWP_RAV_RES: 'SWP_RAV_RES',
+  SWP_RAR_REQ: 'SWP_RAR_REQ',
+  SWP_RAR_RES: 'SWP_RAR_RES'
 };
 
 export const AlertType = {

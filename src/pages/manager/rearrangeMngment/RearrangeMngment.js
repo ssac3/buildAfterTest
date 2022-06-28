@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {style} from './RearrangeMngmentStyle';
 import {MdOutlineClose} from 'react-icons/md';
@@ -6,10 +6,13 @@ import Dropbox from 'components/Dropbox';
 import {MANAGER_APPROVAL_TYPE} from 'utils/constants';
 import theme from 'styles/theme';
 import {cnvrtDate, cnvrtTime} from 'utils/convertDateTime';
+import {useDispatch} from 'react-redux';
+import {SwpRarReq} from 'redux/actions/ManagerAction';
 
 export const RearrangeMngment = ({onClickATR, atvDetail}) => {
+  const dispatch = useDispatch();
   const [openDrop, setOpenDrop] = useState(false);
-  const [change, setChange] = useState(MANAGER_APPROVAL_TYPE[atvDetail.approvalFlag].title);
+  const [change, setChange] = useState(MANAGER_APPROVAL_TYPE[atvDetail?.approvalFlag]?.title);
   const onClickDropbox = () => {
     setOpenDrop(!openDrop);
   };
@@ -18,9 +21,15 @@ export const RearrangeMngment = ({onClickATR, atvDetail}) => {
     setChange(e.target.id);
     onClickDropbox();
   };
-  useEffect(() => {
-    console.log(atvDetail);
-  }, [atvDetail]);
+
+  const onClickRARSubmit = () => {
+    const data = {
+      ...atvDetail,
+      approvalFlag:
+        MANAGER_APPROVAL_TYPE.filter((v) => v.title === change)[0].id};
+    console.log(data);
+    dispatch(SwpRarReq(data, onClickATR));
+  };
   return (
     <Wrap>
       <Container>
@@ -45,26 +54,26 @@ export const RearrangeMngment = ({onClickATR, atvDetail}) => {
         <AtvInfoLayout>
           <AtmItemLayout>
             <ItemLabel>조정 요청 일자</ItemLabel>
-            <h3>{cnvrtDate(new Date(atvDetail.rStartTime))}</h3>
+            <h3>{cnvrtDate(new Date(atvDetail?.rStartTime))}</h3>
           </AtmItemLayout>
           <AtmItemLayout>
             <ItemLabel>조정 요청 사유</ItemLabel>
-            <h3>{atvDetail.contents}</h3>
+            <h3>{atvDetail?.contents}</h3>
           </AtmItemLayout>
           <AtmItemLayout>
             <ItemLabel>조정 요청 시간</ItemLabel>
             <h3>
-              {cnvrtTime(new Date(atvDetail.rStartTime))
+              {cnvrtTime(new Date(atvDetail?.rStartTime))
                 .concat('~')
-                .concat(cnvrtTime(new Date(atvDetail.rEndTime)))}
+                .concat(cnvrtTime(new Date(atvDetail?.rEndTime)))}
             </h3>
           </AtmItemLayout>
           <AtmItemLayout>
             <ItemLabel>기존 근태 시간</ItemLabel>
             <h3>
-              {cnvrtTime(new Date(atvDetail.startTime))
+              {cnvrtTime(new Date(atvDetail?.startTime))
                 .concat('~')
-                .concat(cnvrtTime(new Date(atvDetail.endTime)))}
+                .concat(cnvrtTime(new Date(atvDetail?.endTime)))}
             </h3>
           </AtmItemLayout>
           <AtmItemLayout>
@@ -82,8 +91,8 @@ export const RearrangeMngment = ({onClickATR, atvDetail}) => {
         </AtvInfoLayout>
 
         <BtnLayout>
-          <Btn bgColor={theme.colorSet.SECONDARY.GRAY_CC}>취소</Btn>
-          <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B}>확인</Btn>
+          <Btn bgColor={theme.colorSet.SECONDARY.GRAY_CC} onClick={() => onClickATR(0)}>취소</Btn>
+          <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B} onClick={onClickRARSubmit}>확인</Btn>
         </BtnLayout>
       </Container>
     </Wrap>

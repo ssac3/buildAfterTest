@@ -52,6 +52,11 @@ function MangerReducer(state = INIT_STATE, action) {
         endTime: state.endTime,
         data: action.data,
       };
+    case ManagerType.SWP_RAR_REQ:
+      return {
+        data: action.data,
+        closePage: action.closePage
+      };
     default:
       return state;
   }

@@ -16,7 +16,8 @@ export const ROUTES = {
   SWP_ATR_REQ: API.MANAGER.concat('/deptUpdate'),
   SWP_VAV_REQ: API.MANAGER.concat('/vacView'),
   SWP_VAR_REQ: API.MANAGER.concat('/vacUpdate'),
-  SWP_RAV_REQ: API.MANAGER.concat('/reArrange'),
+  SWP_RAV_REQ: API.MANAGER.concat('/rarView'),
+  SWP_RAR_REQ: API.MANAGER.concat('/rarUpdate'),
   SWP_SAV_REQ: API.USER.concat('/myView'),
   SWP_DAV_REQ: API.USER.concat('/getAllAttendance'),
   SWP_EAC_REQ: API.LOGIN.concat()

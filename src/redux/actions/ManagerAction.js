@@ -66,3 +66,11 @@ export const SwpRavRes = (data) => {
     data
   };
 };
+
+export const SwpRarReq = (data, closePage) => {
+  return {
+    type: ManagerType.SWP_RAR_REQ,
+    data,
+    closePage
+  };
+};
