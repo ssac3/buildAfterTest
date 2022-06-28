@@ -9,6 +9,8 @@ export const ManagerType = {
   SWP_VAR_RES: 'SWP_VAR_RES',
   SWP_RAV_REQ: 'SWP_RAV_REQ',
   SWP_RAV_RES: 'SWP_RAV_RES',
+  SWP_RAR_REQ: 'SWP_RAR_REQ',
+  SWP_RAR_RES: 'SWP_RAR_RES'
 };
 
 export const AdminType = {
@@ -24,6 +26,8 @@ export const AlertType = {
 export const UserType = {
   SWP_SAV_REQ: 'SWP_SAV_REQ',
   SWP_SAV_RES: 'SWP_SAV_RES',
+  SWP_SAPR_REQ: 'SWP_SAPR_REQ',
+  SWP_SAPR_RES: 'SWP_SAPR_RES',
   SWP_DAV_REQ: 'SWP_DAV_REQ',
   SWP_DAV_RES: 'SWP_DAV_RES',
   // SWP_VA_REQ: 'SWP_VA_REQ',

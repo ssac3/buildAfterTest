@@ -38,17 +38,19 @@ export const SwpVavReq = () => {
 };
 
 export const SwpVavRes = (data) => {
+  console.log(data);
   return {
     type: ManagerType.SWP_VAV_RES,
     data,
   };
 };
 
-export const SwpVarReq = (vId, approvalFlag) => {
+export const SwpVarReq = (vId, approvalFlag, detailInit) => {
   return {
     type: ManagerType.SWP_VAR_REQ,
     vId,
-    approvalFlag
+    approvalFlag,
+    detailInit
   };
 };
 
@@ -62,5 +64,13 @@ export const SwpRavRes = (data) => {
   return {
     type: ManagerType.SWP_RAV_RES,
     data
+  };
+};
+
+export const SwpRarReq = (data, closePage) => {
+  return {
+    type: ManagerType.SWP_RAR_REQ,
+    data,
+    closePage
   };
 };
