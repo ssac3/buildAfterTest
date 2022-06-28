@@ -32,7 +32,7 @@ function* postSwpEacReq() {
     const result = yield call(eacReq, packedData);
     if (result.data.resCode === 0) {
       LOCAL_STORAGE.set('Authorization', result.headers.authorization);
-
+      LOCAL_STORAGE.set('Refresh_token', result.headers.refresh_token);
       if(result.data.data === undefined) {
         console.log('[ROLE] ADMIN');
         yield put(SwpEacRes(''));
