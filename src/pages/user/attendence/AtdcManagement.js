@@ -1,24 +1,30 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import AtdcCalendar from 'components/AtdcCalendar';
 import locale from 'antd/es/calendar/locale/ko_KR';
 import AtdcMonthly from 'components/AtdcMonthly';
 import MyProfile from 'components/MyProfile';
 import UpdatePw from 'components/UpdatePw';
-import {SwpDavReq} from '../../../redux/actions/UserAction';
-import {useDispatch} from 'react-redux';
-
+import {SwpDavReq} from 'redux/actions/UserAction';
+import {useDispatch, useSelector} from 'react-redux';
 export const AtdcManagement = ({selectedId}) => {
   const dispatch = useDispatch();
+  const selector = useSelector((state) => state.UserReducer);
+  const [attendanceData, setAttendanceData] = useState([]);
   useEffect(() => {
-    console.log('AtdcManagement 시작');
-    console.log(dispatch(SwpDavReq()));
+    dispatch(SwpDavReq());
   }, []);
+
+  useEffect(() => {
+    if(selector.data?.length > 0) {
+      setAttendanceData(selector.data);
+    }
+  }, [selector]);
   return (
     <div style={{width:'100%', height:'100%', padding:'20px'}}>
       {selectedId === 0 &&
         (
-          <AtdcCalendar locale={locale}/>
+          <AtdcCalendar locale={locale} attendance={attendanceData}/>
         )}
 
       {selectedId === 1 &&

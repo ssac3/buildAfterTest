@@ -3,31 +3,33 @@ import PropTypes from 'prop-types';
 import {SwpAtvReq} from 'redux/actions/ManagerAction';
 import VacationMngment from 'pages/manager/VacationMngment';
 import AttendenceMngment from 'pages/manager/AttendenceMngment';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import {LOCAL_STORAGE} from 'utils/constants';
 
 
-export const Dashboard = ({selectedId}) => {
-  const selector = useSelector((state) => state.SignInReducer);
+export const Dashboard = ({selectedId, onClickATR}) => {
   const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(SwpAtvReq(selector.data?.depId));
+    dispatch(SwpAtvReq(LOCAL_STORAGE.get('depId')));
   }, []);
 
-  return (
-    <>
-      {selectedId === 2 &&
-        (
-          <VacationMngment/>
-        )}
-      {selectedId === 3 && (
-        <AttendenceMngment/>
-      )}
-    </>
-  );
+  const renderUI = React.useMemo(() => {
+    if (selectedId === 2) {
+      return <VacationMngment/>;
+    }
+    if (selectedId === 3) {
+      return <AttendenceMngment
+        onClickATR={onClickATR}
+      />;
+    }
+    return <></>;
+  }, [selectedId]);
+
+  return renderUI;
 };
 
 Dashboard.propTypes = {
   selectedId: PropTypes.number.isRequired,
+  onClickATR: PropTypes.func.isRequired,
 };
 
