@@ -13,7 +13,6 @@ const getHeader = () => {
     headers,
   };
 };
-
 function savReq() {
   const result = axios
     .get(ROUTES.SWP_SAV_REQ, getHeader())

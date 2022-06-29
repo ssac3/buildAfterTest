@@ -5,7 +5,7 @@ import {EmpListItem} from '../EmpListItem/EmpListItem';
 
 export const EmpList = ({emps}) => {
   return (
-    <ul>{emps.map(emp => (
+    <ul>{emps?.map(emp => (
       <EmpListItem emp={emp} key={emp.id}></EmpListItem>
     ))}
     </ul>
