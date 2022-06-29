@@ -2,8 +2,7 @@ import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, takeLatest} from 'redux-saga/effects';
 import {UserType} from 'redux/constants';
-import {SwpSavRes} from 'redux/actions/UserAction';
-
+import {SwpDavRes, SwpSavRes} from 'redux/actions/UserAction';
 axios.defaults.baseURL = ROUTES.BASE_URL;
 const getHeader = () => {
   const headers = { Authorization: LOCAL_STORAGE.get('Authorization')};
@@ -29,7 +28,6 @@ function savReq() {
 }
 
 function davReq() {
-  console.log('in');
   const result = axios
     .get(ROUTES.SWP_DAV_REQ, getHeader())
     .then((res) => {
@@ -41,6 +39,7 @@ function davReq() {
       console.log(LOG(ROUTES.SWP_DAV_REQ).ERROR);
       return err;
     });
+  console.log(result);
   return result;
 }
 
@@ -67,14 +66,12 @@ function* postSwpDavReq() {
     //   return state.UserReducer;
     // });
     const result = yield call(davReq);
-    console.log(result);
-    // if(result.resCode === 0) {
-    //   yield put(
-    //     SwpDavRes(info)
-    //   );
-    // } else {
-    //   yield put('fail', result.res);
-    // }
+    if(result.resCode === 0) {
+      console.log(result.data);
+      yield put(SwpDavRes(result.data));
+    } else {
+      yield put('fail', result.resMsg);
+    }
   } catch (e) {
     console.log(e);
   }

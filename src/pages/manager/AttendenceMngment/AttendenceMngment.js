@@ -29,11 +29,10 @@ const ListItemComponent = ({item}) => {
   );
 };
 
-
 export const AttendenceMngment = () => {
   const dispatch = useDispatch();
   const [infos, setInfos] = useState([]);
-  const selector = useSelector((state) => state.MangerReducer);
+  const selector = useSelector((state) => state.UserReducer);
   useEffect(() => {
     dispatch(SwpRavReq());
   }, []);
