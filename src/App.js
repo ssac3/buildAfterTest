@@ -82,7 +82,6 @@ function App() {
     setOpenModal(!openModal);
   };
   useEffect(() => {
-    console.log(signIn);
     if (signIn?.data === 'ADMIN') {
       setSelect(getMenu(API.ADMIN));
     } else if (signIn?.data === 'USER') {
