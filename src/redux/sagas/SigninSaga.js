@@ -40,7 +40,8 @@ function* postSwpEacReq() {
         history.push('/admin');
       } else if(result.data.data?.depId !== undefined && result.data.data?.role === '1') {
         console.log('[ROLE] MANAGER');
-        yield put(SwpEacRes(result.data.data));
+        LOCAL_STORAGE.set('depId', result?.data?.data.depId);
+        yield put(SwpEacRes('MANAGER'));
         history.push('/manager');
       } else if(result.data.data?.role === '2') {
         console.log('[ROLE] USER');
