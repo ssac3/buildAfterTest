@@ -30,10 +30,10 @@ const ListItemComponent = ({item, onClickATR}) => {
 };
 
 
-export const AttendenceMngment = () => {
+export const AttendenceMngment = ({onClickATR}) => {
   const dispatch = useDispatch();
   const [infos, setInfos] = useState([]);
-  const selector = useSelector((state) => state.UserReducer);
+  const selector = useSelector((state) => state.MangerReducer);
 
   useEffect(() => {
     console.log('RAV');

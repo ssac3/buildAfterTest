@@ -3,6 +3,7 @@ import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {UserType} from 'redux/constants';
 import {SwpDavRes, SwpSavRes} from 'redux/actions/UserAction';
+import {openAlert} from 'redux/actions/AlertAction';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
 const getHeader = () => {
