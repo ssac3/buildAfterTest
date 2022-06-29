@@ -29,8 +29,8 @@ function App() {
   const alert = useSelector((state) => state.AlertReducer);
   const signIn = useSelector((state) => state.SignInReducer);
   const rearrange = useSelector((state) => state.MangerReducer);
-  const [roleURL, setRoleURL] = useState('/');
-  const [select, setSelect] = useState(getMenu(roleURL) || {});
+  const [roleURL, setRoleURL] = useState(window.location.pathname);
+  const [select, setSelect] = useState(getMenu(roleURL));
   const [setting, setSetting] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
@@ -91,9 +91,14 @@ function App() {
       setSelect(getMenu(API.MANAGER));
     }
     return (() => {
+      console.log('안농');
       setRoleURL(window.location.pathname);
     });
   }, [signIn]);
+
+  useEffect(() => {
+    setSelect(getMenu(roleURL));
+  }, []);
 
   useEffect(() => {
     onGetTarget();
