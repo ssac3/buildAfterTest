@@ -9,7 +9,6 @@ export const Header = ({role, setting}) => {
   const onClickSetting = () => {
     setting();
   };
-
   return(
     <Container>
       <img src={logo} alt="로고" width={130}/>

@@ -2,7 +2,7 @@ import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {ManagerType} from 'redux/constants';
-import {SwpAtvRes, SwpRavRes, SwpVavReq, SwpVavRes} from 'redux/actions/ManagerAction';
+import {SwpAtvReq, SwpAtvRes, SwpRavReq, SwpRavRes, SwpVavReq, SwpVavRes} from 'redux/actions/ManagerAction';
 import {openAlert} from 'redux/actions/AlertAction';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -85,12 +85,24 @@ function ravReq() {
   return result;
 }
 
+function rarReq(data) {
+  const result = axios
+    .post(ROUTES.SWP_RAR_REQ, data, getHeader())
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_RAV_REQ).SUCCESS);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_RAV_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
+
 function* postSwpAtvReq() {
   try {
-    const data = yield select((state) => {
-      return state.MangerReducer;
-    });
-    const result = yield call(atvReq, data);
+    const packedMsg = {id: Number(LOCAL_STORAGE.get('depId'))};
+    const result = yield call(atvReq, packedMsg);
 
     if (result.resCode === 0) {
       const {name, startTime, endTime} = result.data;
@@ -110,6 +122,7 @@ function* postSwpAtrReq() {
 
     if (result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
+      yield put(SwpAtvReq(LOCAL_STORAGE.get('depId')));
     } else {
       yield put(openAlert('fail', result.resMsg));
     }
@@ -137,11 +150,12 @@ function* postSwpVarReq() {
     const data = yield select((state) => {
       return state.MangerReducer;
     });
-
-    const result = yield call(varReq, data);
+    const packedMsg = {vId: data.vId, approvalFlag: data.approvalFlag};
+    const result = yield call(varReq, packedMsg);
     if(result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
       yield put(SwpVavReq());
+      data.detailInit();
     } else {
       yield put(openAlert('fail', result.resMsg));
     }
@@ -163,6 +177,30 @@ function* postSwpRavReq() {
   }
 }
 
+function* postSwpRarReq() {
+  try {
+    const data = yield select((state) => { return state.MangerReducer; });
+    const packedMsg = {
+      rId: data.data.rId,
+      aId: data.data.aId,
+      startTime: data.data.rStartTime,
+      endTime: data.data.rEndTime,
+      approvalFlag: data.data.approvalFlag
+    };
+    console.log(packedMsg);
+    const result = yield call(rarReq, packedMsg);
+    if(result.resCode === 0) {
+      yield put(openAlert('success', result.resMsg));
+      yield put(SwpRavReq());
+    } else {
+      yield put(openAlert('fail', result.resMsg));
+    }
+    data.closePage(0);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 
 
 function* watchAlert() {
@@ -171,6 +209,7 @@ function* watchAlert() {
   yield takeLatest(ManagerType.SWP_VAV_REQ, postSwpVavReq);
   yield takeLatest(ManagerType.SWP_VAR_REQ, postSwpVarReq);
   yield takeLatest(ManagerType.SWP_RAV_REQ, postSwpRavReq);
+  yield takeLatest(ManagerType.SWP_RAR_REQ, postSwpRarReq);
 }
 
 

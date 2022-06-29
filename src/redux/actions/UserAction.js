@@ -20,6 +20,21 @@ export const SwpSavRes =
       qrPath
     };
   };
+
+export const SwpSaprReq = (password, nPassword) => {
+  return {
+    type: UserType.SWP_SAPR_REQ,
+    password,
+    nPassword
+  };
+};
+
+export const SwpSaprReS = () => {
+  return {
+    type: UserType.SWP_SAPR_RES
+  };
+};
+
 export const SwpDavReq = () => {
   return {
     type: UserType.SWP_DAV_REQ

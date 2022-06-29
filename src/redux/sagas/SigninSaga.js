@@ -32,18 +32,19 @@ function* postSwpEacReq() {
     const result = yield call(eacReq, packedData);
     if (result.data.resCode === 0) {
       LOCAL_STORAGE.set('Authorization', result.headers.authorization);
+      LOCAL_STORAGE.set('Refresh_token', result.headers.refresh_token);
 
-      if(result.data.data === undefined) {
+      if(result.data.data.role === '0') {
         console.log('[ROLE] ADMIN');
-        yield put(SwpEacRes(''));
+        yield put(SwpEacRes('ADMIN'));
         history.push('/admin');
-      } else if(result.data.data?.depId !== undefined && result.data.data?.username === undefined) {
+      } else if(result.data.data?.depId !== undefined && result.data.data?.role === '1') {
         console.log('[ROLE] MANAGER');
-        yield put(SwpEacRes(result.data.data));
+        yield put(SwpEacRes(result.data.data.depId));
         history.push('/manager');
-      } else {
+      } else if(result.data.data?.role === '2') {
         console.log('[ROLE] USER');
-        yield put(SwpEacRes(result.data.data));
+        yield put(SwpEacRes('USER'));
         history.push('/user');
       }
     } else {
