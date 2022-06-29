@@ -20,72 +20,27 @@ export const AtdcCalendar = () => {
   useEffect(() => {
   }, [getData]);
   const getListData = (value) => {
-    let listData;
-    console.log(value);
+    const listData = [
+      {
+        type : null,
+        content: null,
+        vacation : null
+      }
+    ];
+    const date = value.format('YYYY-MM-DD');
     for(let i = 0; i < 31; i += 1) {
-      console.log(getData[i]);
-      // if(getData[i] !== undefined) {
-      //   console.log('');
-      // }
-      // console.log(getData[i].aStartTime.substring(0, 10));
-      // if(value.dateFormat('YYYY-MM-DD') == getData[i].aStartTime.substring(10)) {
-      //   console.log(getData[i].status);
-      // }
-    }
-    if(value.date() === 8) {
-      console.log(8);
-    }
-    switch (value.date()) {
-      case 8:
-        listData = [
-          {
-            type   : 'success',
-            content: '08:55 / 19:00',
-          }
-        ];
-        break;
-
-      case 10:
-        listData = [
-          {
-            type   : 'warning',
-            content: '09:55 / 19:00',
-          }
-        ];
-        break;
-
-      case 6:
-        listData = [
-          {
-            type   : 'success',
-            content: '08:55 / 19:00',
-          }
-        ];
-        break;
-      case 7:
-        listData = [
-          {
-            type   : 'success',
-            content: '08:51 / 18:42',
-          }
-        ];
-        break;
-      case 9:
-        listData = [
-          {
-            type   : 'success',
-            content: '08:43 / 18:30',
-          }
-        ];
-        break;
-      case 13:
-        listData = [
-          {
-            vacation:'휴가'
-          }
-        ];
-        break;
-      default:
+      if(date === getData[i]?.aStartTime?.substring(0, 10) || date === getData[i]?.vDate) {
+        if(getData[i].aStatus === '0') {
+          listData[0].type = 'success';
+          listData[0].content = getData[i].aStartTime.substring(10, 16);
+        }
+        console.log(getData[i]?.vId);
+        if(getData[i].vId !== null) {
+          listData[0].vacation = '휴가';
+          console.log(getData[i].vDate);
+        }
+      }
+      console.log(getData[i]?.aStartTime?.substring(0, 10));
     }
     return listData || [];
   };
@@ -97,7 +52,7 @@ export const AtdcCalendar = () => {
         {listData.map((item) => (
           <li key={item.content}>
             <Badge status={item.type} text={item.content}/>
-            {item.vacation !== undefined ? <Badge text={item.vacation}></Badge> : null}
+            {item.vacation !== null ? <Badge status={''} text={item.vacation}></Badge> : null}
           </li>
 
         ))}
