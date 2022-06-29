@@ -26,16 +26,20 @@ function MangerReducer(state = INIT_STATE, action) {
       };
     case ManagerType.SWP_VAV_REQ:
       return {
-        ...state,
+        name:state.name,
+        startTime:state.startTime,
+        endTime:state.endTime,
       };
     case ManagerType.SWP_VAV_RES:
       return {
+        name: state.name,
         startTime: state.startTime,
         endTime: state.endTime,
         data: action.data
       };
     case ManagerType.SWP_VAR_REQ:
       return {
+        name: state.name,
         startTime: state.startTime,
         endTime: state.endTime,
         vId: action.vId,
@@ -44,10 +48,11 @@ function MangerReducer(state = INIT_STATE, action) {
       };
     case ManagerType.SWP_RAV_REQ:
       return {
-        ...state
+        state,
       };
     case ManagerType.SWP_RAV_RES:
       return {
+        name: state.name,
         startTime: state.startTime,
         endTime: state.endTime,
         data: action.data,
