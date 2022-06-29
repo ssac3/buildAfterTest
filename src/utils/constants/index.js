@@ -21,11 +21,8 @@ export const ROUTES = {
   SWP_SAV_REQ: API.USER.concat('/myView'),
   SWP_DAV_REQ: API.USER.concat('/getAllAttendance'),
   SWP_EAC_REQ: API.LOGIN.concat(),
-<<<<<<< HEAD
-  SWP_EMPIN_REQ: API.ADMIN.concat('insertEmp')
-=======
+  SWP_EMPIN_REQ: API.ADMIN.concat('/insertEmp'),
   SWP_SAPR_REQ: API.USER.concat('/updatePw')
->>>>>>> 73da628d48c7c511c5e88de188ab3ff29f60d725
 };
 
 export const LOG = (target) => {
