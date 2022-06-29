@@ -3,7 +3,8 @@ import manager from './managerSaga';
 import alert from './alertSags';
 import user from './UserSaga';
 import signIn from './SigninSaga';
+import admin from './adminSaga';
 
 export default function* rootSaga() {
-  yield all([call(manager), call(alert), call(user), call(signIn)]);
+  yield all([call(manager), call(alert), call(user), call(signIn), call(admin())]);
 }

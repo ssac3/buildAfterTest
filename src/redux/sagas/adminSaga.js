@@ -30,13 +30,13 @@ function empinReq(data) {
 
 function* postSwpEmpinReq() {
   try {
-    // 첫번째 파라미터: 함수
-    // 두 번째 파라미터: 첫번째 함수에 들어갈 인자값
-    const data = yield call(empinReq, action.data);
-    // 사원등록 코드값이 성공이면 == 0
+    const data = yield select((state) => {
+      return state.AdminReducer;
+    });
+    const result = yield call(empinReq, data);
+
     if(result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
-      // yield put(SwpEmpInRes(result.data));
     } else {
       yield put(openAlert('fail', result.resMsg));
     }

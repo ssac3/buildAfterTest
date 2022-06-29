@@ -22,7 +22,7 @@ export const EmpInsert = () => {
                 사원번호
                 <BtnLayout>생성</BtnLayout>
               </CaptionLayout>
-              <LabelLayout readOnly/>
+              <LabelLayout />
             </UserInfoLayout>
             <UserInfoLayout>
               <CaptionLayout>
