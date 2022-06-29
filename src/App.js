@@ -87,7 +87,7 @@ function App() {
     } else if (signIn?.data === 'USER') {
       setSelect(getMenu(API.USER));
     } else {
-      LOCAL_STORAGE.set('depId', signIn.data);
+      LOCAL_STORAGE.set('depId', signIn?.data?.depId);
       setSelect(getMenu(API.MANAGER));
     }
     return (() => {
