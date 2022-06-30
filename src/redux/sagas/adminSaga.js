@@ -7,18 +7,20 @@ import {AdminType} from 'redux/constants';
 axios.defaults.baseURL = ROUTES.BASE_URL;
 const getHeader = () => {
   const headers = { Authorization: LOCAL_STORAGE.get('Authorization')};
-  console.log(headers);
   return {
     headers,
   };
 };
 
 function empinReq(data) {
-  console.log('사원등록사가');
   const result = axios
     .post(ROUTES.SWP_EMPIN_REQ, data, getHeader())
     .then((res) => {
+      console.log(data);
+      console.log('1111');
       console.log(LOG(ROUTES.SWP_EMPIN_REQ).SUCCESS);
+      console.log(res.data);
+      console.log('2222');
       return res.data;
     })
     .catch((err) => {
@@ -30,9 +32,8 @@ function empinReq(data) {
 
 function* postSwpEmpinReq() {
   try {
-    const data = yield select((state) => {
-      return state.AdminReducer;
-    });
+    const data = yield select((state) => { return state.AdminReducer; });
+    console.log(data);
     const result = yield call(empinReq, data);
 
     if(result.resCode === 0) {

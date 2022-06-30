@@ -5,42 +5,7 @@ import {EmpList} from 'components/EmpList/EmpList';
 import {style} from './EmpManagementStyle';
 export const EmpManagement = ({onClickInsertEmp}) => {
   // setEmps해주기 쓰려면~db연결해서 할 땐 빈값으로 만들어주기
-  const [emps] = useState([
-    {
-      id: '',
-      checked: '',
-      username: '',
-      name: '',
-      email: '',
-      img: '',
-      gender: '',
-      department_id: '',
-      deptname: '',
-      department_location: '',
-      position: '',
-      role: '',
-      qr_path: '',
-      createAt: '',
-      working_status: '',
-    },
-    {
-      id: '',
-      checked: '',
-      username: '',
-      name: '',
-      email: '',
-      img: '',
-      gender: '',
-      department_id: '',
-      deptname: '',
-      department_location: '',
-      position: '',
-      role: '',
-      qr_path: '',
-      createAt: '',
-      working_status: '',
-    },
-  ]);
+  const [emps] = useState([]);
   return(
     <>
       <Container>
@@ -52,12 +17,12 @@ export const EmpManagement = ({onClickInsertEmp}) => {
             <Search/>
             <select id="selectbox">
               <option key="position" value="position">직급</option>
-              <option key="email" value="email">사원</option>
-              <option key="deptname" value="deptname">주임</option>
-              <option key="createat" value="createat">대리</option>
-              <option key="createat" value="createat">과장</option>
-              <option key="createat" value="createat">차장</option>
-              <option key="createat" value="createat">부장</option>
+              <option key="a" value="a">사원</option>
+              <option key="b" value="b">주임</option>
+              <option key="c" value="c">대리</option>
+              <option key="d" value="d">과장</option>
+              <option key="e" value="e">차장</option>
+              <option key="f" value="f">부장</option>
             </select>
           </div>
           <DelBtn value="regBtn">삭제</DelBtn>

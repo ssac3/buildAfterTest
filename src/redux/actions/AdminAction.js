@@ -1,9 +1,9 @@
 import {AdminType} from 'redux/constants/actionTypes';
 
-export const SwpEmpinReq = (data) => {
+export const SwpEmpinReq = (emp) => {
   return {
     type: AdminType.SWP_EMPIN_REQ,
-    data
+    emp
   };
 };
 
