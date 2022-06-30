@@ -7,7 +7,7 @@ import AtdcManagement from 'pages/user/attendence';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
-import {ADMIN_MENU, MANAGER_MENU, USER_MENU, API, LOCAL_STORAGE} from 'utils/constants';
+import {ADMIN_MENU, MANAGER_MENU, USER_MENU, API} from 'utils/constants';
 import Setting from 'pages/manager/setting';
 import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
@@ -29,8 +29,8 @@ function App() {
   const alert = useSelector((state) => state.AlertReducer);
   const signIn = useSelector((state) => state.SignInReducer);
   const rearrange = useSelector((state) => state.MangerReducer);
-  const [roleURL, setRoleURL] = useState('/');
-  const [select, setSelect] = useState(getMenu(roleURL) || {});
+  const [roleURL, setRoleURL] = useState(window.location.pathname);
+  const [select, setSelect] = useState(getMenu(roleURL));
   const [setting, setSetting] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(0);
@@ -87,13 +87,16 @@ function App() {
     } else if (signIn?.data === 'USER') {
       setSelect(getMenu(API.USER));
     } else {
-      LOCAL_STORAGE.set('depId', signIn.data);
       setSelect(getMenu(API.MANAGER));
     }
     return (() => {
       setRoleURL(window.location.pathname);
     });
   }, [signIn]);
+
+  useEffect(() => {
+    setSelect(getMenu(roleURL));
+  }, []);
 
   useEffect(() => {
     onGetTarget();

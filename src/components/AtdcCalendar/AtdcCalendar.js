@@ -20,86 +20,76 @@ export const AtdcCalendar = () => {
   useEffect(() => {
   }, [getData]);
   const getListData = (value) => {
-    let listData;
-    console.log(value);
+    const listData = [
+      {
+        type : null,
+        content: null,
+        vacation : null,
+        approval : null
+      }
+    ];
+    const date = value.format('YYYY-MM-DD');
     for(let i = 0; i < 31; i += 1) {
-      console.log(getData[i]);
-      // if(getData[i] !== undefined) {
-      //   console.log('');
-      // }
-      // console.log(getData[i].aStartTime.substring(0, 10));
-      // if(value.dateFormat('YYYY-MM-DD') == getData[i].aStartTime.substring(10)) {
-      //   console.log(getData[i].status);
-      // }
-    }
-    if(value.date() === 8) {
-      console.log(8);
-    }
-    switch (value.date()) {
-      case 8:
-        listData = [
-          {
-            type   : 'success',
-            content: '08:55 / 19:00',
+      const aDate = getData[i]?.aDate;
+      const workIn = (getData[i]?.aStartTime === null) ? '출근 정보 없음' : getData[i]?.aStartTime;
+      if(date === aDate || date === getData[i]?.vDate) {
+        console.log(aDate);
+        console.log(getData[i]?.vType);
+        switch (getData[i].aStatus) {
+          case '0':
+            listData[0].type = 'success';
+            listData[0].content = workIn;
+            break;
+          case '1':
+            listData[0].type = 'warning';
+            listData[0].content = workIn;
+            break;
+          case '2':
+            listData[0].type = 'error';
+            listData[0].content = workIn;
+            break;
+          default:
+        }
+        if(getData[i]?.vId !== null) {
+          console.log('in');
+          console.log(getData[i]?.vType);
+          const approve = getData[i].vApprovalFlag;
+          switch (getData[i]?.vType) {
+            case '0':
+              listData[0].vacation = '전일휴가';
+              listData[0].approval = approve;
+              break;
+            case '1':
+              listData[0].vacation = '오전휴가';
+              listData[0].approval = approve;
+              break;
+            case '2':
+              listData[0].vacation = '오후휴가';
+              listData[0].approval = approve;
+              break;
+            default:
           }
-        ];
-        break;
-
-      case 10:
-        listData = [
-          {
-            type   : 'warning',
-            content: '09:55 / 19:00',
-          }
-        ];
-        break;
-
-      case 6:
-        listData = [
-          {
-            type   : 'success',
-            content: '08:55 / 19:00',
-          }
-        ];
-        break;
-      case 7:
-        listData = [
-          {
-            type   : 'success',
-            content: '08:51 / 18:42',
-          }
-        ];
-        break;
-      case 9:
-        listData = [
-          {
-            type   : 'success',
-            content: '08:43 / 18:30',
-          }
-        ];
-        break;
-      case 13:
-        listData = [
-          {
-            vacation:'휴가'
-          }
-        ];
-        break;
-      default:
+          console.log('out');
+        }
+      }
     }
     return listData || [];
   };
 
   const dateCellRender = (value) => {
+    useEffect(() => {
+      console.log(value);
+    }, []);
     const listData = getListData(value);
     return (
       <ul className="events">
         {listData.map((item) => (
           <li key={item.content}>
-            <Badge status={item.type} text={item.content}/>
-            {item.vacation !== undefined ? <Badge text={item.vacation}></Badge> : null}
-          </li>
+            { item.vacation !== null && item.content === '출근 정보 없음' ?
+              null : <Badge status={item.type} text={item.content}/>}
+            { item.approval === '1' ? <Badge className={'vacation approve'} status={''} text={item.vacation}></Badge> : <Badge className={'denied'} status={''} text={item.vacation}></Badge>}
 
+          </li>
         ))}
       </ul>
     );

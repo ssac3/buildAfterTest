@@ -1,4 +1,4 @@
-const formatter = (str) => {
+export const formatter = (str) => {
   return str.length > 1 ? str : '0'.concat(str);
 };
 

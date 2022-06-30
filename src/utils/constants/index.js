@@ -18,10 +18,12 @@ export const ROUTES = {
   SWP_VAR_REQ: API.MANAGER.concat('/vacUpdate'),
   SWP_RAV_REQ: API.MANAGER.concat('/rarView'),
   SWP_RAR_REQ: API.MANAGER.concat('/rarUpdate'),
+  SWP_EIV_REQ: API.MANAGER.concat('/eivView'),
   SWP_SAV_REQ: API.USER.concat('/myView'),
   SWP_DAV_REQ: API.USER.concat('/getAllAttendance'),
   SWP_EAC_REQ: API.LOGIN.concat(''),
   SWP_EMPIN_REQ: API.ADMIN.concat('/insertEmp'),
+  SWP_EMPSEL_REQ: API.ADMIN.concat(''),
   SWP_SAPR_REQ: API.USER.concat('/updatePw')
 };
 
@@ -80,3 +82,9 @@ export const MANAGER_APPROVAL_TYPE = [
   {id: 1, title: '승인'},
   {id: 2, title: '반려'},
 ];
+
+export const GENDER_TYPE = [
+  {id:0, title:'남'},
+  {id:1, title:'여'}
+];
+
