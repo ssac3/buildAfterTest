@@ -30,6 +30,15 @@
     font-size: 28px;
 }
 
+.events .approve {
+    background: #1A83FE;
+}
+.events .denied {
+}
+.events .vacation .ant-badge-status-text {
+    color: white;
+}
+
 
 .ant-picker-calendar-full .ant-picker-panel .ant-picker-body td:first-child .ant-picker-calendar-date-value {
     color: red;
