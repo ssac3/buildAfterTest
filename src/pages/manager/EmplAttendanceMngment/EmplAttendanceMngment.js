@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import {cnvrtDate} from 'utils/convertDateTime';
 
 
-const ListItemComponent = ({item}) => {
+const ListItemComponent = ({item, onClickDetail}) => {
   return(
     <ListItemContainer>
       <ItemContainer>{item.username}</ItemContainer>
@@ -19,7 +19,7 @@ const ListItemComponent = ({item}) => {
       <ItemContainer>{item.position}</ItemContainer>
       <ItemContainer>{cnvrtDate(new Date(item.createdAt))}</ItemContainer>
       <ItemContainer>
-        <BtnContainer id={item.vId} >상세보기</BtnContainer>
+        <BtnContainer id={item.username} onClick={onClickDetail}>상세보기</BtnContainer>
       </ItemContainer>
     </ListItemContainer>
   );
@@ -33,6 +33,10 @@ export const EmplAttendanceMngment = () => {
 
   const onClickType = (target) => {
     setSelectType(target);
+  };
+
+  const onClickDetail = (e) => {
+    console.log(e.target.id);
   };
 
   useEffect(() => {
@@ -71,7 +75,7 @@ export const EmplAttendanceMngment = () => {
           </HeaderContainer>
 
           {info?.map((item) => (
-            <ListItemComponent key={item.username} item={item}/>
+            <ListItemComponent key={item.username} item={item} onClickDetail={onClickDetail}/>
           ))}
         </ListContainer>
       </Container>
@@ -81,6 +85,7 @@ export const EmplAttendanceMngment = () => {
 
 ListItemComponent.propTypes = {
   item: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
+  onClickDetail: PropTypes.func.isRequired,
 };
 
 const {
