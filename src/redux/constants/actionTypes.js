@@ -16,8 +16,12 @@ export const ManagerType = {
 };
 
 export const AdminType = {
+  // 사원등록
   SWP_EMPIN_REQ: 'SWP_EMPIN_REQ',
   SWP_EMPIN_RES: 'SWP_EMPIN_RES',
+  // 사원목록
+  SWP_EMPSEL_REQ: 'SWP_EMPSEL_REQ',
+  SWP_EMPSEL_RES: 'SWP_EMPSEL_RES',
 };
 
 export const AlertType = {
