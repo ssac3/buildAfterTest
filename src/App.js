@@ -7,7 +7,7 @@ import AtdcManagement from 'pages/user/attendence';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
-import {ADMIN_MENU, MANAGER_MENU, USER_MENU, API, LOCAL_STORAGE} from 'utils/constants';
+import {ADMIN_MENU, MANAGER_MENU, USER_MENU, API} from 'utils/constants';
 import Setting from 'pages/manager/setting';
 import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
@@ -90,7 +90,6 @@ function App() {
       setSelect(getMenu(API.MANAGER));
     }
     return (() => {
-      console.log('안농');
       setRoleURL(window.location.pathname);
     });
   }, [signIn]);
