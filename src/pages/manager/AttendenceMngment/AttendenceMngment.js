@@ -42,8 +42,10 @@ export const AttendenceMngment = ({onClickATR}) => {
 
 
   useEffect(() => {
-    if(selector.data.length > 0 && selector.data[0]?.rId !== undefined) {
+    if(selector.data?.length > 0 && selector.data[0]?.rId !== undefined) {
       setInfos(selector.data);
+    } else {
+      setInfos([]);
     }
   }, [selector]);
 

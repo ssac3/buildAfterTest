@@ -152,6 +152,8 @@ export const VacationMngment = () => {
   useEffect(() => {
     if(selector.data?.length > 0 && selector.data[0]?.vId !== undefined) {
       setData(selector.data);
+    } else {
+      setData([]);
     }
   }, [selector]);
 

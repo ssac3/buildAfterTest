@@ -6,10 +6,9 @@ import {TimePicker} from '@mui/x-date-pickers/TimePicker';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {LocalizationProvider} from '@mui/x-date-pickers';
 import {TextField} from '@mui/material';
-import {convertTime} from 'utils/constants/convertTime';
 import {useSelector, useDispatch} from 'react-redux';
 import theme from 'styles/theme';
-import {cnvrtDateTime} from 'utils/convertDateTime';
+import {cnvrtDateTime, formatter} from 'utils/convertDateTime';
 import {SwpAtrReq} from 'redux/actions/ManagerAction';
 import {LOCAL_STORAGE} from 'utils/constants';
 
@@ -20,10 +19,10 @@ export const Setting = ({open}) => {
   });
   const [startTime, setStartTime] = useState(new Date(reducer.startTime) || null);
   const [endTime, setEndTime] = useState(new Date(reducer.endTime) || null);
-  const [workingTime, setWorkingTime] = useState(convertTime((endTime.getHours() - startTime.getHours())).concat('시간 ').concat(convertTime(endTime.getMinutes() - startTime.getMinutes())).concat('분'));
+  const [workingTime, setWorkingTime] = useState(formatter((endTime.getHours() - 1) - startTime.getHours()).concat('시간 ').concat(formatter(endTime.getMinutes() - startTime.getMinutes())).concat('분'));
 
   useEffect(() => {
-    setWorkingTime(convertTime((endTime.getHours() - startTime.getHours()).toString()).concat('시간 ').concat(convertTime((endTime.getMinutes() - startTime.getMinutes()).toString()).concat('분')));
+    setWorkingTime(formatter(((endTime.getHours() - 1) - startTime.getHours()).toString()).concat('시간 ').concat(formatter((endTime.getMinutes() - startTime.getMinutes()).toString()).concat('분')));
   }, [startTime, endTime]);
 
 
@@ -63,6 +62,7 @@ export const Setting = ({open}) => {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <TimePicker
                 label={'퇴근시간'}
+                minTime={startTime}
                 value={endTime || null}
                 ampm={false}
                 onChange={(newValue) => {
