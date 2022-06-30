@@ -1,18 +1,6 @@
 import React, {useState} from 'react';
 import {style} from './EmplAttendanceMngmentStyle';
 import ButtonGroup from 'components/ButtonGroup';
-import ManagerList from 'components/ManagerList';
-import {MANAGER_EMP_MNG_HEADER} from 'utils/constants';
-
-// const sampleData = {
-//   username: 5414290,
-//   name: '박채연',
-//   email: 'pcyeon07@gmail.com',
-//   gender: '1',
-//   deptName:'프론트엔드',
-//   position:'사원',
-//   create_at:'2022.06.10'
-// };
 
 export const EmplAttendanceMngment = () => {
   const [selectType, setSelectType] = useState('일별');
@@ -31,7 +19,19 @@ export const EmplAttendanceMngment = () => {
       </TitleContainer>
 
       <Container>
-        <ManagerList headerData={MANAGER_EMP_MNG_HEADER}/>
+        <ListContainer>
+          <HeaderContainer>
+            <InnerLayout>사원번호</InnerLayout>
+            <InnerLayout>사원명</InnerLayout>
+            <InnerLayout>이메일</InnerLayout>
+            <InnerLayout>성별</InnerLayout>
+            <InnerLayout>부서</InnerLayout>
+            <InnerLayout>직급</InnerLayout>
+            <InnerLayout>입사일</InnerLayout>
+            <InnerLayout>상세보기</InnerLayout>
+          </HeaderContainer>
+
+        </ListContainer>
       </Container>
     </Wrapper>
   );
@@ -41,5 +41,8 @@ const {
   Wrapper,
   TitleContainer,
   InnerContainer,
-  Container
+  Container,
+  ListContainer,
+  HeaderContainer,
+  InnerLayout,
 } = style;

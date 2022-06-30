@@ -32,6 +32,7 @@ function MangerReducer(state = INIT_STATE, action) {
         name:state.name,
         startTime:state.startTime,
         endTime:state.endTime,
+        id:action.id
       };
     case ManagerType.SWP_VAV_RES:
       return {
@@ -53,7 +54,8 @@ function MangerReducer(state = INIT_STATE, action) {
       return {
         name: state.name,
         startTime: state.startTime,
-        endTime: state.endTime
+        endTime: state.endTime,
+        id: action.id,
       };
     case ManagerType.SWP_RAV_RES:
       return {
