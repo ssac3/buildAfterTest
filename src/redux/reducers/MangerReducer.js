@@ -72,6 +72,20 @@ function MangerReducer(state = INIT_STATE, action) {
         data: action.data,
         closePage: action.closePage
       };
+    case ManagerType.SWP_EIV_REQ:
+      return {
+        name: state.name,
+        startTime: state.startTime,
+        endTime: state.endTime,
+        id:action.id
+      }
+    case ManagerType.SWP_EIV_RES:
+      return {
+        name: state.name,
+        startTime: state.startTime,
+        endTime: state.endTime,
+        data: action.data,
+      }
     default:
       return state;
   }

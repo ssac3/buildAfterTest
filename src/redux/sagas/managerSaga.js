@@ -2,7 +2,7 @@ import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {ManagerType} from 'redux/constants';
-import {SwpAtvReq, SwpAtvRes, SwpRavReq, SwpRavRes, SwpVavReq, SwpVavRes} from 'redux/actions/ManagerAction';
+import {SwpAtvReq, SwpAtvRes, SwpRavReq, SwpRavRes, SwpVavReq, SwpVavRes, SwpEivRes} from 'redux/actions/ManagerAction';
 import {openAlert} from 'redux/actions/AlertAction';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -99,6 +99,20 @@ function rarReq(data) {
   return result;
 }
 
+function eivReq(data) {
+  const result = axios
+    .post(ROUTES.SWP_EIV_REQ, data, getHeader())
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_EIV_REQ).SUCCESS);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_EIV_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
+
 function* postSwpAtvReq() {
   try {
     const packedMsg = {id: Number(LOCAL_STORAGE.get('depId'))};
@@ -190,7 +204,6 @@ function* postSwpRarReq() {
       endTime: data.data.rEndTime,
       approvalFlag: data.data.approvalFlag
     };
-    console.log(packedMsg);
     const result = yield call(rarReq, packedMsg);
     if(result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
@@ -199,6 +212,23 @@ function* postSwpRarReq() {
       yield put(openAlert('fail', result.resMsg));
     }
     data.closePage(0);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* postSwpEivReq() {
+  try {
+    const data = yield select((state) => state.MangerReducer);
+    const packedMsg = {id: data.id};
+    const result = yield call(eivReq, packedMsg);
+
+    if(result.resCode === 0) {
+      yield put(openAlert('success', result.resMsg));
+      yield put(SwpEivRes(result.data));
+    } else {
+      yield put(openAlert('fail', result.resMsg));
+    }
   } catch (e) {
     console.log(e);
   }
@@ -213,6 +243,7 @@ function* watchAlert() {
   yield takeLatest(ManagerType.SWP_VAR_REQ, postSwpVarReq);
   yield takeLatest(ManagerType.SWP_RAV_REQ, postSwpRavReq);
   yield takeLatest(ManagerType.SWP_RAR_REQ, postSwpRarReq);
+  yield takeLatest(ManagerType.SWP_EIV_REQ, postSwpEivReq);
 }
 
 
