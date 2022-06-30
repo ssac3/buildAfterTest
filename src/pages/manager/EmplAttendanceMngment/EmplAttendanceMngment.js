@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import ButtonGroup from 'components/ButtonGroup';
 import {SwpEivReq} from 'redux/actions/ManagerAction';
 import {LOCAL_STORAGE, GENDER_TYPE} from 'utils/constants';
-import {MdModeEditOutline} from 'react-icons/md';
 import PropTypes from 'prop-types';
 import {cnvrtDate} from 'utils/convertDateTime';
 
@@ -20,9 +19,7 @@ const ListItemComponent = ({item}) => {
       <ItemContainer>{item.position}</ItemContainer>
       <ItemContainer>{cnvrtDate(new Date(item.createdAt))}</ItemContainer>
       <ItemContainer>
-        <IconLayout>
-          <MdModeEditOutline size={20}/>
-        </IconLayout>
+        <BtnContainer id={item.vId} >상세보기</BtnContainer>
       </ItemContainer>
     </ListItemContainer>
   );
@@ -96,5 +93,5 @@ const {
   InnerLayout,
   ListItemContainer,
   ItemContainer,
-  IconLayout,
+  BtnContainer,
 } = style;

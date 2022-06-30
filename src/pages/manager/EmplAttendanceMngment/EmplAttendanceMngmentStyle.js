@@ -64,15 +64,18 @@ const ItemContainer = styled.div`
   horiz-align: center;
 `;
 
-const IconLayout = styled.div`
-  cursor: pointer;
+const BtnContainer = styled.div`
   ${({theme}) => theme.flexSet()};
-  width: 35px;
+  cursor: pointer;
+  width: 70px;
   height: 35px;
-  border-radius: 50%;
-  border: 1px solid black;
+  padding: 5px;
+  color: white;
+  border-radius: 5px;
+  font-weight:bold;
+  background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
   &:hover{
-    background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_E1};
+    background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_54};
   }
 `;
 
@@ -87,5 +90,5 @@ export const style = {
   InnerLayout,
   ListItemContainer,
   ItemContainer,
-  IconLayout,
+  BtnContainer,
 };
