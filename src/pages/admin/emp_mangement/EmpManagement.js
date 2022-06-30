@@ -1,11 +1,45 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Search from 'components/EmpListHeader';
-import {EmpList} from 'components/EmpList/EmpList';
+import {useDispatch, useSelector} from 'react-redux';
+import {SwpEmpSelReq} from 'redux/actions/AdminAction';
 import {style} from './EmpManagementStyle';
+import {cnvrtDate} from 'utils/convertDateTime';
+
+const ListItemComponent = ({emp}) => {
+  return (
+    <ListItemContainer>
+      <ItemContainer >{emp.username}</ItemContainer>
+      <ItemContainer>{emp.name}</ItemContainer>
+      <ItemContainer>{emp.email}</ItemContainer>
+      <ItemContainer>{emp.gender}</ItemContainer>
+      <ItemContainer>{emp.depId}</ItemContainer>
+      <ItemContainer >{emp.position}</ItemContainer>
+      <ItemContainer >{cnvrtDate(new Date(emp.createdAt))}</ItemContainer>
+      <ItemContainer >
+        <BtnLayout >보기</BtnLayout>
+      </ItemContainer>
+    </ListItemContainer>
+  );
+};
+
 export const EmpManagement = ({onClickInsertEmp}) => {
-  // setEmps해주기 쓰려면~db연결해서 할 땐 빈값으로 만들어주기
-  const [emps] = useState([]);
+  const dispatch = useDispatch();
+  const selector = useSelector((state) => state.AdminReducer);
+  const [emps, setEmps] = useState([]);
+
+  useEffect(() => {
+    dispatch(SwpEmpSelReq());
+  }, []);
+
+  useEffect(() => {
+    console.log(selector);
+    if(selector.emps?.length > 0 && selector.emps[0]?.username !== undefined) {
+      setEmps(selector.emps);
+    } else {
+      setEmps([]);
+    }
+  }, [selector]);
   return(
     <>
       <Container>
@@ -38,7 +72,10 @@ export const EmpManagement = ({onClickInsertEmp}) => {
           <ListItem w={100}>입사일</ListItem>
           <ListItem w={100}>상세보기</ListItem>
         </ListHeader>
-        <EmpList emps={emps}/>
+        {emps?.map((v) => {
+          console.log(v);
+          return <ListItemComponent key={v.username} emp={v}/>;
+        })}
       </Container>
     </>
   );
@@ -47,4 +84,19 @@ export const EmpManagement = ({onClickInsertEmp}) => {
 EmpManagement.propTypes = {
   onClickInsertEmp:PropTypes.func.isRequired,
 };
-const {Container, DelBtn, RegBtn, ListHeader, ListItem} = style;
+ListItemComponent.propTypes = {
+  emp: PropTypes.arrayOf(
+    PropTypes.objectOf(
+      PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool])
+    )
+  ).isRequired,
+};
+const {
+  Container,
+  DelBtn,
+  RegBtn,
+  ListHeader,
+  ListItem,
+  ListItemContainer,
+  ItemContainer,
+  BtnLayout} = style;
