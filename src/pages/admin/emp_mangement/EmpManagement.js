@@ -85,10 +85,8 @@ EmpManagement.propTypes = {
   onClickInsertEmp:PropTypes.func.isRequired,
 };
 ListItemComponent.propTypes = {
-  emp: PropTypes.arrayOf(
-    PropTypes.objectOf(
-      PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool])
-    )
+  emp: PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool])
   ).isRequired,
 };
 const {

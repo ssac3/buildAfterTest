@@ -81,12 +81,12 @@ export const SwpEivReq = (id) => {
   return {
     type: ManagerType.SWP_EIV_REQ,
     id,
-  }
+  };
 };
 
 export const SwpEivRes = (data) => {
   return {
     type: ManagerType.SWP_EIV_RES,
     data
-  }
-}
+  };
+};
