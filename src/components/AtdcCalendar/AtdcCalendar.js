@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 // import PropTypes from 'prop-types';
-import 'antd/dist/antd.min.css';
 import './index.css';
 import {Badge, Calendar} from 'antd';
 import locale from 'antd/es/calendar/locale/ko_KR';
