@@ -10,9 +10,33 @@ import {useDispatch} from 'react-redux';
 import {SwpRarReq} from 'redux/actions/ManagerAction';
 
 export const RearrangeMngment = ({onClickATR, atvDetail}) => {
+  let [startHour, startMin, endHour, endMin] = [0, 0, 0, 0];
   const dispatch = useDispatch();
   const [openDrop, setOpenDrop] = useState(false);
   const [change, setChange] = useState(MANAGER_APPROVAL_TYPE[atvDetail?.approvalFlag]?.title);
+
+  if(atvDetail.startTime !== null && atvDetail.endTime !== null) {
+    const startTime = atvDetail.startTime.split(':');
+    const endTime = atvDetail.endTime.split(':');
+    startHour = Number(startTime[0]);
+    startMin = Number(startTime[1]);
+    endHour = Number(endTime[0]);
+    endMin = Number(endTime[1]);
+  }
+  const resultStartTime = cnvrtTime(new Date(
+    0,
+    0,
+    0,
+    startHour,
+    startMin,
+  )).replace('00:00', '--:--');
+  const resultEndTime = cnvrtTime(new Date(
+    0,
+    0,
+    0,
+    endHour,
+    endMin,
+  )).replace('00:00', '--:--');
   const onClickDropbox = () => {
     setOpenDrop(!openDrop);
   };
@@ -71,9 +95,7 @@ export const RearrangeMngment = ({onClickATR, atvDetail}) => {
           <AtmItemLayout>
             <ItemLabel>기존 근태 시간</ItemLabel>
             <h3>
-              {cnvrtTime(new Date(atvDetail?.startTime))
-                .concat('~')
-                .concat(cnvrtTime(new Date(atvDetail?.endTime)))}
+              {resultStartTime.concat(' ~ ').concat(resultEndTime)}
             </h3>
           </AtmItemLayout>
           <AtmItemLayout>

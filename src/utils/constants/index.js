@@ -18,6 +18,7 @@ export const ROUTES = {
   SWP_VAR_REQ: API.MANAGER.concat('/vacUpdate'),
   SWP_RAV_REQ: API.MANAGER.concat('/rarView'),
   SWP_RAR_REQ: API.MANAGER.concat('/rarUpdate'),
+  SWP_EIV_REQ: API.MANAGER.concat('/eivView'),
   SWP_SAV_REQ: API.USER.concat('/myView'),
   SWP_DAV_REQ: API.USER.concat('/getAllAttendance'),
   SWP_EAC_REQ: API.LOGIN.concat(''),
@@ -81,27 +82,8 @@ export const MANAGER_APPROVAL_TYPE = [
   {id: 2, title: '반려'},
 ];
 
-export const MANAGER_ATD_MNG_HEADER = [
-  {id: 0, title:'사원번호'},
-  {id :1, title:'사원명'},
-  {id: 2, title: '조정 요청 일자'},
-  {id: 3, title: '조정 요청 사유'},
-  {id: 4, title: '조정 요청 시간'},
-  {id: 5, title: '실제 출/퇴근 시간'},
-  {id: 6, title: '상태'},
-  {id: 7, title: '수정'},
+export const GENDER_TYPE = [
+  {id:0, title:'남'},
+  {id:1, title:'여'}
 ];
-
-
-export const MANAGER_EMP_MNG_HEADER = [
-  {id: 0, title:'사원번호'},
-  {id :1, title:'사원명'},
-  {id: 2, title: '이메일'},
-  {id: 3, title: '성별'},
-  {id: 4, title: '부서'},
-  {id: 5, title: '직급'},
-  {id: 6, title: '입사일'},
-  {id: 7, title: '상세보기'},
-];
-
 

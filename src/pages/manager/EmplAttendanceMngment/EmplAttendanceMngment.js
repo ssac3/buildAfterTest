@@ -1,25 +1,56 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {style} from './EmplAttendanceMngmentStyle';
+import {useDispatch, useSelector} from 'react-redux';
 import ButtonGroup from 'components/ButtonGroup';
-import ManagerList from 'components/ManagerList';
-import {MANAGER_EMP_MNG_HEADER} from 'utils/constants';
+import {SwpEivReq} from 'redux/actions/ManagerAction';
+import {LOCAL_STORAGE, GENDER_TYPE} from 'utils/constants';
+import PropTypes from 'prop-types';
+import {cnvrtDate} from 'utils/convertDateTime';
 
-// const sampleData = {
-//   username: 5414290,
-//   name: '박채연',
-//   email: 'pcyeon07@gmail.com',
-//   gender: '1',
-//   deptName:'프론트엔드',
-//   position:'사원',
-//   create_at:'2022.06.10'
-// };
+
+const ListItemComponent = ({item, onClickDetail}) => {
+  return(
+    <ListItemContainer>
+      <ItemContainer>{item.username}</ItemContainer>
+      <ItemContainer>{item.name}</ItemContainer>
+      <ItemContainer>{item.email}</ItemContainer>
+      <ItemContainer>{GENDER_TYPE[item.gender].title}</ItemContainer>
+      <ItemContainer>{item.dName}</ItemContainer>
+      <ItemContainer>{item.position}</ItemContainer>
+      <ItemContainer>{cnvrtDate(new Date(item.createdAt))}</ItemContainer>
+      <ItemContainer>
+        <BtnContainer id={item.username} onClick={onClickDetail}>상세보기</BtnContainer>
+      </ItemContainer>
+    </ListItemContainer>
+  );
+};
 
 export const EmplAttendanceMngment = () => {
+  const dispatch = useDispatch();
+  const selector = useSelector((state) => state.MangerReducer);
   const [selectType, setSelectType] = useState('일별');
+  const [info, setInfo] = useState([]);
 
   const onClickType = (target) => {
     setSelectType(target);
   };
+
+  const onClickDetail = (e) => {
+    console.log(e.target.id);
+  };
+
+  useEffect(() => {
+    dispatch(SwpEivReq(LOCAL_STORAGE.get('depId')));
+  }, []);
+
+  useEffect(() => {
+    console.log(selector);
+    if(selector.data?.length > 0 && selector.data[0]?.username !== undefined) {
+      setInfo(selector.data);
+    } else {
+      setInfo([]);
+    }
+  }, [selector]);
 
   return (
     <Wrapper>
@@ -31,15 +62,41 @@ export const EmplAttendanceMngment = () => {
       </TitleContainer>
 
       <Container>
-        <ManagerList headerData={MANAGER_EMP_MNG_HEADER}/>
+        <ListContainer>
+          <HeaderContainer>
+            <InnerLayout>사원번호</InnerLayout>
+            <InnerLayout>사원명</InnerLayout>
+            <InnerLayout>이메일</InnerLayout>
+            <InnerLayout>성별</InnerLayout>
+            <InnerLayout>부서</InnerLayout>
+            <InnerLayout>직급</InnerLayout>
+            <InnerLayout>입사일</InnerLayout>
+            <InnerLayout>상세보기</InnerLayout>
+          </HeaderContainer>
+
+          {info?.map((item) => (
+            <ListItemComponent key={item.username} item={item} onClickDetail={onClickDetail}/>
+          ))}
+        </ListContainer>
       </Container>
     </Wrapper>
   );
+};
+
+ListItemComponent.propTypes = {
+  item: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
+  onClickDetail: PropTypes.func.isRequired,
 };
 
 const {
   Wrapper,
   TitleContainer,
   InnerContainer,
-  Container
+  Container,
+  ListContainer,
+  HeaderContainer,
+  InnerLayout,
+  ListItemContainer,
+  ItemContainer,
+  BtnContainer,
 } = style;

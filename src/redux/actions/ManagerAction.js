@@ -12,7 +12,7 @@ export const SwpAtvRes = (name, startTime, endTime) => {
     type: ManagerType.SWP_ATV_RES,
     name,
     startTime,
-    endTime
+    endTime,
   };
 };
 
@@ -31,9 +31,10 @@ export const SwpAtrRes = () => {
   };
 };
 
-export const SwpVavReq = () => {
+export const SwpVavReq = (id) => {
   return {
     type: ManagerType.SWP_VAV_REQ,
+    id,
   };
 };
 
@@ -54,9 +55,10 @@ export const SwpVarReq = (vId, approvalFlag, detailInit) => {
   };
 };
 
-export const SwpRavReq = () => {
+export const SwpRavReq = (id) => {
   return {
     type: ManagerType.SWP_RAV_REQ,
+    id
   };
 };
 
@@ -74,3 +76,17 @@ export const SwpRarReq = (data, closePage) => {
     closePage
   };
 };
+
+export const SwpEivReq = (id) => {
+  return {
+    type: ManagerType.SWP_EIV_REQ,
+    id,
+  }
+};
+
+export const SwpEivRes = (data) => {
+  return {
+    type: ManagerType.SWP_EIV_RES,
+    data
+  }
+}

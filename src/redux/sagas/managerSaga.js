@@ -2,7 +2,7 @@ import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {ManagerType} from 'redux/constants';
-import {SwpAtvReq, SwpAtvRes, SwpRavReq, SwpRavRes, SwpVavReq, SwpVavRes} from 'redux/actions/ManagerAction';
+import {SwpAtvReq, SwpAtvRes, SwpRavReq, SwpRavRes, SwpVavReq, SwpVavRes, SwpEivRes} from 'redux/actions/ManagerAction';
 import {openAlert} from 'redux/actions/AlertAction';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -42,9 +42,9 @@ function atrReq(data) {
   return result;
 }
 
-function vavReq() {
+function vavReq(data) {
   const result = axios
-    .post(ROUTES.SWP_VAV_REQ, null, getHeader())
+    .post(ROUTES.SWP_VAV_REQ, data, getHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_VAV_REQ).SUCCESS);
       return res.data;
@@ -71,9 +71,9 @@ function varReq(data) {
   return result;
 }
 
-function ravReq() {
+function ravReq(data) {
   const result = axios
-    .post(ROUTES.SWP_RAV_REQ, null, getHeader())
+    .post(ROUTES.SWP_RAV_REQ, data, getHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_RAV_REQ).SUCCESS);
       return res.data;
@@ -94,6 +94,20 @@ function rarReq(data) {
     })
     .catch((err) => {
       console.log(LOG(ROUTES.SWP_RAV_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
+
+function eivReq(data) {
+  const result = axios
+    .post(ROUTES.SWP_EIV_REQ, data, getHeader())
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_EIV_REQ).SUCCESS);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_EIV_REQ).ERROR);
       return err;
     });
   return result;
@@ -133,8 +147,9 @@ function* postSwpAtrReq() {
 
 function* postSwpVavReq() {
   try {
-    const result = yield call(vavReq);
-
+    const data = yield select((state) => state.MangerReducer);
+    const packedMsg = {id: data.id};
+    const result = yield call(vavReq, packedMsg);
     if(result.resCode === 0) {
       yield put(SwpVavRes(result.data));
     }else{
@@ -154,7 +169,7 @@ function* postSwpVarReq() {
     const result = yield call(varReq, packedMsg);
     if(result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
-      yield put(SwpVavReq());
+      yield put(SwpVavReq(LOCAL_STORAGE.get('depId')));
       data.detailInit();
     } else {
       yield put(openAlert('fail', result.resMsg));
@@ -166,7 +181,9 @@ function* postSwpVarReq() {
 
 function* postSwpRavReq() {
   try {
-    const result = yield call(ravReq);
+    const data = yield select((state) => state.MangerReducer);
+    const packedMsg = {id: data.id};
+    const result = yield call(ravReq, packedMsg);
     if(result.resCode === 0) {
       yield put(SwpRavRes(result.data));
     } else {
@@ -187,15 +204,31 @@ function* postSwpRarReq() {
       endTime: data.data.rEndTime,
       approvalFlag: data.data.approvalFlag
     };
-    console.log(packedMsg);
     const result = yield call(rarReq, packedMsg);
     if(result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
-      yield put(SwpRavReq());
+      yield put(SwpRavReq(LOCAL_STORAGE.get('depId')));
     } else {
       yield put(openAlert('fail', result.resMsg));
     }
     data.closePage(0);
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+function* postSwpEivReq() {
+  try {
+    const data = yield select((state) => state.MangerReducer);
+    const packedMsg = {id: data.id};
+    const result = yield call(eivReq, packedMsg);
+
+    if(result.resCode === 0) {
+      yield put(openAlert('success', result.resMsg));
+      yield put(SwpEivRes(result.data));
+    } else {
+      yield put(openAlert('fail', result.resMsg));
+    }
   } catch (e) {
     console.log(e);
   }
@@ -210,6 +243,7 @@ function* watchAlert() {
   yield takeLatest(ManagerType.SWP_VAR_REQ, postSwpVarReq);
   yield takeLatest(ManagerType.SWP_RAV_REQ, postSwpRavReq);
   yield takeLatest(ManagerType.SWP_RAR_REQ, postSwpRarReq);
+  yield takeLatest(ManagerType.SWP_EIV_REQ, postSwpEivReq);
 }
 
 
