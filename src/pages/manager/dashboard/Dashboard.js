@@ -5,6 +5,7 @@ import VacationMngment from 'pages/manager/VacationMngment';
 import AttendenceMngment from 'pages/manager/AttendenceMngment';
 import {useDispatch} from 'react-redux';
 import {LOCAL_STORAGE} from 'utils/constants';
+import EmplAttendanceMngment from 'pages/manager/EmplAttendanceMngment';
 
 
 export const Dashboard = ({selectedId, onClickATR}) => {
@@ -21,6 +22,9 @@ export const Dashboard = ({selectedId, onClickATR}) => {
       return <AttendenceMngment
         onClickATR={onClickATR}
       />;
+    }
+    if(selectedId === 4) {
+      return <EmplAttendanceMngment/>;
     }
     return <></>;
   }, [selectedId]);
