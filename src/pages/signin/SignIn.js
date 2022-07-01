@@ -18,14 +18,21 @@ export const SignIn = () => {
   const Login = () => {
     dispatch(SwpEacReq(info.username, info.password, history));
   };
+
+  const onKeyPress = (e) => {
+    if(e.key === 'Enter') {
+      dispatch(SwpEacReq(info.username, info.password, history));
+    }
+  };
+
   return (
     <Container>
       <CardContainer>
         <LogoLayout>
           <img src={Logo} alt={'로고'}/>
         </LogoLayout>
-        <InputLayout id={'username'} value={info.id} onChange={getDataHandler} autoFocus placeholder={'사원번호'}/>
-        <InputLayout id={'password'} value={info.pw} onChange={getDataHandler} placeholder={'비밀번호'} type={'password'}/>
+        <InputLayout id={'username'} value={info.id} onChange={getDataHandler} autoFocus placeholder={'사원번호'} onKeyPress={onKeyPress} />
+        <InputLayout id={'password'} value={info.pw} onChange={getDataHandler} placeholder={'비밀번호'} type={'password'} onKeyPress={onKeyPress} />
 
         <SignInButton onClick={Login}>로그인</SignInButton>
       </CardContainer>

@@ -5,7 +5,8 @@ export const API = {
   ADMIN:'/admin',
   MANAGER: '/manager',
   USER: '/user',
-  LOGIN: '/login'
+  LOGIN: '/login',
+  LOGOUT: '/logout'
 };
 
 
@@ -24,7 +25,8 @@ export const ROUTES = {
   SWP_EAC_REQ: API.LOGIN.concat(''),
   SWP_EMPIN_REQ: API.ADMIN.concat('/insertEmp'),
   SWP_EMPSEL_REQ: API.ADMIN.concat(''),
-  SWP_SAPR_REQ: API.USER.concat('/updatePw')
+  SWP_SAPR_REQ: API.USER.concat('/updatePw'),
+  SWP_EAS_REQ: API.LOGOUT.concat('')
 };
 
 export const LOG = (target) => {

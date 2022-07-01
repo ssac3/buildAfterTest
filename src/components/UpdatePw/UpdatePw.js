@@ -6,8 +6,8 @@ import {openAlert} from 'redux/actions/AlertAction';
 
 export const UpdatePw = () => {
   const dispatch = useDispatch();
-  const [nPwCheck, setNPwCheck] = useState('비밀번호가 일치하지 않습니다.');
-  const [rexCheck, setRexCheck] = useState('비밀번호는 8~32자이어야 하며, 대/소문자, 숫자, 특수기호를 모두 포함해야 합니다.');
+  const [nPwCheck, setNPwCheck] = useState('');
+  const [rexCheck, setRexCheck] = useState('');
   const [info, setInfo] = useState({password : '', nPassword : '', nPasswordCheck : ''});
 
   const getDataHandler = (e) => {
@@ -33,17 +33,19 @@ export const UpdatePw = () => {
   }, [info.nPassword]);
 
   useEffect(() => {
-    if(info.nPassword === info.nPasswordCheck) {
+    if(info.nPassword === info.nPasswordCheck && (info.nPassword !== '' || info.nPasswordCheck !== '')) {
       setNPwCheck('비밀번호가 일치합니다.');
     } else {
-      setNPwCheck('비밀번호가 일치하지 않습니다.');
+      setNPwCheck('');
     }
+    console.log(info);
   }, [info.nPassword, info.nPasswordCheck]);
 
   const Update = () => {
     if (rexCheck === '안전하게 사용하실 수 있는 비밀번호 입니다.') {
       if (nPwCheck === '비밀번호가 일치합니다.') {
         dispatch(SwpSaprReq(info.password, info.nPassword));
+        onChangeInit();
       } else {
         dispatch(openAlert('fail', '새 비밀번호와 비밀번호 확인이 일치하지 않습니다.'));
         onChangeInit();

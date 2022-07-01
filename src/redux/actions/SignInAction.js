@@ -1,4 +1,4 @@
-import {SignInType} from 'redux/constants/actionTypes';
+import {SignInType, SignOutType} from 'redux/constants/actionTypes';
 
 export const SwpEacReq = (username, password, history) => {
   return {
@@ -13,5 +13,18 @@ export const SwpEacRes = (data) => {
   return {
     type: SignInType.SWP_EAC_RES,
     data
+  };
+};
+
+export const SwpEasReq = (history) => {
+  return {
+    type: SignOutType.SWP_EAS_REQ,
+    history
+  };
+};
+
+export const SwpEasRes = () => {
+  return {
+    type: SignOutType.SWP_EAS_RES
   };
 };
