@@ -13,6 +13,7 @@ import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
 import RearrangeMngment from 'pages/manager/rearrangeMngment';
 import {EmpInsert} from 'pages/admin/emp_insert/EmpInsert';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function getMenu(role) {
   switch (role) {
@@ -26,6 +27,7 @@ function getMenu(role) {
 }
 
 function App() {
+  const history = useHistory();
   const alert = useSelector((state) => state.AlertReducer);
   const signIn = useSelector((state) => state.SignInReducer);
   const rearrange = useSelector((state) => state.MangerReducer);
@@ -82,11 +84,12 @@ function App() {
     setOpenModal(!openModal);
   };
   useEffect(() => {
+    console.log(signIn);
     if (signIn?.data === 'ADMIN') {
       setSelect(getMenu(API.ADMIN));
     } else if (signIn?.data === 'USER') {
       setSelect(getMenu(API.USER));
-    } else {
+    } else if (signIn?.data === 'MANAGER') {
       setSelect(getMenu(API.MANAGER));
     }
     return (() => {
@@ -101,15 +104,15 @@ function App() {
   useEffect(() => {
     onGetTarget();
   }, [select]);
+
   return (
     <>
-
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
 
       {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
       {roleURL !== API.ROOT && (
         <>
-          <Header role={roleURL} setting={onClickSetting}/>
+          <Header role={roleURL} setting={onClickSetting} history={history}/>
           <Navigation
             role={roleURL}
             menu={select}

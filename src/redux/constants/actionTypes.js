@@ -48,3 +48,8 @@ export const SignInType = {
   SWP_EAC_REQ: 'SWP_EAC_REQ',
   SWP_EAC_RES: 'SWP_EAC_RES'
 };
+
+export const SignOutType = {
+  SWP_EAS_REQ: 'SWP_EAS_REQ',
+  SWP_EAS_RES: 'SWP_EAS_RES'
+};
