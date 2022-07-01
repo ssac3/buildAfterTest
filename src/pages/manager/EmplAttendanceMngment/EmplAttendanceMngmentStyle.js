@@ -79,7 +79,13 @@ const BtnContainer = styled.div`
   }
 `;
 
-
+const CalendarLayout = styled.div`
+  ${({theme}) => theme.flexSet()};
+  width: 100%;
+  padding: 15px;
+  background-color: white;
+  position: relative;
+`;
 export const style = {
   Wrapper,
   TitleContainer,
@@ -91,4 +97,5 @@ export const style = {
   ListItemContainer,
   ItemContainer,
   BtnContainer,
+  CalendarLayout
 };

@@ -90,3 +90,19 @@ export const SwpEivRes = (data) => {
     data
   };
 };
+
+export const SwpEadReq = (username, sDate, eDate) => {
+  return {
+    type: ManagerType.SWP_EAD_REQ,
+    username,
+    sDate,
+    eDate
+  };
+};
+
+export const SwpEadRes = (data) => {
+  return {
+    type: ManagerType.SWP_EAD_RES,
+    data
+  };
+};
