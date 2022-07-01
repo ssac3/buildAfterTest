@@ -1,4 +1,4 @@
-import {SignInType} from 'redux/constants';
+import {SignInType, SignOutType} from 'redux/constants';
 const INIT_STATE = {};
 
 function SignInReducer(state = INIT_STATE, action) {
@@ -13,6 +13,12 @@ function SignInReducer(state = INIT_STATE, action) {
       return {
         data: action.data
       };
+    case SignOutType.SWP_EAS_REQ:
+      return {
+        history: action.history
+      };
+    case SignOutType.SWP_EAS_RES:
+      return {};
     default:
       return state;
   }
