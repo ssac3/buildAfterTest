@@ -1,6 +1,6 @@
 import {all, call} from 'redux-saga/effects';
 import manager from './managerSaga';
-import alert from './alertSags';
+import alert from './alertSagas';
 import user from './UserSaga';
 import signIn from './SigninSaga';
 import admin from './adminSaga';

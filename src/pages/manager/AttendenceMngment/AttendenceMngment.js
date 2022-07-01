@@ -6,17 +6,47 @@ import {MdModeEditOutline} from 'react-icons/md';
 import {useDispatch, useSelector} from 'react-redux';
 import {SwpRavReq} from 'redux/actions/ManagerAction';
 import {cnvrtDate, cnvrtTime} from 'utils/convertDateTime';
-import {MANAGER_APPROVAL_TYPE} from 'utils/constants';
+import {LOCAL_STORAGE, MANAGER_APPROVAL_TYPE} from 'utils/constants';
 
 const ListItemComponent = ({item, onClickATR}) => {
+  let [startHour, startMin, endHour, endMin] = [0, 0, 0, 0];
+  if(item.startTime !== null && item.endTime !== null) {
+    const startTime = item.startTime.split(':');
+    const endTime = item.endTime.split(':');
+    startHour = Number(startTime[0]);
+    startMin = Number(startTime[1]);
+    endHour = Number(endTime[0]);
+    endMin = Number(endTime[1]);
+  }
+  const resultStartTime = cnvrtTime(new Date(
+    0,
+    0,
+    0,
+    startHour,
+    startMin,
+  )).replace('00:00', '--:--');
+  const resultEndTime = cnvrtTime(new Date(
+    0,
+    0,
+    0,
+    endHour,
+    endMin,
+  )).replace('00:00', '--:--');
+
   return(
     <ListItemContainer>
       <ItemContainer>{item.username}</ItemContainer>
       <ItemContainer>{item.name}</ItemContainer>
       <ItemContainer>{cnvrtDate(new Date(item.rStartTime))}</ItemContainer>
       <ItemContainer>{item.contents}</ItemContainer>
-      <ItemContainer>{cnvrtTime(new Date(item.rStartTime)).concat('~').concat(cnvrtTime(new Date(item.rEndTime)))}</ItemContainer>
-      <ItemContainer>{cnvrtTime(new Date(item.startTime)).concat('~').concat(cnvrtTime(new Date(item.endTime)))}</ItemContainer>
+      <ItemContainer>
+        {cnvrtTime(new Date(item.rStartTime))
+          .concat('~')
+          .concat(cnvrtTime(new Date(item.rEndTime)))}
+      </ItemContainer>
+      <ItemContainer>
+        {resultStartTime.concat(' ~ ').concat(resultEndTime)}
+      </ItemContainer>
       <ItemContainer>
         <Label type={MANAGER_APPROVAL_TYPE[Number(item.approvalFlag)].title}/>
       </ItemContainer>
@@ -37,7 +67,7 @@ export const AttendenceMngment = ({onClickATR}) => {
 
   useEffect(() => {
     console.log('RAV');
-    dispatch(SwpRavReq());
+    dispatch(SwpRavReq(LOCAL_STORAGE.get('depId')));
   }, []);
 
 
@@ -61,7 +91,7 @@ export const AttendenceMngment = ({onClickATR}) => {
             <InnerLayout>조정 요청일</InnerLayout>
             <InnerLayout>사유</InnerLayout>
             <InnerLayout>조정 요청 시간</InnerLayout>
-            <InnerLayout>실제 출/퇴근 시간</InnerLayout>
+            <InnerLayout>기존 근태 시간</InnerLayout>
             <InnerLayout>상태</InnerLayout>
             <InnerLayout>수정</InnerLayout>
           </HeaderContainer>

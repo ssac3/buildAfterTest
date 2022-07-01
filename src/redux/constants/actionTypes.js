@@ -10,12 +10,18 @@ export const ManagerType = {
   SWP_RAV_REQ: 'SWP_RAV_REQ',
   SWP_RAV_RES: 'SWP_RAV_RES',
   SWP_RAR_REQ: 'SWP_RAR_REQ',
-  SWP_RAR_RES: 'SWP_RAR_RES'
+  SWP_RAR_RES: 'SWP_RAR_RES',
+  SWP_EIV_REQ: 'SWP_EIV_REQ',
+  SWP_EIV_RES: 'SWP_EIV_RES'
 };
 
 export const AdminType = {
+  // 사원등록
   SWP_EMPIN_REQ: 'SWP_EMPIN_REQ',
   SWP_EMPIN_RES: 'SWP_EMPIN_RES',
+  // 사원목록, 사원상세정보
+  SWP_EMPSEL_REQ: 'SWP_EMPSEL_REQ',
+  SWP_EMPSEL_RES: 'SWP_EMPSEL_RES',
 };
 
 export const AlertType = {
@@ -41,4 +47,9 @@ export const UserType = {
 export const SignInType = {
   SWP_EAC_REQ: 'SWP_EAC_REQ',
   SWP_EAC_RES: 'SWP_EAC_RES'
+};
+
+export const SignOutType = {
+  SWP_EAS_REQ: 'SWP_EAS_REQ',
+  SWP_EAS_RES: 'SWP_EAS_RES'
 };

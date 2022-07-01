@@ -67,7 +67,45 @@ const ListItem = styled.li`
   float: left;
   width: ${({w}) => w}px;
 `;
+const ListItemContainer = styled.div`
+  ${({theme}) => theme.flexSet('space-around')};
+  //border-top: 0.5px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_BE};
+  //border-bottom: 0.5px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_BE};
+  width: 100%;
+  min-height: 25px;
+  padding: 15px 8px;
+  margin: 10px 0px;
+  background-color: white;
+  border-radius: 8px;
+`;
+const ItemContainer = styled.div`
+  ${({theme}) => theme.flexSet()};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+  horiz-align: center;
+  width: 130px;
+`;
+const BtnLayout = styled.button`
+  background-color: #5B5B5B;
+  ${({theme}) => theme.flexSet()};
+  cursor: pointer;
+  width:80px;
+  height: 40px;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  margin-right: 30px;
+`;
 
-
-
-export const style = {Container, DelBtn, RegBtn, ListHeader, ListItem};
+export const style = {
+  Container,
+  DelBtn,
+  RegBtn,
+  ListHeader,
+  ListItem,
+  ListItemContainer,
+  ItemContainer,
+  BtnLayout
+};

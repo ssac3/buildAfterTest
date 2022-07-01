@@ -4,7 +4,7 @@ import {style} from './VacationMngmentStyle';
 import { Calendar } from 'antd';
 import {MdSearch, MdCalendarToday} from 'react-icons/md';
 import Dropbox from 'components/Dropbox';
-import {VACATION_TYPE, MANAGER_APPROVAL_TYPE} from 'utils/constants';
+import {VACATION_TYPE, MANAGER_APPROVAL_TYPE, LOCAL_STORAGE} from 'utils/constants';
 import {useDispatch, useSelector} from 'react-redux';
 import {SwpVarReq, SwpVavReq} from 'redux/actions/ManagerAction';
 import {calcVacationTime} from 'utils/convertDateTime';
@@ -146,7 +146,7 @@ export const VacationMngment = () => {
 
   useEffect(() => {
     console.log('VAV');
-    dispatch(SwpVavReq());
+    dispatch(SwpVavReq(LOCAL_STORAGE.get('depId')));
   }, []);
 
   useEffect(() => {

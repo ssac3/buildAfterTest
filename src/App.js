@@ -14,6 +14,8 @@ import Alert from 'components/Alert';
 import RearrangeMngment from 'pages/manager/rearrangeMngment';
 import AttendanceDetail from 'pages/user/attendanceDetail';
 import {EmpInsert} from 'pages/admin/emp_insert/EmpInsert';
+import {EmpDetail} from 'pages/admin/emp_detail/EmpDetail';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function getMenu(role) {
   switch (role) {
@@ -27,14 +29,17 @@ function getMenu(role) {
 }
 
 function App() {
+  const history = useHistory();
   const alert = useSelector((state) => state.AlertReducer);
   const signIn = useSelector((state) => state.SignInReducer);
   const rearrange = useSelector((state) => state.MangerReducer);
   const attendance = useSelector((state) => state.UserReducer);
+  const emplist = useSelector((state) => state.AdminReducer);
   const [roleURL, setRoleURL] = useState(window.location.pathname);
   const [select, setSelect] = useState(getMenu(roleURL));
   const [setting, setSetting] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [openInsertModal, setOpenInsertModal] = useState(false);
+  const [selectedEmpl, setSelectedEmpl] = useState(0);
   const [selectedItem, setSelectedItem] = useState(0);
   const [openATR, setOpenATR] = useState(0);
   const [openATD, setOpenATD] = useState(0);
@@ -92,15 +97,30 @@ function App() {
     }
     return '';
   }, [attendance, openATD]);
+
+  const emplDetail = React.useMemo(() => {
+    if(selectedEmpl > 0 && (
+      emplist?.emps?.length > 0 && emplist.emps[0].username !== undefined
+    )) {
+      return (emplist.emps.filter((v) => v.username === selectedEmpl)[0]);
+    }
+    return {};
+  }, [emplist, selectedEmpl]);
+
   const onClickInsertEmp = () => {
-    setOpenModal(!openModal);
+    setOpenInsertModal(!openInsertModal);
+  };
+  const onClickDetailEmp = (target) => {
+    console.log(target);
+    setSelectedEmpl(target);
   };
   useEffect(() => {
+    console.log(signIn);
     if (signIn?.data === 'ADMIN') {
       setSelect(getMenu(API.ADMIN));
     } else if (signIn?.data === 'USER') {
       setSelect(getMenu(API.USER));
-    } else {
+    } else if (signIn?.data === 'MANAGER') {
       setSelect(getMenu(API.MANAGER));
     }
     return (() => {
@@ -115,6 +135,7 @@ function App() {
   useEffect(() => {
     onGetTarget();
   }, [select]);
+
   return (
     <>
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
@@ -122,7 +143,7 @@ function App() {
       {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
       {roleURL !== API.ROOT && (
         <>
-          <Header role={roleURL} setting={onClickSetting}/>
+          <Header role={roleURL} setting={onClickSetting} history={history}/>
           <Navigation
             role={roleURL}
             menu={select}
@@ -132,14 +153,19 @@ function App() {
         </>
       )}
       {setting && <Setting open={onClickSetting}/>}
-      {openModal && <EmpInsert/>}
+      {openInsertModal && <EmpInsert/>}
+      {selectedEmpl && <EmpDetail emp={emplDetail}/>}
       <BrowserRouter>
         <Switch>
           <Route exact path={API.ROOT} component={SignIn}/>
           <Wrap p={position()}>
             <Route
               path={API.ADMIN}
-              render={() => <EmpManagement onClickInsertEmp={onClickInsertEmp}/>}
+              render={() => (
+                <EmpManagement
+                  onClickInsertEmp={onClickInsertEmp}
+                  onClickDetailEmp={onClickDetailEmp}
+                />)}
             />
             <Route
               path={API.MANAGER}
