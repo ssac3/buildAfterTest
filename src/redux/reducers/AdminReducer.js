@@ -24,6 +24,7 @@ function AdminReducer(state = INIT_STATE, action) {
     case AdminType.SWP_EMPSEL_RES:
       return{
         emps: action.emps,
+        emp: action.emp
       };
     default:
       return state;
