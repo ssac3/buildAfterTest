@@ -10,7 +10,6 @@ import {SwpEmpinReq} from 'redux/actions/AdminAction';
 export const EmpInsert = () => {
   const dispatch = useDispatch();
 
-
   const [emp, setEmp] = useState(
     {
       username : '',

@@ -2,11 +2,11 @@ import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Search from 'components/EmpListHeader';
 import {useDispatch, useSelector} from 'react-redux';
-import {SwpEmpSelReq} from 'redux/actions/AdminAction';
+import {SwpEmpselReq} from 'redux/actions/AdminAction';
 import {style} from './EmpManagementStyle';
 import {cnvrtDate} from 'utils/convertDateTime';
 
-const ListItemComponent = ({emp}) => {
+const ListItemComponent = ({emp, onClickDetailEmp}) => {
   return (
     <ListItemContainer>
       <ItemContainer >{emp.username}</ItemContainer>
@@ -17,19 +17,18 @@ const ListItemComponent = ({emp}) => {
       <ItemContainer >{emp.position}</ItemContainer>
       <ItemContainer >{cnvrtDate(new Date(emp.createdAt))}</ItemContainer>
       <ItemContainer >
-        <BtnLayout >보기</BtnLayout>
+        <BtnLayout onClick={() => onClickDetailEmp(emp.username)}>보기</BtnLayout>
       </ItemContainer>
     </ListItemContainer>
   );
 };
-
-export const EmpManagement = ({onClickInsertEmp}) => {
+export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.AdminReducer);
   const [emps, setEmps] = useState([]);
 
   useEffect(() => {
-    dispatch(SwpEmpSelReq());
+    dispatch(SwpEmpselReq());
   }, []);
 
   useEffect(() => {
@@ -73,8 +72,12 @@ export const EmpManagement = ({onClickInsertEmp}) => {
           <ListItem w={100}>상세보기</ListItem>
         </ListHeader>
         {emps?.map((v) => {
-          console.log(v);
-          return <ListItemComponent key={v.username} emp={v}/>;
+          // console.log(v);
+          return <ListItemComponent
+            key={v.username}
+            emp={v}
+            onClickDetailEmp={onClickDetailEmp}
+          />;
         })}
       </Container>
     </>
@@ -83,11 +86,13 @@ export const EmpManagement = ({onClickInsertEmp}) => {
 
 EmpManagement.propTypes = {
   onClickInsertEmp:PropTypes.func.isRequired,
+  onClickDetailEmp: PropTypes.func.isRequired,
 };
 ListItemComponent.propTypes = {
   emp: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.bool])
+    PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   ).isRequired,
+  onClickDetailEmp: PropTypes.func.isRequired,
 };
 const {
   Container,
