@@ -21,11 +21,12 @@ export const SwpSavRes =
     };
   };
 
-export const SwpSaprReq = (password, nPassword) => {
+export const SwpSaprReq = (password, nPassword, nPasswordCheck) => {
   return {
     type: UserType.SWP_SAPR_REQ,
     password,
-    nPassword
+    nPassword,
+    nPasswordCheck
   };
 };
 
