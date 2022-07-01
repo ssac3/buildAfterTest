@@ -19,7 +19,7 @@ const ListItemComponent = ({item, onClickDetail}) => {
       <ItemContainer>{item.position}</ItemContainer>
       <ItemContainer>{cnvrtDate(new Date(item.createdAt))}</ItemContainer>
       <ItemContainer>
-        <BtnContainer id={item.username} onClick={onClickDetail}>상세보기</BtnContainer>
+        <BtnContainer onClick={() => onClickDetail(item.username)}>상세보기</BtnContainer>
       </ItemContainer>
     </ListItemContainer>
   );
@@ -31,22 +31,29 @@ export const EmplAttendanceMngment = () => {
   const [selectType, setSelectType] = useState('일별');
   const [info, setInfo] = useState([]);
   const [openCalendar, setOpenCalendar] = useState(false);
-
+  const [selectEmpl, setSelecEmpl] = useState(0);
   const onClickType = (target) => {
     setSelectType(target);
   };
 
-  const onClickDetail = (e) => {
-    console.log(e.target.id);
-    setOpenCalendar(true);
+  const onClickDetail = (target) => {
+    setSelecEmpl(target);
   };
 
   useEffect(() => {
     dispatch(SwpEivReq(LOCAL_STORAGE.get('depId')));
   }, []);
 
+
   useEffect(() => {
-    console.log(selector);
+    if(selectEmpl !== 0) {
+      setOpenCalendar(true);
+    } else {
+      setOpenCalendar(false);
+    }
+  }, [selectEmpl]);
+
+  useEffect(() => {
     if(selector.data?.length > 0 && selector.data[0]?.username !== undefined) {
       setInfo(selector.data);
     } else {
@@ -58,7 +65,7 @@ export const EmplAttendanceMngment = () => {
     <>
       {openCalendar && (
         <CalendarLayout>
-          <AtdcCalendar2/>
+          <AtdcCalendar2 selectEmpl={selectEmpl} onClickDetail={onClickDetail}/>
         </CalendarLayout>
       )}
       {!openCalendar && (

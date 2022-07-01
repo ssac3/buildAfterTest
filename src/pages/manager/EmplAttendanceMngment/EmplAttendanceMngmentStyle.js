@@ -84,6 +84,7 @@ const CalendarLayout = styled.div`
   width: 100%;
   padding: 15px;
   background-color: white;
+  position: relative;
 `;
 export const style = {
   Wrapper,

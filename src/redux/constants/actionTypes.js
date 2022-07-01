@@ -12,7 +12,9 @@ export const ManagerType = {
   SWP_RAR_REQ: 'SWP_RAR_REQ',
   SWP_RAR_RES: 'SWP_RAR_RES',
   SWP_EIV_REQ: 'SWP_EIV_REQ',
-  SWP_EIV_RES: 'SWP_EIV_RES'
+  SWP_EIV_RES: 'SWP_EIV_RES',
+  SWP_EAD_REQ: 'SWP_EAD_REQ',
+  SWP_EAD_RES: 'SWP_EAD_RES',
 };
 
 export const AdminType = {
