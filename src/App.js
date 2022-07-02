@@ -154,7 +154,7 @@ function App() {
       )}
       {setting && <Setting open={onClickSetting}/>}
       {openInsertModal && <EmpInsert/>}
-      {selectedEmpl && <EmpDetail emp={emplDetail}/>}
+      {selectedEmpl !== 0 && <EmpDetail emp={emplDetail}/>}
       <BrowserRouter>
         <Switch>
           <Route exact path={API.ROOT} component={SignIn}/>
