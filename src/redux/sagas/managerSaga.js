@@ -2,7 +2,16 @@ import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {ManagerType} from 'redux/constants';
-import {SwpAtvReq, SwpAtvRes, SwpRavReq, SwpRavRes, SwpVavReq, SwpVavRes, SwpEivRes} from 'redux/actions/ManagerAction';
+import {
+  SwpAtvReq,
+  SwpAtvRes,
+  SwpRavReq,
+  SwpRavRes,
+  SwpVavReq,
+  SwpVavRes,
+  SwpEivRes,
+  SwpEadRes,
+} from 'redux/actions/ManagerAction';
 import {openAlert} from 'redux/actions/AlertAction';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -108,6 +117,20 @@ function eivReq(data) {
     })
     .catch((err) => {
       console.log(LOG(ROUTES.SWP_EIV_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
+
+function eadReq(data) {
+  const result = axios
+    .post(ROUTES.SWP_EAD_REQ, data, getHeader())
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_EAD_REQ).SUCCESS);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_EAD_REQ).ERROR);
       return err;
     });
   return result;
@@ -234,6 +257,22 @@ function* postSwpEivReq() {
   }
 }
 
+function* postSwpEadReq() {
+  try {
+    const data = yield select((state) => state.MangerReducer);
+    const packedMsg = {username: data.username, sDate:data.sDate, eDate: data.eDate};
+    const result = yield call(eadReq, packedMsg);
+
+    if(result.resCode === 0) {
+      yield put(openAlert('success', result.resMsg));
+      yield put(SwpEadRes(result.data));
+    } else {
+      yield put(openAlert('fail', result.resMsg));
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 
 function* watchAlert() {
@@ -244,6 +283,7 @@ function* watchAlert() {
   yield takeLatest(ManagerType.SWP_RAV_REQ, postSwpRavReq);
   yield takeLatest(ManagerType.SWP_RAR_REQ, postSwpRarReq);
   yield takeLatest(ManagerType.SWP_EIV_REQ, postSwpEivReq);
+  yield takeLatest(ManagerType.SWP_EAD_REQ, postSwpEadReq);
 }
 
 

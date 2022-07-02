@@ -3,7 +3,6 @@
     padding: 0;
     list-style: none;
 }
-
 .events .ant-badge-status {
     width: 100%;
     overflow: hidden;
@@ -11,39 +10,10 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
-
-.ant-picker-calendar .ant-picker-panel .ant-picker-body{
-    padding: 15px;
-}
-.ant-picker-calendar .ant-picker-panel .ant-picker-content{
-    width: 100%;
-    max-height: 550px;
-    text-align: right;
-}
-
 .notes-month {
     font-size: 28px;
     text-align: center;
 }
-
 .notes-month section {
     font-size: 28px;
-}
-
-.events .approve {
-    background: #1A83FE;
-}
-.events .denied {
-}
-.events .vacation .ant-badge-status-text {
-    color: white;
-}
-
-
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-body td:first-child .ant-picker-calendar-date-value {
-    color: red;
-}
-
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-body td:last-child {
-    color: blue;
 }

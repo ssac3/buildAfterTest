@@ -6,7 +6,7 @@ import {SwpEivReq} from 'redux/actions/ManagerAction';
 import {LOCAL_STORAGE, GENDER_TYPE} from 'utils/constants';
 import PropTypes from 'prop-types';
 import {cnvrtDate} from 'utils/convertDateTime';
-
+import AtdcCalendar2 from 'components/AtdcCalendar2';
 
 const ListItemComponent = ({item, onClickDetail}) => {
   return(
@@ -19,7 +19,7 @@ const ListItemComponent = ({item, onClickDetail}) => {
       <ItemContainer>{item.position}</ItemContainer>
       <ItemContainer>{cnvrtDate(new Date(item.createdAt))}</ItemContainer>
       <ItemContainer>
-        <BtnContainer id={item.username} onClick={onClickDetail}>상세보기</BtnContainer>
+        <BtnContainer onClick={() => onClickDetail(item.username)}>상세보기</BtnContainer>
       </ItemContainer>
     </ListItemContainer>
   );
@@ -30,21 +30,30 @@ export const EmplAttendanceMngment = () => {
   const selector = useSelector((state) => state.MangerReducer);
   const [selectType, setSelectType] = useState('일별');
   const [info, setInfo] = useState([]);
-
+  const [openCalendar, setOpenCalendar] = useState(false);
+  const [selectEmpl, setSelecEmpl] = useState(0);
   const onClickType = (target) => {
     setSelectType(target);
   };
 
-  const onClickDetail = (e) => {
-    console.log(e.target.id);
+  const onClickDetail = (target) => {
+    setSelecEmpl(target);
   };
 
   useEffect(() => {
     dispatch(SwpEivReq(LOCAL_STORAGE.get('depId')));
   }, []);
 
+
   useEffect(() => {
-    console.log(selector);
+    if(selectEmpl !== 0) {
+      setOpenCalendar(true);
+    } else {
+      setOpenCalendar(false);
+    }
+  }, [selectEmpl]);
+
+  useEffect(() => {
     if(selector.data?.length > 0 && selector.data[0]?.username !== undefined) {
       setInfo(selector.data);
     } else {
@@ -53,33 +62,43 @@ export const EmplAttendanceMngment = () => {
   }, [selector]);
 
   return (
-    <Wrapper>
-      <TitleContainer>
-        <InnerContainer>
-          <h2>사원별 근태 관리</h2>
-          <ButtonGroup selectType={selectType} onClickType={onClickType}/>
-        </InnerContainer>
-      </TitleContainer>
+    <>
+      {openCalendar && (
+        <CalendarLayout>
+          <AtdcCalendar2 selectEmpl={selectEmpl} onClickDetail={onClickDetail}/>
+        </CalendarLayout>
+      )}
+      {!openCalendar && (
+        <Wrapper>
+          <TitleContainer>
+            <InnerContainer>
+              <h2>사원별 근태 관리</h2>
+              <ButtonGroup selectType={selectType} onClickType={onClickType}/>
+            </InnerContainer>
+          </TitleContainer>
 
-      <Container>
-        <ListContainer>
-          <HeaderContainer>
-            <InnerLayout>사원번호</InnerLayout>
-            <InnerLayout>사원명</InnerLayout>
-            <InnerLayout>이메일</InnerLayout>
-            <InnerLayout>성별</InnerLayout>
-            <InnerLayout>부서</InnerLayout>
-            <InnerLayout>직급</InnerLayout>
-            <InnerLayout>입사일</InnerLayout>
-            <InnerLayout>상세보기</InnerLayout>
-          </HeaderContainer>
+          <Container>
+            <ListContainer>
+              <HeaderContainer>
+                <InnerLayout>사원번호</InnerLayout>
+                <InnerLayout>사원명</InnerLayout>
+                <InnerLayout>이메일</InnerLayout>
+                <InnerLayout>성별</InnerLayout>
+                <InnerLayout>부서</InnerLayout>
+                <InnerLayout>직급</InnerLayout>
+                <InnerLayout>입사일</InnerLayout>
+                <InnerLayout>상세보기</InnerLayout>
+              </HeaderContainer>
 
-          {info?.map((item) => (
-            <ListItemComponent key={item.username} item={item} onClickDetail={onClickDetail}/>
-          ))}
-        </ListContainer>
-      </Container>
-    </Wrapper>
+              {info?.map((item) => (
+                <ListItemComponent key={item.username} item={item} onClickDetail={onClickDetail}/>
+              ))}
+            </ListContainer>
+          </Container>
+        </Wrapper>
+      )}
+
+    </>
   );
 };
 
@@ -99,4 +118,5 @@ const {
   ListItemContainer,
   ItemContainer,
   BtnContainer,
+  CalendarLayout
 } = style;
