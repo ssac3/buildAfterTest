@@ -91,16 +91,16 @@ export const SwpEivRes = (data) => {
   };
 };
 
-export const SwpEadReq = (username, sDate, eDate) => {
+export const SwpEadReq = (username, findDate) => {
   return {
     type: ManagerType.SWP_EAD_REQ,
     username,
-    sDate,
-    eDate
+    findDate,
   };
 };
 
 export const SwpEadRes = (data) => {
+  console.log(data);
   return {
     type: ManagerType.SWP_EAD_RES,
     data

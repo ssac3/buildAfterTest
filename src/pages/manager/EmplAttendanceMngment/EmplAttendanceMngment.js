@@ -41,8 +41,10 @@ export const EmplAttendanceMngment = () => {
   };
 
   useEffect(() => {
-    dispatch(SwpEivReq(LOCAL_STORAGE.get('depId')));
-  }, []);
+    if(selectEmpl === 0) {
+      dispatch(SwpEivReq(LOCAL_STORAGE.get('depId')));
+    }
+  }, [selectEmpl]);
 
 
   useEffect(() => {
