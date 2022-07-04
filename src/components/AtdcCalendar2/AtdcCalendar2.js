@@ -116,12 +116,18 @@ const CustomHeader = ({value, onChange}) => {
 };
 const getListData = (value, infos) => {
   let listData;
+  let vacationData;
+  let resultData;
   if (infos.length > 0) {
     listData = infos.filter(
       (v) => moment(v.date).month() === value.month() && moment(v.date).date() === value.date()
     );
+    vacationData = infos.filter(
+      (v) => moment(v.vDate).month() === value.month() && moment(v.vDate).date() === value.date()
+    );
+    resultData = listData.concat(vacationData);
   }
-  return listData || [];
+  return resultData || [];
 };
 
 const VacationItem = ({vType, vApprovalFlag}) => {
@@ -152,6 +158,7 @@ export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
   }, [selector]);
   const dateCellRender = (value) => {
     const listData = getListData(value, infos);
+    console.log(listData);
     const getStatus = (status) => {
       let result;
       switch (status) {
@@ -179,7 +186,7 @@ export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
         {listData.map((item) => (
           <li key={item.date}>
             <Badge
-              status={getStatus(item.status)}
+              status={item.status && getStatus(item.status)}
               text={cnvrtTime(item.startTime)?.concat(' / ').concat(cnvrtTime(item.endTime))}
             />
             {item.vType !== null &&

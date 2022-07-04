@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {style} from './EmplAttendanceMngmentStyle';
 import {useDispatch, useSelector} from 'react-redux';
 import ButtonGroup from 'components/ButtonGroup';
@@ -30,31 +30,20 @@ export const EmplAttendanceMngment = () => {
   const selector = useSelector((state) => state.MangerReducer);
   const [selectType, setSelectType] = useState('일별');
   const [info, setInfo] = useState([]);
-  const [openCalendar, setOpenCalendar] = useState(false);
   const [selectEmpl, setSelecEmpl] = useState(0);
   const onClickType = (target) => {
     setSelectType(target);
   };
 
-  const onClickDetail = (target) => {
+  const onClickDetail = useCallback((target) => {
     setSelecEmpl(target);
-  };
+  }, [selectEmpl]);
 
   useEffect(() => {
     if(selectEmpl === 0) {
       dispatch(SwpEivReq(LOCAL_STORAGE.get('depId')));
     }
   }, [selectEmpl]);
-
-
-  useEffect(() => {
-    if(selectEmpl !== 0) {
-      setOpenCalendar(true);
-    } else {
-      setOpenCalendar(false);
-    }
-  }, [selectEmpl]);
-
   useEffect(() => {
     if(selector.data?.length > 0 && selector.data[0]?.username !== undefined) {
       setInfo(selector.data);
@@ -65,12 +54,12 @@ export const EmplAttendanceMngment = () => {
 
   return (
     <>
-      {openCalendar && (
+      {selectEmpl > 0 && (
         <CalendarLayout>
           <AtdcCalendar2 selectEmpl={selectEmpl} onClickDetail={onClickDetail}/>
         </CalendarLayout>
       )}
-      {!openCalendar && (
+      {selectEmpl === 0 && (
         <Wrapper>
           <TitleContainer>
             <InnerContainer>
