@@ -1,21 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {style} from './MyProfileStyle';
-
 import Douzone from 'assets/myprofile.png';
-import QR from 'assets/qr.png';
-// import defaultImg from 'assets/defaultImg.png';
 import {useDispatch, useSelector} from 'react-redux';
 import {SwpSairReq, SwpSavReq} from 'redux/actions/UserAction';
-// import {useDispatch, useSelector} from "react-redux";
-// import PropTypes from 'prop-types';
-// import {MdModeEdit} from 'react-icons/md';
+import { saveAs } from 'file-saver';
 
 export const MyProfile = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.UserReducer);
   const [detail, setDetail] = useState({});
   const [myImg, setmyImg] = useState(null);
-
   const onChangeImg = (e) => {
     if(e.target.files) {
       const uploadFile = e.target.files[0];
@@ -39,6 +33,11 @@ export const MyProfile = () => {
       dispatch(SwpSairReq(myImg));
     }
   }, [myImg]);
+
+  const onSaveFile = (e) => {
+    saveAs(e.target.id, detail.username.concat('.png'));
+  };
+
   return(
     <>
       {detail ? (
@@ -68,8 +67,13 @@ export const MyProfile = () => {
                 나의 QR코드
               </BotTitle>
               <BotContents>
-                <MyImg alt={'QrCode'} src={QR}>
+                <MyImg alt={'QrCode'} src={detail?.qrPath}>
                 </MyImg>
+                <QrCodeDownload
+                  id={detail?.qrPath}
+                  text={'https://cdn-icons-png.flaticon.com/512/62/62055.png'}
+                  onClick={onSaveFile}
+                />
               </BotContents>
 
             </BotContainer>
@@ -107,5 +111,6 @@ const {
   MyImg,
   BotTitle,
   BotContents,
-  MyImgUpdateButton
+  MyImgUpdateButton,
+  QrCodeDownload
 } = style;

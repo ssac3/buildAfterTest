@@ -86,6 +86,24 @@ const MyImgUpdateButton = styled.input`
   }
 `;
 
+const QrCodeDownload = styled.div`
+  cursor: pointer;
+  position: relative;
+  border: 0.5px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_CC};
+  border-radius:7px;
+  background: white;
+  width: 35px;
+  height: 35px;
+  color:black;
+  background-image: url(${({text}) => text});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+`;
+
+
+
+
 export const style = {
   Container,
   MyViewTop,
@@ -97,5 +115,6 @@ export const style = {
   MyImg,
   BotTitle,
   BotContents,
-  MyImgUpdateButton
+  MyImgUpdateButton,
+  QrCodeDownload
 };

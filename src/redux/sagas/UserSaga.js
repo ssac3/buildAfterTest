@@ -162,6 +162,7 @@ function* watchAlert() {
   yield takeLatest(UserType.SWP_SAV_REQ, postSwpSavReq);
   yield takeLatest(UserType.SWP_SAPR_REQ, postSwpSaprReq);
   yield takeLatest(UserType.SWP_DAV_REQ, postSwpDavReq);
+  yield takeLatest(UserType.SWP_SAIR_REQ, postSwpSairReq);
 }
 export default function* userSaga() {
   yield all([fork(watchAlert)]);
