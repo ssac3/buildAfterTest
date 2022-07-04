@@ -2,7 +2,7 @@ import styled, {keyframes} from 'styled-components';
 const fadein = () => {
   return keyframes`
     from {
-      width: 350px;
+      width: 345px;
       opacity: 0;
     }
     to {
@@ -22,6 +22,7 @@ const Wrapper = styled.div`
 `;
 
 const Container = styled.div`
+  ${({theme}) => theme.flexSet('space-around', '', 'column')};
   position: absolute;
   right:0px;
   width: 353px;
@@ -49,24 +50,63 @@ const TextLayout = styled.div`
   border-bottom: 1px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_E1};
 `;
 
+const DateLayout = styled.div`
+  ${({theme}) => theme.flexSet()};
+  width: 100%;
+  height: 30px;
+  font-weight: bold;
+  font-size: 25px;
+`;
+
 const InfoLayout = styled.div`
   width: 100%;
   height: 200px;
 `;
 
-const DateLayout = styled.div`
-  ${({theme}) => theme.flexSet()};
-  width: 100%;
-  height: 30%;
-  font-weight: bold;
-  font-size: 20px;
-`;
 const LabelLayout = styled.div`
   display: grid;
   grid-template-rows: repeat(1,1fr);
   grid-template-columns: repeat(3, 1fr);
   width: 100%;
   height: 15%;
+`;
+const DataLayout = styled.div`
+  ${({theme}) => theme.flexSet('space-around')};
+  width: 100%;
+  height: 55%;
+`;
+
+const BoxLayout = styled.div`
+  ${({theme}) => theme.flexSet('flex-start', 'start', 'column')};
+  
+  #title{
+    font-weight: normal;
+    font-size: 13px;
+  }
+  #time{
+    font-weight: bold;
+    font-size: 25px;
+  }
+`;
+
+const VacationInput = styled.div`
+  ${({theme}) => theme.flexSet('flex-start', '', 'column')};
+  height: 300px;
+  #title{
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+  #contents{
+    width: 100%;
+    padding: 10px;
+    height: 290px;
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 20px;
+  }
+
+
 `;
 export const style = {
   Wrapper,
@@ -76,4 +116,7 @@ export const style = {
   InfoLayout,
   DateLayout,
   LabelLayout,
+  DataLayout,
+  BoxLayout,
+  VacationInput,
 };

@@ -116,7 +116,6 @@ function App() {
     setSelectedEmpl(target);
   };
   const onClickEadDetail = (target) => {
-    console.log(target);
     setOpenEadDetail(target);
   };
   useEffect(() => {

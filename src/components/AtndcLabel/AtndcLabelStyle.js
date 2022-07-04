@@ -6,7 +6,6 @@ const Container = styled.div`
   height: 100%;
   color: white;
   font-weight: bold;
-  border-radius: 5px;
   background-color: ${({bgColor}) => bgColor};
 `;
 
