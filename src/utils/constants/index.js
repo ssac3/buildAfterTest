@@ -26,6 +26,7 @@ export const ROUTES = {
   SWP_EAC_REQ: API.LOGIN.concat(''),
   SWP_EMPIN_REQ: API.ADMIN.concat('/insertEmp'),
   SWP_EMPSEL_REQ: API.ADMIN.concat(''),
+  SWP_EMPUP_REQ: API.ADMIN.concat('/updateEmp'),
   SWP_SAPR_REQ: API.USER.concat('/updatePw'),
   SWP_EAS_REQ: API.LOGOUT.concat('')
 };

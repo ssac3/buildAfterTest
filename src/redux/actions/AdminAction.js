@@ -25,3 +25,17 @@ export const SwpEmpselRes = (emps) => {
     emps
   };
 };
+
+// 사원수정
+export const SwpEmpupReq = (emp) => {
+  return {
+    type: AdminType.SWP_EMPUP_REQ,
+    emp
+  };
+};
+export const SwpEmpupRes = (emp) => {
+  return {
+    type: AdminType.SWP_EMPUP_RES,
+    emp
+  };
+};

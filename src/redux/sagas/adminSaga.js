@@ -70,9 +70,46 @@ function* getSwpEmpselReq() {
   }
 }
 
+// 사원수정
+function empupReq(emp) {
+  const result = axios
+    .post(ROUTES.SWP_EMPUP_REQ, emp, getHeader())
+    .then((res) => {
+      console.log(res);
+      console.log('사원수정_adminSaga');
+      console.log(emp);
+      console.log(LOG(ROUTES.SWP_EMPUP_REQ).SUCCESS);
+      // console.log(res.emp);
+      return res.emp;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_EMPUP_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
+function* postSwpEmpupReq() {
+  try {
+    const emp = yield select((state) => { return state.AdminReducer; });
+    console.log('postSwpEmpupReq', emp);
+    console.log(emp);
+    const result = yield call(empupReq, emp);
+
+    if(result.resCode === 0) {
+      yield put(openAlert('successess', result.resMsg));
+    } else {
+      yield put(openAlert('fail', result.resMsg));
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+
 function* watchAdmin() {
   yield takeLatest(AdminType.SWP_EMPIN_REQ, postSwpEmpinReq);
   yield takeLatest(AdminType.SWP_EMPSEL_REQ, getSwpEmpselReq);
+  yield takeLatest(AdminType.SWP_EMPUP_REQ, postSwpEmpupReq);
 }
 
 export default function* adminSaga() {
