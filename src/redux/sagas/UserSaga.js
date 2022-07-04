@@ -42,9 +42,9 @@ function saprReq(data) {
   return result;
 }
 
-function davReq() {
+function davReq(data) {
   const result = axios
-    .get(ROUTES.SWP_DAV_REQ, getHeader())
+    .post(ROUTES.SWP_DAV_REQ, data, getHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_DAV_REQ).SUCCESS);
       console.log(res);
@@ -91,10 +91,12 @@ function* postSwpSaprReq() {
 
 function* postSwpDavReq() {
   try {
-    // const data = yield select((state) => {
-    //   return state.UserReducer;
-    // });
-    const result = yield call(davReq);
+    const data = yield select((state) => {
+      return state.UserReducer;
+    });
+    console.log(data);
+    const result = yield call(davReq, data);
+    console.log(result);
     if(result.resCode === 0) {
       console.log(result.data);
       yield put(SwpDavRes(result.data));
