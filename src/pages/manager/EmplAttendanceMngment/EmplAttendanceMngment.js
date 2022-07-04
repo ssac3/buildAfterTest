@@ -25,7 +25,7 @@ const ListItemComponent = ({item, onClickDetail}) => {
   );
 };
 
-export const EmplAttendanceMngment = () => {
+export const EmplAttendanceMngment = ({onClickEadDetail}) => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.MangerReducer);
   const [selectType, setSelectType] = useState('일별');
@@ -56,7 +56,7 @@ export const EmplAttendanceMngment = () => {
     <>
       {selectEmpl > 0 && (
         <CalendarLayout>
-          <AtdcCalendar2 selectEmpl={selectEmpl} onClickDetail={onClickDetail}/>
+          <AtdcCalendar2 selectEmpl={selectEmpl} onClickDetail={onClickDetail} onClickEadDetail={onClickEadDetail}/>
         </CalendarLayout>
       )}
       {selectEmpl === 0 && (
@@ -97,6 +97,10 @@ ListItemComponent.propTypes = {
   item: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
   onClickDetail: PropTypes.func.isRequired,
 };
+
+EmplAttendanceMngment.propTypes ={
+  onClickEadDetail: PropTypes.func.isRequired,
+}
 
 const {
   Wrapper,

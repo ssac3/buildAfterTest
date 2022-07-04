@@ -116,18 +116,13 @@ const CustomHeader = ({value, onChange}) => {
 };
 const getListData = (value, infos) => {
   let listData;
-  let vacationData;
-  let resultData;
   if (infos.length > 0) {
     listData = infos.filter(
-      (v) => moment(v.date).month() === value.month() && moment(v.date).date() === value.date()
+      (v) => (moment(v.date).month() === value.month() && moment(v.date).date() === value.date()) ||
+        (moment(v.vDate).month() === value.month() && moment(v.vDate).date() === value.date())
     );
-    vacationData = infos.filter(
-      (v) => moment(v.vDate).month() === value.month() && moment(v.vDate).date() === value.date()
-    );
-    resultData = listData.concat(vacationData);
   }
-  return resultData || [];
+  return listData || [];
 };
 
 const VacationItem = ({vType, vApprovalFlag}) => {
@@ -139,7 +134,7 @@ const VacationItem = ({vType, vApprovalFlag}) => {
   );
 };
 
-export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
+export const AtdcCalendar2 = ({selectEmpl, onClickDetail, onClickEadDetail}) => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.MangerReducer);
   const [selectDate, setSelectDate] = useState(moment());
@@ -158,7 +153,6 @@ export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
   }, [selector]);
   const dateCellRender = (value) => {
     const listData = getListData(value, infos);
-    console.log(listData);
     const getStatus = (status) => {
       let result;
       switch (status) {
@@ -203,6 +197,11 @@ export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
     setFindDate(value);
   };
   const onSelectDate = (value) => {
+    const filterData = infos.filter(
+      (v) => (moment(v.date).month() === value.month() && moment(v.date).date() === value.date()) ||
+        (moment(v.vDate).month() === value.month() && moment(v.vDate).date() === value.date())
+    );
+    onClickEadDetail(filterData);
     setSelectDate(value);
   };
   const onClickBack = () => {
@@ -230,7 +229,8 @@ export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
 
 AtdcCalendar2.propTypes = {
   selectEmpl   : PropTypes.number.isRequired,
-  onClickDetail: PropTypes.func.isRequired
+  onClickDetail: PropTypes.func.isRequired,
+  onClickEadDetail: PropTypes.func.isRequired,
 };
 
 CustomHeader.propTypes = {

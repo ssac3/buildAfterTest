@@ -8,7 +8,7 @@ const Container = styled.button`
   right: 30px;
   width: 65px;
   height: 65px;
-  z-index: 200;
+  z-index: 3;
   font-weight: bold;
   border-radius: 50%;
   background-color: ${({theme}) => theme.colorSet.PRIMARY.BLUE_1A};
