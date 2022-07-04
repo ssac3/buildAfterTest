@@ -8,6 +8,7 @@ import {VACATION_TYPE, MANAGER_APPROVAL_TYPE, LOCAL_STORAGE} from 'utils/constan
 import {useDispatch, useSelector} from 'react-redux';
 import {SwpVarReq, SwpVavReq} from 'redux/actions/ManagerAction';
 import {calcVacationTime} from 'utils/convertDateTime';
+import Pagination from 'components/Pagination';
 
 const InputComponent = ({type}) => {
   const [open, setOpen] = useState(false);
@@ -139,6 +140,9 @@ export const VacationMngment = () => {
   const [openDropbox, setOpenDropbox] = useState(false);
   const [openStatusDropbox, setOpenStatusDropbox] = useState(false);
   const [detail, setDetail] = useState({});
+  const [page, setPage] = useState(1);
+  const limit = 7;
+  const offset = (page - 1) * limit;
   const [selectItem, setSelectItem] = useState({
     vacation:'선택하세요',
     status:'선택하세요'
@@ -217,11 +221,18 @@ export const VacationMngment = () => {
             <InnerLayout>-</InnerLayout>
           </HeaderContainer>
 
-          {data?.map((item) => (
+          {data?.slice(offset, offset + limit).map((item) => (
             <ListItemComponent key={item.vId} item={item} onClickDetail={onClickDetail}/>
           ))}
-        </ListContainer>
 
+
+          <Pagination
+            total={data?.length}
+            limit={8}
+            page={page}
+            setPage={setPage}
+          />
+        </ListContainer>
         <SideContainer>
           <InfoContainer h={35}/>
           <InfoContainer h={63}>
