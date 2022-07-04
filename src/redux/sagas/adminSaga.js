@@ -3,7 +3,7 @@ import {LOCAL_STORAGE, LOG, ROUTES} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {openAlert} from 'redux/actions/AlertAction';
 import {AdminType} from 'redux/constants';
-import {SwpEmpselRes} from 'redux/actions/AdminAction';
+import {SwpEmpselReq, SwpEmpselRes} from 'redux/actions/AdminAction';
 
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -18,9 +18,7 @@ function empinReq(data) {
   const result = axios
     .post(ROUTES.SWP_EMPIN_REQ, data, getHeader())
     .then((res) => {
-      console.log(data);
       console.log(LOG(ROUTES.SWP_EMPIN_REQ).SUCCESS);
-      console.log(res.data);
       return res.data;
     })
     .catch((err) => {
@@ -37,6 +35,8 @@ function* postSwpEmpinReq() {
 
     if(result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
+      yield put(SwpEmpselReq());
+      // put
     } else {
       yield put(openAlert('fail', result.resMsg));
     }
@@ -71,16 +71,13 @@ function* getSwpEmpselReq() {
 }
 
 // 사원수정
-function empupReq(emp) {
+function empupReq(change) {
   const result = axios
-    .post(ROUTES.SWP_EMPUP_REQ, emp, getHeader())
+    .post(ROUTES.SWP_EMPUP_REQ, change.change, getHeader())
     .then((res) => {
-      console.log(res);
-      console.log('사원수정_adminSaga');
-      console.log(emp);
+      console.log('username확인', change.change.username);
       console.log(LOG(ROUTES.SWP_EMPUP_REQ).SUCCESS);
-      // console.log(res.emp);
-      return res.emp;
+      return res.data;
     })
     .catch((err) => {
       console.log(LOG(ROUTES.SWP_EMPUP_REQ).ERROR);
@@ -90,13 +87,11 @@ function empupReq(emp) {
 }
 function* postSwpEmpupReq() {
   try {
-    const emp = yield select((state) => { return state.AdminReducer; });
-    console.log('postSwpEmpupReq', emp);
-    console.log(emp);
-    const result = yield call(empupReq, emp);
-
+    const data = yield select((state) => { return state.AdminReducer; });
+    const result = yield call(empupReq, data);
     if(result.resCode === 0) {
-      yield put(openAlert('successess', result.resMsg));
+      yield put(openAlert('success', result.resMsg));
+      yield put(SwpEmpselReq());
     } else {
       yield put(openAlert('fail', result.resMsg));
     }

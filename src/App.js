@@ -12,10 +12,8 @@ import Setting from 'pages/manager/setting';
 import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
 import RearrangeMngment from 'pages/manager/rearrangeMngment';
-import AttendanceDetail from 'pages/user/attendanceDetail';
 import {EmpInsert} from 'pages/admin/emp_insert/EmpInsert';
 import {EmpDetail} from 'pages/admin/emp_detail/EmpDetail';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function getMenu(role) {
   switch (role) {
@@ -29,11 +27,9 @@ function getMenu(role) {
 }
 
 function App() {
-  const history = useHistory();
   const alert = useSelector((state) => state.AlertReducer);
   const signIn = useSelector((state) => state.SignInReducer);
   const rearrange = useSelector((state) => state.MangerReducer);
-  const attendance = useSelector((state) => state.UserReducer);
   const emplist = useSelector((state) => state.AdminReducer);
   const [roleURL, setRoleURL] = useState(window.location.pathname);
   const [select, setSelect] = useState(getMenu(roleURL));
@@ -42,7 +38,6 @@ function App() {
   const [selectedEmpl, setSelectedEmpl] = useState(0);
   const [selectedItem, setSelectedItem] = useState(0);
   const [openATR, setOpenATR] = useState(0);
-  const [openATD, setOpenATD] = useState(0);
 
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
@@ -76,29 +71,15 @@ function App() {
   const onClickATR = (target) => {
     setOpenATR(target);
   };
-  const onClickATD = (target) => {
-    setOpenATD(target);
-  };
 
   const atvDetail = React.useMemo(() => {
     if(openATR > 0 && (
       rearrange.data?.length > 0 && rearrange.data[0].rId !== undefined
     )) {
-      console.log(rearrange.data.filter((v) => v.rId === openATR)[0]);
       return (rearrange.data.filter((v) => v.rId === openATR)[0]);
     }
     return '';
   }, [rearrange, openATR]);
-
-  const atDetail = React.useMemo(() => {
-    if(openATD > 0 && (
-      attendance.data?.length > 0 && attendance.data[0].aId !== undefined
-    )) {
-      return (attendance.data.filter((v) => v.aId === openATD)[0]);
-    }
-    return '';
-  }, [attendance, openATD]);
-
   const emplDetail = React.useMemo(() => {
     if(selectedEmpl > 0 && (
       emplist?.emps?.length > 0 && emplist.emps[0].username !== undefined
@@ -107,7 +88,6 @@ function App() {
     }
     return {};
   }, [emplist, selectedEmpl]);
-
   const onClickInsertEmp = () => {
     setOpenInsertModal(!openInsertModal);
   };
@@ -116,12 +96,11 @@ function App() {
     setSelectedEmpl(target);
   };
   useEffect(() => {
-    console.log(signIn);
     if (signIn?.data === 'ADMIN') {
       setSelect(getMenu(API.ADMIN));
     } else if (signIn?.data === 'USER') {
       setSelect(getMenu(API.USER));
-    } else if (signIn?.data === 'MANAGER') {
+    } else {
       setSelect(getMenu(API.MANAGER));
     }
     return (() => {
@@ -136,15 +115,15 @@ function App() {
   useEffect(() => {
     onGetTarget();
   }, [select]);
-
   return (
     <>
+
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
-      {openATD !== 0 && <AttendanceDetail onClickATD={onClickATD} atDetail={atDetail}/>}
+
       {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
       {roleURL !== API.ROOT && (
         <>
-          <Header role={roleURL} setting={onClickSetting} history={history}/>
+          <Header role={roleURL} setting={onClickSetting}/>
           <Navigation
             role={roleURL}
             menu={select}
@@ -155,7 +134,7 @@ function App() {
       )}
       {setting && <Setting open={onClickSetting}/>}
       {openInsertModal && <EmpInsert/>}
-      {selectedEmpl !== 0 && <EmpDetail emp={emplDetail}/>}
+      {selectedEmpl !== 0 && <EmpDetail emp={emplDetail} onClickDetailEmp={onClickDetailEmp}/>}
       <BrowserRouter>
         <Switch>
           <Route exact path={API.ROOT} component={SignIn}/>
@@ -176,14 +155,7 @@ function App() {
                   onClickATR={onClickATR}
                 />)}
             />
-            <Route
-              path={API.USER}
-              render={() => (
-                <AtdcManagement
-                  selectedId={selectedItem}
-                  onClickATD={onClickATD}
-                />)}
-            />
+            <Route path={API.USER} render={() => <AtdcManagement selectedId={selectedItem}/>}/>
           </Wrap>
         </Switch>
       </BrowserRouter>
