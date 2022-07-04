@@ -7,7 +7,7 @@ import {LOCAL_STORAGE, GENDER_TYPE} from 'utils/constants';
 import PropTypes from 'prop-types';
 import {cnvrtDate} from 'utils/convertDateTime';
 import AtdcCalendar2 from 'components/AtdcCalendar2';
-
+import Pagination from 'components/Pagination';
 const ListItemComponent = ({item, onClickDetail}) => {
   return(
     <ListItemContainer>
@@ -30,6 +30,8 @@ export const EmplAttendanceMngment = ({onClickEadDetail}) => {
   const selector = useSelector((state) => state.MangerReducer);
   const [selectType, setSelectType] = useState('일별');
   const [info, setInfo] = useState([]);
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * 8;
   const [selectEmpl, setSelecEmpl] = useState(0);
   const onClickType = (target) => {
     setSelectType(target);
@@ -56,7 +58,11 @@ export const EmplAttendanceMngment = ({onClickEadDetail}) => {
     <>
       {selectEmpl > 0 && (
         <CalendarLayout>
-          <AtdcCalendar2 selectEmpl={selectEmpl} onClickDetail={onClickDetail} onClickEadDetail={onClickEadDetail}/>
+          <AtdcCalendar2
+            selectEmpl={selectEmpl}
+            onClickDetail={onClickDetail}
+            onClickEadDetail={onClickEadDetail}
+          />
         </CalendarLayout>
       )}
       {selectEmpl === 0 && (
@@ -81,10 +87,21 @@ export const EmplAttendanceMngment = ({onClickEadDetail}) => {
                 <InnerLayout>상세보기</InnerLayout>
               </HeaderContainer>
 
-              {info?.map((item) => (
-                <ListItemComponent key={item.username} item={item} onClickDetail={onClickDetail}/>
-              ))}
+              {info?.slice(offset, offset + 8).map((item) => {
+                return <ListItemComponent
+                  key={item.username}
+                  item={item}
+                  onClickDetail={onClickDetail}
+                />;
+              })}
+
             </ListContainer>
+            <Pagination
+              total={info?.length}
+              limit={8}
+              page={page}
+              setPage={setPage}
+            />
           </Container>
         </Wrapper>
       )}
@@ -98,9 +115,9 @@ ListItemComponent.propTypes = {
   onClickDetail: PropTypes.func.isRequired,
 };
 
-EmplAttendanceMngment.propTypes ={
+EmplAttendanceMngment.propTypes = {
   onClickEadDetail: PropTypes.func.isRequired,
-}
+};
 
 const {
   Wrapper,
