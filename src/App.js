@@ -14,8 +14,9 @@ import Alert from 'components/Alert';
 import RearrangeMngment from 'pages/manager/rearrangeMngment';
 import AttendanceDetail from 'pages/user/attendanceDetail';
 import DetailEmplAtndc from 'pages/manager/DetailEmplAtndc';
-import {EmpInsert} from 'pages/admin/emp_insert/EmpInsert';
-import {EmpDetail} from 'pages/admin/emp_detail/EmpDetail';
+import EamPage from 'pages/manager/EamPage';
+import EmpInsert from 'pages/admin/emp_insert';
+import EmpDetail from 'pages/admin/emp_detail';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function getMenu(role) {
@@ -45,6 +46,8 @@ function App() {
   const [openATR, setOpenATR] = useState(0);
   const [openATD, setOpenATD] = useState(0);
   const [openEadDetail, setOpenEadDetail] = useState([]);
+  const [openEamDetail, setOpenEamDetail] = useState([]);
+
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
       ...value,
@@ -118,6 +121,11 @@ function App() {
   const onClickEadDetail = (target) => {
     setOpenEadDetail(target);
   };
+
+  const onClickEamDetail = (target) => {
+    console.log(target);
+    setOpenEamDetail(target);
+  };
   useEffect(() => {
     if (signIn?.data === 'ADMIN') {
       setSelect(getMenu(API.ADMIN));
@@ -160,6 +168,10 @@ function App() {
       {selectedEmpl !== 0 && <EmpDetail emp={emplDetail}/>}
       {openEadDetail?.length > 0 &&
         <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
+
+      {openEamDetail?.length > 0 &&
+        <EamPage/>}
+
       <BrowserRouter>
         <Switch>
           <Route exact path={API.ROOT} component={SignIn}/>
@@ -179,6 +191,7 @@ function App() {
                   selectedId={selectedItem}
                   onClickATR={onClickATR}
                   onClickEadDetail={onClickEadDetail}
+                  onClickEamDetail={onClickEamDetail}
                 />)}
             />
             <Route

@@ -25,7 +25,7 @@ const ListItemComponent = ({item, onClickDetail}) => {
   );
 };
 
-export const EmplAttendanceMngment = ({onClickEadDetail}) => {
+export const EmplAttendanceMngment = ({onClickEadDetail, onClickEamDetail}) => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.MangerReducer);
   const [selectType, setSelectType] = useState('일별');
@@ -38,14 +38,18 @@ export const EmplAttendanceMngment = ({onClickEadDetail}) => {
   };
 
   const onClickDetail = useCallback((target) => {
-    setSelecEmpl(target);
-  }, [selectEmpl]);
+    if(selectType === '일별') {
+      setSelecEmpl(target);
+    } else {
+      onClickEamDetail(info?.filter((v) => v.username === target));
+    }
+  }, [selectEmpl, selectType]);
 
   useEffect(() => {
     if(selectEmpl === 0) {
       dispatch(SwpEivReq(LOCAL_STORAGE.get('depId')));
     }
-  }, [selectEmpl]);
+  }, [selectEmpl, selectType]);
   useEffect(() => {
     if(selector.data?.length > 0 && selector.data[0]?.username !== undefined) {
       setInfo(selector.data);
@@ -55,8 +59,8 @@ export const EmplAttendanceMngment = ({onClickEadDetail}) => {
   }, [selector]);
 
   return (
-    <>
-      {selectEmpl > 0 && (
+    <Wrapper>
+      {(selectEmpl > 0 && selectType === '일별') && (
         <CalendarLayout>
           <AtdcCalendar2
             selectEmpl={selectEmpl}
@@ -65,15 +69,18 @@ export const EmplAttendanceMngment = ({onClickEadDetail}) => {
           />
         </CalendarLayout>
       )}
-      {selectEmpl === 0 && (
-        <Wrapper>
-          <TitleContainer>
-            <InnerContainer>
-              <h2>사원별 근태 관리</h2>
-              <ButtonGroup selectType={selectType} onClickType={onClickType}/>
-            </InnerContainer>
-          </TitleContainer>
 
+      {selectEmpl === 0 && (
+        <TitleContainer>
+          <InnerContainer>
+            <h2>사원별 근태 관리</h2>
+            <ButtonGroup selectType={selectType} onClickType={onClickType}/>
+          </InnerContainer>
+        </TitleContainer>
+      )}
+
+      {selectEmpl === 0 && (
+        <>
           <Container>
             <ListContainer>
               <HeaderContainer>
@@ -103,10 +110,9 @@ export const EmplAttendanceMngment = ({onClickEadDetail}) => {
               setPage={setPage}
             />
           </Container>
-        </Wrapper>
+        </>
       )}
-
-    </>
+    </Wrapper>
   );
 };
 
@@ -117,6 +123,7 @@ ListItemComponent.propTypes = {
 
 EmplAttendanceMngment.propTypes = {
   onClickEadDetail: PropTypes.func.isRequired,
+  onClickEamDetail: PropTypes.func.isRequired,
 };
 
 const {
@@ -130,5 +137,5 @@ const {
   ListItemContainer,
   ItemContainer,
   BtnContainer,
-  CalendarLayout
+  CalendarLayout,
 } = style;

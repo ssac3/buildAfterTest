@@ -86,6 +86,7 @@ const CalendarLayout = styled.div`
   background-color: white;
   position: relative;
 `;
+
 export const style = {
   Wrapper,
   TitleContainer,
@@ -97,5 +98,5 @@ export const style = {
   ListItemContainer,
   ItemContainer,
   BtnContainer,
-  CalendarLayout
+  CalendarLayout,
 };
