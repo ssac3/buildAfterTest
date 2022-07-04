@@ -27,7 +27,8 @@ export const ROUTES = {
   SWP_EMPIN_REQ: API.ADMIN.concat('/insertEmp'),
   SWP_EMPSEL_REQ: API.ADMIN.concat(''),
   SWP_SAPR_REQ: API.USER.concat('/updatePw'),
-  SWP_EAS_REQ: API.LOGOUT.concat('')
+  SWP_EAS_REQ: API.LOGOUT.concat(''),
+  SWP_SAIR_REQ: API.USER.concat('/myImgUpdate')
 };
 
 export const LOG = (target) => {

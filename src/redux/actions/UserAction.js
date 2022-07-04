@@ -7,7 +7,7 @@ export const SwpSavReq = () => {
 };
 
 export const SwpSavRes =
-  (name, username, department, position, email, manager, location, qrPath) => {
+  (name, username, department, position, email, manager, location, qrPath, img) => {
     return {
       type: UserType.SWP_SAV_RES,
       name,
@@ -17,7 +17,8 @@ export const SwpSavRes =
       email,
       manager,
       location,
-      qrPath
+      qrPath,
+      img
     };
   };
 
@@ -33,6 +34,19 @@ export const SwpSaprReq = (password, nPassword, nPasswordCheck) => {
 export const SwpSaprReS = () => {
   return {
     type: UserType.SWP_SAPR_RES
+  };
+};
+
+export const SwpSairReq = (data) => {
+  return {
+    type: UserType.SWP_SAIR_REQ,
+    data
+  };
+};
+
+export const SwpSairRes = () => {
+  return {
+    type: UserType.SWP_SAIR_RES
   };
 };
 
