@@ -30,7 +30,6 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
   useEffect(() => {
     dispatch(SwpEmpselReq());
   }, []);
-
   useEffect(() => {
     console.log(selector);
     if(selector.emps?.length > 0 && selector.emps[0]?.username !== undefined) {

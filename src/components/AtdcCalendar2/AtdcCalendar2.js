@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 import 'components/AtdcCalendar/index.css';
@@ -6,9 +7,40 @@ import {Calendar, Col, Row, Select, Badge} from 'antd';
 import locale from 'antd/es/calendar/locale/ko_KR';
 import moment from 'moment';
 import FloatBtn from 'components/FloatBtn';
-// import {useDispatch, useSelector} from 'react-redux';
-// import {SwpEadReq} from 'redux/actions/ManagerAction';
+import {useDispatch, useSelector} from 'react-redux';
+import {SwpEadReq} from 'redux/actions/ManagerAction';
 
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  height: 20px;
+`;
+
+const EveningItem = styled.div`
+  visibility: ${({vType}) => (vType !== '2' ? 'visible' : 'hidden')};
+  width: 50%;
+  height: 100%;
+  background-color: ${
+  ({
+    vApprovalFlag, theme
+  }) => (vApprovalFlag === 1 ? theme.colorSet.ATTENDANCE_STATUS.VACATION : theme.colorSet.SECONDARY.GRAY_CC)};
+`;
+
+const AfternoonItem = styled.div`
+  visibility: ${({vType}) => (vType !== '1' ? 'visible' : 'hidden')};
+  width: 50%;
+  height: 100%;
+  background-color: ${
+  ({
+    vApprovalFlag, theme
+  }) => (vApprovalFlag === 1 ? theme.colorSet.ATTENDANCE_STATUS.VACATION : theme.colorSet.SECONDARY.GRAY_CC)};
+`;
+
+const getFindMonth = (date) => {
+  const findYear = (date.year()).toString();
+  const findMonth = (date.month() + 1).toString().length > 1 ? (date.month() + 1).toString() : '0'.concat((date.month() + 1).toString());
+  return findYear.concat('-').concat(findMonth);
+};
 const CustomHeader = ({value, onChange}) => {
   const start = 0;
   const end = 12;
@@ -44,9 +76,9 @@ const CustomHeader = ({value, onChange}) => {
   return (
     <div
       style={{
-        display: 'flex',
+        display       : 'flex',
         justifyContent: 'flex-end',
-        padding: 8
+        padding       : 8
       }}
     >
       <Row gutter={8}>
@@ -82,98 +114,94 @@ const CustomHeader = ({value, onChange}) => {
     </div>
   );
 };
-const getListData = (value) => {
+const getListData = (value, infos) => {
   let listData;
-
-  switch (value.date()) {
-    case 8:
-      listData = [
-        {
-          id:0,
-          type: 'warning',
-          content: 'This is warning event.'
-        },
-        {
-          id:1,
-          type: 'success',
-          content: 'This is usual event.'
-        }
-      ];
-      break;
-
-    case 10:
-      listData = [
-        {
-          id:2,
-          type: 'warning',
-          content: 'This is warning event.'
-        },
-        {
-          id:3,
-          type: 'success',
-          content: 'This is usual event.'
-        },
-        {
-          id:4,
-          type: 'error',
-          content: 'This is error event.'
-        }
-      ];
-      break;
-
-    case 15:
-      listData = [
-        {
-          id:5,
-          type: 'warning',
-          content: 'This is warning event'
-        },
-        {
-          id:6,
-          type: 'success',
-          content: 'This is warning event'
-        }
-      ];
-      break;
-
-    default:
+  if (infos.length > 0) {
+    listData = infos.filter(
+      (v) => moment(v.date).month() === value.month() && moment(v.date).date() === value.date()
+    );
   }
-
   return listData || [];
 };
 
-export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
-  const [selectDate, setSelectDate] = useState(moment());
-  useEffect(() => {
-    console.log(selectEmpl);
-  }, []);
+const VacationItem = ({vType, vApprovalFlag}) => {
+  return (
+    <Container>
+      <EveningItem vType={vType} vApprovalFlag={Number(vApprovalFlag)}/>
+      <AfternoonItem vType={vType} vApprovalFlag={Number(vApprovalFlag)}/>
+    </Container>
+  );
+};
 
+export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
+  const dispatch = useDispatch();
+  const selector = useSelector((state) => state.MangerReducer);
+  const [selectDate, setSelectDate] = useState(moment());
+  const [findDate, setFindDate] = useState(selectDate);
+  const [infos, setInfos] = useState([]);
+  useEffect(() => {
+    dispatch(SwpEadReq(selectEmpl, getFindMonth(selectDate)));
+  }, [findDate]);
+
+  useEffect(() => {
+    if (selector.data?.length > 0 && selector.data[0].date !== undefined) {
+      setInfos(selector.data);
+    } else {
+      setInfos([]);
+    }
+  }, [selector]);
   const dateCellRender = (value) => {
-    const listData = getListData(value);
+    const listData = getListData(value, infos);
+    const getStatus = (status) => {
+      let result;
+      switch (status) {
+        case '0':
+          result = 'success';
+          break;
+        case '1':
+          result = 'warning';
+          break;
+        case '2':
+          result = 'error';
+          break;
+        default:
+          result = 'default';
+          break;
+      }
+      return result;
+    };
+
+    const cnvrtTime = (time) => {
+      return time?.substring(0, 5);
+    };
     return (
       <ul className="events">
         {listData.map((item) => (
-          <li key={item.id}>
-            <Badge status={item.type} text={item.content} />
+          <li key={item.date}>
+            <Badge
+              status={getStatus(item.status)}
+              text={cnvrtTime(item.startTime)?.concat(' / ').concat(cnvrtTime(item.endTime))}
+            />
+            {item.vType !== null &&
+              <VacationItem
+                vType={item.vType}
+                vApprovalFlag={item.vApprovalFlag}
+              />}
           </li>
         ))}
       </ul>
     );
   };
-
-  const onPanelChange = (value, mode) => {
-    console.log(value.format('YYYY-MM-DD'), mode);
+  const onPanelChange = (value) => {
+    setFindDate(value);
   };
-
   const onSelectDate = (value) => {
     setSelectDate(value);
   };
   const onClickBack = () => {
     onClickDetail(0);
   };
-  useEffect(() => {
-    console.log(selectDate);
-  }, [selectDate]);
+
   return (
     <>
       <FloatBtn onClickBack={onClickBack}/>
@@ -194,13 +222,18 @@ export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
 };
 
 AtdcCalendar2.propTypes = {
-  selectEmpl: PropTypes.number.isRequired,
+  selectEmpl   : PropTypes.number.isRequired,
   onClickDetail: PropTypes.func.isRequired
 };
 
 CustomHeader.propTypes = {
-  value:PropTypes.objectOf(
+  value   : PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.func])
   ).isRequired,
-  onChange:PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+VacationItem.propTypes = {
+  vType: PropTypes.string.isRequired,
+  vApprovalFlag:PropTypes.string.isRequired,
 };

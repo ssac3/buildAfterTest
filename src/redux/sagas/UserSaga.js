@@ -65,9 +65,9 @@ function sairReq(data) {
   return result;
 }
 
-function davReq() {
+function davReq(data) {
   const result = axios
-    .get(ROUTES.SWP_DAV_REQ, getHeader())
+    .post(ROUTES.SWP_DAV_REQ, data, getHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_DAV_REQ).SUCCESS);
       console.log(res);
@@ -142,10 +142,12 @@ function* postSwpSairReq() {
 
 function* postSwpDavReq() {
   try {
-    // const data = yield select((state) => {
-    //   return state.UserReducer;
-    // });
-    const result = yield call(davReq);
+    const data = yield select((state) => {
+      return state.UserReducer;
+    });
+    console.log(data);
+    const result = yield call(davReq, data);
+    console.log(result);
     if(result.resCode === 0) {
       console.log(result.data);
       yield put(SwpDavRes(result.data));
@@ -160,7 +162,6 @@ function* watchAlert() {
   yield takeLatest(UserType.SWP_SAV_REQ, postSwpSavReq);
   yield takeLatest(UserType.SWP_SAPR_REQ, postSwpSaprReq);
   yield takeLatest(UserType.SWP_DAV_REQ, postSwpDavReq);
-  yield takeLatest(UserType.SWP_SAIR_REQ, postSwpSairReq);
 }
 export default function* userSaga() {
   yield all([fork(watchAlert)]);

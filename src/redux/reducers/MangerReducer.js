@@ -93,8 +93,7 @@ function MangerReducer(state = INIT_STATE, action) {
         startTime: state.startTime,
         endTime: state.endTime,
         username:action.username,
-        sDate:action.sDate,
-        eDate:action.eDate
+        findDate:action.findDate,
       };
 
     case ManagerType.SWP_EAD_RES:

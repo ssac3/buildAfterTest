@@ -32,7 +32,9 @@ function UserReducer(state = INIT_STATE, action) {
     case UserType.SWP_SAIR_RES:
       return {};
     case UserType.SWP_DAV_REQ:
-      return {};
+      return {
+        month: action.month,
+      };
     case UserType.SWP_DAV_RES:
       return {
         data: action.data

@@ -260,7 +260,7 @@ function* postSwpEivReq() {
 function* postSwpEadReq() {
   try {
     const data = yield select((state) => state.MangerReducer);
-    const packedMsg = {username: data.username, sDate:data.sDate, eDate: data.eDate};
+    const packedMsg = {username: data.username, findDate:data.findDate};
     const result = yield call(eadReq, packedMsg);
 
     if(result.resCode === 0) {

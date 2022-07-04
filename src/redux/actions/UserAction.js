@@ -50,9 +50,11 @@ export const SwpSairRes = () => {
   };
 };
 
-export const SwpDavReq = () => {
+
+export const SwpDavReq = (month) => {
   return {
-    type: UserType.SWP_DAV_REQ
+    type: UserType.SWP_DAV_REQ,
+    month
   };
 };
 export const SwpDavRes = (data) => {

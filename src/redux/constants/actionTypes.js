@@ -24,6 +24,9 @@ export const AdminType = {
   // 사원목록, 사원상세정보
   SWP_EMPSEL_REQ: 'SWP_EMPSEL_REQ',
   SWP_EMPSEL_RES: 'SWP_EMPSEL_RES',
+  // 사원수정
+  SWP_EMPUP_REQ: 'SWP_EMPUP_REQ',
+  SWP_EMPUP_RES: 'SWP_EMPUP_RES'
 };
 
 export const AlertType = {

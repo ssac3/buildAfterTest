@@ -84,6 +84,7 @@ function App() {
     if(openATR > 0 && (
       rearrange.data?.length > 0 && rearrange.data[0].rId !== undefined
     )) {
+      console.log(rearrange.data.filter((v) => v.rId === openATR)[0]);
       return (rearrange.data.filter((v) => v.rId === openATR)[0]);
     }
     return '';
@@ -93,7 +94,7 @@ function App() {
     if(openATD > 0 && (
       attendance.data?.length > 0 && attendance.data[0].aId !== undefined
     )) {
-      return (attendance.data.filter((v) => v.aId === openATR)[0]);
+      return (attendance.data.filter((v) => v.aId === openATD)[0]);
     }
     return '';
   }, [attendance, openATD]);
@@ -175,7 +176,14 @@ function App() {
                   onClickATR={onClickATR}
                 />)}
             />
-            <Route path={API.USER} render={() => <AtdcManagement selectedId={selectedItem}/>}/>
+            <Route
+              path={API.USER}
+              render={() => (
+                <AtdcManagement
+                  selectedId={selectedItem}
+                  onClickATD={onClickATD}
+                />)}
+            />
           </Wrap>
         </Switch>
       </BrowserRouter>
