@@ -1,5 +1,4 @@
 import styled, {keyframes} from 'styled-components';
-
 const Wrap = styled.div`
   z-index: 10;
   position: absolute;
