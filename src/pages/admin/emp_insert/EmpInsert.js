@@ -5,11 +5,8 @@ import {MdOutlineClose} from 'react-icons/md';
 import {useDispatch} from 'react-redux';
 import {SwpEmpinReq} from 'redux/actions/AdminAction';
 
-
-
 export const EmpInsert = () => {
   const dispatch = useDispatch();
-
   const [emp, setEmp] = useState(
     {
       username : '',
@@ -21,7 +18,7 @@ export const EmpInsert = () => {
       role : '',
       qrPath : '',
       depId : '',
-      password:'1234',
+      password:'test123',
       img:'testest',
     }
   );
