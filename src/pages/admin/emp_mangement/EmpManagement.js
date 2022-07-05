@@ -5,6 +5,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {SwpEmpselReq} from 'redux/actions/AdminAction';
 import {style} from './EmpManagementStyle';
 import {cnvrtDate} from 'utils/convertDateTime';
+import Pagination from 'components/Pagination';
+import {POSITION_TYPE} from 'utils/constants';
+import Dropbox from 'components/Dropbox';
 
 const ListItemComponent = ({emp, onClickDetailEmp}) => {
   return (
@@ -26,7 +29,31 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.AdminReducer);
   const [emps, setEmps] = useState([]);
+  // 페이지네이션
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * 4;
+  // 드롭박스
+  const [openDropbox, setOpenDropbox] = useState(false);
+  const [openStatusDropbox, setOpenStatusDropbox] = useState(false);
+  const [selectItem, setSelectItem] = useState({
+    position:'선택하세요',
+  });
+  const onClickType = () => {
+    setOpenDropbox(!openDropbox);
+  };
+  const onClickStatus = () => {
+    setOpenStatusDropbox(!openStatusDropbox);
+  };
+  const onClickDropBoxItem = (e, target) => {
+    setSelectItem({...selectItem, [target]: e.target.id});
 
+    if(target === 'position') {
+      onClickType();
+    }else{
+      onClickStatus();
+    }
+  };
+  // 드롭박스 끝
   useEffect(() => {
     dispatch(SwpEmpselReq());
   }, []);
@@ -41,25 +68,21 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
   return(
     <>
       <Container>
-        <div id="pagename">
+        <PageNameContainer>
           <h2>사원 관리</h2>
-        </div>
-        <div id="topcomponent">
-          <div id={'wrapper'}>
-            <Search/>
-            <select id="selectbox">
-              <option key="position" value="position">직급</option>
-              <option key="a" value="a">사원</option>
-              <option key="b" value="b">주임</option>
-              <option key="c" value="c">대리</option>
-              <option key="d" value="d">과장</option>
-              <option key="e" value="e">차장</option>
-              <option key="f" value="f">부장</option>
-            </select>
-          </div>
+        </PageNameContainer>
+        <TopComponent>
+          <Wrapper>
+            <Search />
+            <DivContainer>
+              <SelectBox>
+                <Dropbox id={'position'} open={openDropbox} onClickDropBox={onClickType} menu={POSITION_TYPE} select={selectItem.position} onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'position')}/>
+              </SelectBox>
+            </DivContainer>
+          </Wrapper>
           <DelBtn value="regBtn">삭제</DelBtn>
           <RegBtn value="regBtn" onClick={onClickInsertEmp}>추가</RegBtn>
-        </div>
+        </TopComponent>
         <ListHeader>
           <ListItem w={100}>사원 번호</ListItem>
           <ListItem w={100}>사원명</ListItem>
@@ -70,7 +93,7 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
           <ListItem w={100}>입사일</ListItem>
           <ListItem w={100}>상세보기</ListItem>
         </ListHeader>
-        {emps?.map((v) => {
+        {emps?.slice(offset, offset + 4).map((v) => {
           // console.log(v);
           return <ListItemComponent
             key={v.username}
@@ -79,6 +102,12 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
           />;
         })}
       </Container>
+      <Pagination
+        total={emps?.length}
+        limit={4}
+        page={page}
+        setPage={setPage}
+      />
     </>
   );
 };
@@ -95,6 +124,11 @@ ListItemComponent.propTypes = {
 };
 const {
   Container,
+  PageNameContainer,
+  TopComponent,
+  Wrapper,
+  DivContainer,
+  SelectBox,
   DelBtn,
   RegBtn,
   ListHeader,

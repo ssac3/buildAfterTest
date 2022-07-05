@@ -7,6 +7,8 @@ import PropTypes from 'prop-types';
 import {SwpEmpupReq} from 'redux/actions/AdminAction';
 
 export const EmpDetail = ({emp, onClickDetailEmp}) => {
+  // 드롭박스
+  // 통신
   const dispatch = useDispatch();
   const [change, setChange] = useState(
     {
@@ -89,7 +91,7 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
           />
           <LabelLayout
             id={'position'}
-            value={change.position || ''}
+            value={change?.position}
             onChange={onChange}
           />
           <CaptionLayout>담당역할</CaptionLayout>

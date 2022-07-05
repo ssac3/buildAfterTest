@@ -190,7 +190,6 @@ export const VacationMngment = () => {
 
   const onClickDropBoxItem = (e, target) => {
     setSelectItem({...selectItem, [target]: e.target.id});
-
     if(target === 'vacation') {
       onClickType();
     }else{
@@ -201,7 +200,6 @@ export const VacationMngment = () => {
   return (
     <Wrapper>
       <TitleContainer/>
-
       <Container>
         <ListContainer>
           <HeaderContainer>
