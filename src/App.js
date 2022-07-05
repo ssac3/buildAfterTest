@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import Dashboard from 'pages/manager/dashboard';
 import EmpManagement from 'pages/admin/emp_mangement';
-import AtdcManagement from 'pages/user/attendence';
+import AtdcManagement from 'pages/user/AtdcManagement';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
@@ -12,12 +12,11 @@ import Setting from 'pages/manager/setting';
 import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
 import RearrangeMngment from 'pages/manager/rearrangeMngment';
-import AttendanceDetail from 'pages/user/attendanceDetail';
-import VacationDetail from 'pages/user/vacationDetail';
 import DetailEmplAtndc from 'pages/manager/DetailEmplAtndc';
 import EamPage from 'pages/manager/EamPage';
 import EmpInsert from 'pages/admin/emp_insert';
 import EmpDetail from 'pages/admin/emp_detail';
+import DetailDavPage from 'pages/user/DetailDavPage';
 
 function getMenu(role) {
   switch (role) {
@@ -42,12 +41,9 @@ function App() {
   const [selectedEmpl, setSelectedEmpl] = useState(0);
   const [selectedItem, setSelectedItem] = useState(0);
   const [openATR, setOpenATR] = useState(0);
-  const [openVD, setOpenVD] = useState([]);
-  const [openATD, setOpenATD] = useState([]);
-  const [openErollVacation, setEnrollVacation] = useState(null);
-  const [openEadDetail, setOpenEadDetail] = useState([]);
-  const [openEamDetail, setOpenEamDetail] = useState([]);
-
+  const [openEadDetail, setOpenEadDetail] = useState([]); // 근태 담당자 사원별 근태 조회(일별)
+  const [openEamDetail, setOpenEamDetail] = useState([]); // 근태 담당자 사원별 근태 조회(월별)
+  const [openDavDetail, setOpenDavDetail] = useState([]); // 사원 일별 근태 조회
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
       ...value,
@@ -80,14 +76,6 @@ function App() {
   const onClickATR = (target) => {
     setOpenATR(target);
   };
-  const onClickATD = (target) => {
-    setOpenATD(target);
-    setEnrollVacation(null);
-  };
-  const onClickVD = (target) => {
-    setOpenVD(target);
-    setEnrollVacation(null);
-  };
 
   const atvDetail = React.useMemo(() => {
     if(openATR > 0 && (
@@ -98,26 +86,6 @@ function App() {
     return '';
   }, [rearrange, openATR]);
 
-  const atDetail = React.useMemo(() => {
-    if(openATD?.length > 0) {
-      return openATD[0];
-    }
-    return [];
-  }, [openATD]);
-  const vDetail = React.useMemo(() => {
-    if(openVD?.length > 0) {
-      return openVD[0];
-    }
-    return [];
-  }, [openVD]);
-
-  // const vEnroll = React.useMemo(() => {
-  //   if(openErollVacation?.length > 0) {
-  //     console.log(openErollVacation[0]);
-  //     return openErollVacation[0].date();
-  //   }
-  //   return null;
-  // }, [openErollVacation]);
 
   const emplDetail = React.useMemo(() => {
     if(selectedEmpl > 0 && (
@@ -142,12 +110,9 @@ function App() {
     setOpenEamDetail(target);
   };
 
-  const onClickEnrollVac = (target) => {
-    // const year = target.year().toString();
-    // const month = formatter(target.month().toString());
-    // const date = formatter(target.date().toString());
-    // const result = year.concat('-').concat(month).concat('-').concat(date);
-    setEnrollVacation(target);
+
+  const onClickDavDetail = (target) => {
+    setOpenDavDetail(target);
   };
   useEffect(() => {
     if (signIn?.data === 'ADMIN') {
@@ -170,24 +135,20 @@ function App() {
     onGetTarget();
   }, [select]);
 
-  useEffect(() => {
-    console.log(openErollVacation);
-  }, [openErollVacation]);
   return (
     <>
-
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
-      {openATD?.length > 0 && <AttendanceDetail onClickATD={onClickATD} atDetail={atDetail}/>}
-      {openVD?.length > 0
-        &&
-          <VacationDetail
-            onClickVD={onClickVD}
-            vDetail={vDetail}
-          />}
-      {openErollVacation !== null && console.log('휴가 신청 폼 ~~')}
-      {
-        alert.open && <Alert status={alert.status} msg={alert.msg}/>
-      }
+      {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
+      {setting && <Setting open={onClickSetting}/>}
+      {openInsertModal && <EmpInsert/>}
+      {selectedEmpl !== 0 && <EmpDetail emp={emplDetail} onClickDetailEmp={onClickDetailEmp}/>}
+      {openEadDetail?.length > 0 &&
+        <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
+      {openEamDetail?.length > 0 &&
+        <EamPage/>}
+
+      {openDavDetail?.length > 0 && <DetailDavPage/>}
+
       {roleURL !== API.ROOT && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>
@@ -199,13 +160,6 @@ function App() {
           />
         </>
       )}
-      {setting && <Setting open={onClickSetting}/>}
-      {openInsertModal && <EmpInsert/>}
-      {selectedEmpl !== 0 && <EmpDetail emp={emplDetail} onClickDetailEmp={onClickDetailEmp}/>}
-      {openEadDetail?.length > 0 &&
-        <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
-      {openEamDetail?.length > 0 &&
-        <EamPage/>}
       <BrowserRouter>
         <Switch>
           <Route exact path={API.ROOT} component={SignIn}/>
@@ -233,9 +187,7 @@ function App() {
               render={() => (
                 <AtdcManagement
                   selectedId={selectedItem}
-                  onClickATD={onClickATD}
-                  onClickVD={onClickVD}
-                  onClickEnrollVac={onClickEnrollVac}
+                  onClickDavDetail={onClickDavDetail}
                 />)}
             />
           </Wrap>

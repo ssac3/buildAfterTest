@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import './index.css';
 import {Badge, Calendar, Col, Row, Select} from 'antd';
+import VacationItem from 'components/VacationItem';
 import locale from 'antd/es/calendar/locale/ko_KR';
 import {useDispatch, useSelector} from 'react-redux';
 import {SwpDavReq} from 'redux/actions/UserAction';
@@ -85,125 +86,104 @@ const CustomHeader = ({value, onChange}) => {
     </div>
   );
 };
-export const AtdcCalendar = ({
-  onClickATD,
-  onClickVD,
-  onClickEnrollVac}) => {
+export const AtdcCalendar = ({onClickDavDetail}) => {
   const selector = useSelector((state) => state.UserReducer);
   const dispatch = useDispatch();
   const [selectDate, setSelectDate] = useState(moment());
   const [findDate, setFindDate] = useState(selectDate);
   const [getData, setGetData] = useState([]);
+  const today = moment();
 
   useEffect(() => {
     dispatch(SwpDavReq(getFindMonth(selectDate)));
   }, [findDate]);
+
   useEffect(() => {
-    if(selector.data?.length > 0) {
+    if (selector.data?.length > 0) {
       setGetData(selector.data);
     }
   }, [selector]);
-  useEffect(() => {
-  }, [getData]);
-  const getListData = (value) => {
-    const listData = [
-      {
-        type : null,
-        content: null,
-        vacation : null,
-        approval : null
-      }
-    ];
-    const date = value.format('YYYY-MM-DD');
-    for(let i = 0; i < 31; i += 1) {
-      const aDate = getData[i]?.aDate;
-      const workIn = (getData[i]?.aStartTime === null) ? '출근 정보 없음' : getData[i]?.aStartTime;
-      if(date === aDate || date === getData[i]?.vDate) {
-        switch (getData[i].aStatus) {
-          case '0':
-            listData[0].type = 'success';
-            listData[0].content = workIn;
-            break;
-          case '1':
-            listData[0].type = 'warning';
-            listData[0].content = workIn;
-            break;
-          case '2':
-            listData[0].type = 'error';
-            listData[0].content = workIn;
-            break;
-          default:
-        }
-        if(getData[i]?.vId !== null) {
-          const approve = getData[i].vApprovalFlag;
-          switch (getData[i]?.vType) {
-            case '0':
-              listData[0].vacation = '전일휴가';
-              listData[0].approval = approve;
-              break;
-            case '1':
-              listData[0].vacation = '오전휴가';
-              listData[0].approval = approve;
-              break;
-            case '2':
-              listData[0].vacation = '오후휴가';
-              listData[0].approval = approve;
-              break;
-            default:
-          }
-        }
-      }
+
+
+  const getListData = (value, infos) => {
+    let listData;
+    if (infos.length > 0) {
+      listData = infos.filter(
+        (v) => (moment(v.aDate).month() === value.month()
+            && moment(v.aDate).date() === value.date())
+          ||
+          (moment(v.vDate).month() === value.month()
+            && moment(v.vDate).date() === value.date())
+      );
     }
+    console.log(listData);
     return listData || [];
   };
 
   const dateCellRender = (value) => {
-    const listData = getListData(value);
+    const listData = getListData(value, getData);
+    const getStatus = (status) => {
+      let result;
+      switch (status) {
+        case '0':
+          result = 'success';
+          break;
+        case '1':
+          result = 'warning';
+          break;
+        case '2':
+          result = 'error';
+          break;
+        default:
+          result = 'default';
+          break;
+      }
+      return result;
+    };
+
+    const cnvrtTime = (time) => {
+      return time?.substring(0, 5);
+    };
     return (
-      <ul type={'button'} className="events">
+      <ul className="events">
         {listData.map((item) => (
-          <li key={item.content}>
-            { item.vacation !== null && item.content === '출근 정보 없음' ?
-              null : <Badge status={item.type} text={item.content}/>}
-            { item.approval === '1' ? <Badge className={'approve'} status={''} text={item.vacation}></Badge> : <Badge className={'denied'} status={''} text={item.vacation}></Badge>}
+          <li key={item?.aDate}>
+            <Badge
+              status={item.aStatus && getStatus(item.aStatus)}
+              text={cnvrtTime(item?.aStartTime)?.concat(' / ').concat(cnvrtTime(item?.aEndTime))}
+            />
+            {item.vType !== null &&
+            <VacationItem
+              vType={item.vType}
+              vApprovalFlag={item.vApprovalFlag}
+            />}
           </li>
         ))}
       </ul>
     );
   };
 
-  const onSelectDate = ((value) => {
-    let result = getData.filter(v => v.aDate === value.format('YYYY-MM-DD'));
-    if(result.length > 0) {
-      onClickATD(result);
-    } else {
-      result = getData.filter(v => v.vDate === value.format('YYYY-MM-DD'));
-
-      if(result.length > 0) {
-        onClickVD(result);
+  const onSelectDate = React.useCallback((value) => {
+    if (today.isBefore(value)) {
+      console.log('미래');
+      const filterInfo = getData?.filter((v) => v.vDate === value.format('YYYY-MM-DD'));
+      if (filterInfo.length > 0) {
+        onClickDavDetail(filterInfo);
       } else {
-        onClickEnrollVac(value);
-        setSelectDate(value);
+        console.log('휴가 신청 창');
+        // onClickEnrollVac(value);
       }
+    } else {
+      console.log('과거'); // 무조건 조회
+      const filterInfo = getData?.filter((v) => v.aDate === value.format('YYYY-MM-DD'));
+      onClickDavDetail(filterInfo);
     }
-    // if(aresult?.length === 0) {
-    //   const vresult = getData.filter(v => v.vDate === value.format('YYYY-MM-DD'));
-    //   console.log(vresult);
-    //   if(vresult?.length === 0) {
-    //     // console.log(vresult);
-    //     // onClickVD([{}]);
-    //   }else onClickVD(vresult);
-    // }
-    // console.log(onClickVD);
-    // setSelectDate(value);
-  });
+    setSelectDate(value);
+  }, [selectDate, getData, findDate]);
   const onPanelChange = (value) => {
+    console.log('panel', value);
     setFindDate(value);
   };
-
-  useEffect(() => {
-    onClickEnrollVac(null);
-  }, [findDate]);
   return (
     <>
       <div className="site-calendar-customize-header-wrapper">
@@ -214,16 +194,14 @@ export const AtdcCalendar = ({
           onPanelChange={onPanelChange}
           value={selectDate}
           onSelect={onSelectDate}
-          dateCellRender={(value) => dateCellRender(value, getData)}
+          dateCellRender={dateCellRender}
         />
       </div>
     </>
   );
 };
 AtdcCalendar.propTypes = {
-  onClickATD: PropTypes.func.isRequired,
-  onClickVD:PropTypes.func.isRequired,
-  onClickEnrollVac:PropTypes.func.isRequired,
+  onClickDavDetail: PropTypes.func.isRequired,
 };
 CustomHeader.propTypes = {
   value   : PropTypes.objectOf(
