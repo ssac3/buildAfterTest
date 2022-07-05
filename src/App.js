@@ -18,7 +18,6 @@ import DetailEmplAtndc from 'pages/manager/DetailEmplAtndc';
 import EamPage from 'pages/manager/EamPage';
 import EmpInsert from 'pages/admin/emp_insert';
 import EmpDetail from 'pages/admin/emp_detail';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function getMenu(role) {
   switch (role) {
@@ -36,6 +35,7 @@ function App() {
   const signIn = useSelector((state) => state.SignInReducer);
   const rearrange = useSelector((state) => state.MangerReducer);
   const emplist = useSelector((state) => state.AdminReducer);
+  const attendance = useSelector((state) => state.UserReducer);
   const [roleURL, setRoleURL] = useState(window.location.pathname);
   const [select, setSelect] = useState(getMenu(roleURL));
   const [setting, setSetting] = useState(false);
