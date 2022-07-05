@@ -4,23 +4,12 @@ import './index.css';
 import {Badge, Calendar, Col, Row, Select} from 'antd';
 import locale from 'antd/es/calendar/locale/ko_KR';
 import {useDispatch, useSelector} from 'react-redux';
-// import {style} from './AtdcCalendarStyle';
 import {SwpDavReq} from 'redux/actions/UserAction';
 import moment from 'moment';
-import FloatBtn from '../FloatBtn';
-
-// const ListItemComponent = () => {
-//   return(
-//     <ListItemContainer>
-//     </ListItemContainer>
-//   );
-// };
 
 const getFindMonth = (date) => {
-  console.log(date);
   const findYear = (date.year()).toString();
   const findMonth = (date.month() + 1).toString().length > 1 ? (date.month() + 1).toString() : '0'.concat((date.month() + 1).toString());
-  console.log(findYear.concat('-').concat(findMonth));
   return findYear.concat('-').concat(findMonth);
 };
 const CustomHeader = ({value, onChange}) => {
@@ -96,7 +85,10 @@ const CustomHeader = ({value, onChange}) => {
     </div>
   );
 };
-export const AtdcCalendar = ({onClickATD, onClickVD}) => {
+export const AtdcCalendar = ({
+  onClickATD,
+  onClickVD,
+  onClickEnrollVac}) => {
   const selector = useSelector((state) => state.UserReducer);
   const dispatch = useDispatch();
   const [selectDate, setSelectDate] = useState(moment());
@@ -164,52 +156,56 @@ export const AtdcCalendar = ({onClickATD, onClickVD}) => {
     }
     return listData || [];
   };
-  const dateCellRender = (value) => {
-    useEffect(() => {
-    }, []);
-    const listData = getListData(value);
-    const getDetail = (val) => {
-      console.log(val);
-    };
 
-    // const onClickDate = () => {
-    //   console.log('testtest');
-    // };
+  const dateCellRender = (value) => {
+    const listData = getListData(value);
     return (
       <ul type={'button'} className="events">
         {listData.map((item) => (
           <li key={item.content}>
             { item.vacation !== null && item.content === '출근 정보 없음' ?
-              null : <Badge status={item.type} text={item.content} onClick={getDetail}/>}
+              null : <Badge status={item.type} text={item.content}/>}
             { item.approval === '1' ? <Badge className={'approve'} status={''} text={item.vacation}></Badge> : <Badge className={'denied'} status={''} text={item.vacation}></Badge>}
           </li>
         ))}
       </ul>
     );
   };
+
+  const onSelectDate = ((value) => {
+    let result = getData.filter(v => v.aDate === value.format('YYYY-MM-DD'));
+    if(result.length > 0) {
+      onClickATD(result);
+    } else {
+      result = getData.filter(v => v.vDate === value.format('YYYY-MM-DD'));
+
+      if(result.length > 0) {
+        onClickVD(result);
+      } else {
+        onClickEnrollVac(value);
+        setSelectDate(value);
+      }
+    }
+    // if(aresult?.length === 0) {
+    //   const vresult = getData.filter(v => v.vDate === value.format('YYYY-MM-DD'));
+    //   console.log(vresult);
+    //   if(vresult?.length === 0) {
+    //     // console.log(vresult);
+    //     // onClickVD([{}]);
+    //   }else onClickVD(vresult);
+    // }
+    // console.log(onClickVD);
+    // setSelectDate(value);
+  });
   const onPanelChange = (value) => {
-    console.log(value);
     setFindDate(value);
   };
 
-  const onSelectDate = (value) => {
-    const aresult = getData.filter(v => v.aDate === value.format('YYYY-MM-DD'));
-    console.log(aresult);
-    onClickATD(aresult);
-    if(aresult?.length === 0) {
-      const vresult = getData.filter(v => v.vDate === value.format('YYYY-MM-DD'));
-      console.log(vresult);
-      if(vresult?.length === 0) {
-        console.log(vresult);
-        onClickVD([{vId:null}]);
-      }else onClickVD(vresult);
-    }
-    console.log(onClickVD);
-    setSelectDate(value);
-  };
+  useEffect(() => {
+    onClickEnrollVac(null);
+  }, [findDate]);
   return (
     <>
-      <FloatBtn/>
       <div className="site-calendar-customize-header-wrapper">
         <Calendar
           fullscreen
@@ -224,18 +220,10 @@ export const AtdcCalendar = ({onClickATD, onClickVD}) => {
     </>
   );
 };
-// const {
-//   ListItemContainer,
-// } = style;
-// AtdcCalendar.propTypes = {
-//   attendanceData:PropTypes.arrayOf(
-//     PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))
-//   ).isRequired,
-//
-// };
 AtdcCalendar.propTypes = {
   onClickATD: PropTypes.func.isRequired,
   onClickVD:PropTypes.func.isRequired,
+  onClickEnrollVac:PropTypes.func.isRequired,
 };
 CustomHeader.propTypes = {
   value   : PropTypes.objectOf(

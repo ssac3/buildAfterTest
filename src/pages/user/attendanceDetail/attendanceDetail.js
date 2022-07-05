@@ -50,7 +50,7 @@ export const attendanceDetail = ({onClickATD, atDetail}) => {
     <Wrap>
       <Container>
         <CloseLayout>
-          <MdOutlineClose size={25} onClick={() => onClickATD(0)} style={{cursor: 'pointer'}}/>
+          <MdOutlineClose size={25} onClick={() => onClickATD([])} style={{cursor: 'pointer'}}/>
         </CloseLayout>
         <Title>
           <h2>출퇴근 상세정보</h2>
@@ -103,7 +103,7 @@ export const attendanceDetail = ({onClickATD, atDetail}) => {
               <BtnLayout>
                 <Btn
                   bgColor={theme.colorSet.SECONDARY.GRAY_CC}
-                  onClick={() => onClickATD(0)}
+                  onClick={() => onClickATD([])}
                 >
                   취소
                 </Btn>

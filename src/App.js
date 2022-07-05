@@ -35,7 +35,6 @@ function App() {
   const signIn = useSelector((state) => state.SignInReducer);
   const rearrange = useSelector((state) => state.MangerReducer);
   const emplist = useSelector((state) => state.AdminReducer);
-  const attendance = useSelector((state) => state.UserReducer);
   const [roleURL, setRoleURL] = useState(window.location.pathname);
   const [select, setSelect] = useState(getMenu(roleURL));
   const [setting, setSetting] = useState(false);
@@ -43,8 +42,9 @@ function App() {
   const [selectedEmpl, setSelectedEmpl] = useState(0);
   const [selectedItem, setSelectedItem] = useState(0);
   const [openATR, setOpenATR] = useState(0);
-  const [openVD, setOpenVD] = useState(null);
-  const [openATD, setOpenATD] = useState(0);
+  const [openVD, setOpenVD] = useState([]);
+  const [openATD, setOpenATD] = useState([]);
+  const [openErollVacation, setEnrollVacation] = useState(null);
   const [openEadDetail, setOpenEadDetail] = useState([]);
   const [openEamDetail, setOpenEamDetail] = useState([]);
 
@@ -81,12 +81,12 @@ function App() {
     setOpenATR(target);
   };
   const onClickATD = (target) => {
-    console.log(target);
     setOpenATD(target);
+    setEnrollVacation(null);
   };
   const onClickVD = (target) => {
-    console.log(target);
     setOpenVD(target);
+    setEnrollVacation(null);
   };
 
   const atvDetail = React.useMemo(() => {
@@ -99,32 +99,25 @@ function App() {
   }, [rearrange, openATR]);
 
   const atDetail = React.useMemo(() => {
-    console.log(openATD);
-    if(openATD?.length > 0 && (
-      attendance.data?.length > 0 && attendance.data[0].aId !== undefined
-    )) {
-      console.log(attendance.data.filter((v) => v.aId === openATD[0].aId)[0]);
-      return (attendance.data.filter((v) => v.aId === openATD[0].aId)[0]);
+    if(openATD?.length > 0) {
+      return openATD[0];
     }
-    return '';
-  }, [attendance, openATD]);
+    return [];
+  }, [openATD]);
   const vDetail = React.useMemo(() => {
-    console.log(openVD);
-    console.log(attendance);
-    if(openVD?.length > 0 && (
-      attendance.data?.length > 0 && attendance.data[0].aId !== undefined
-    )) {
-      console.log(attendance);
-      console.log(attendance.data.filter((v) => v?.vId === openVD[0]?.vId)[0]);
-      return (attendance.data.filter((v) => v?.vId === openVD[0].vId)[0]);
+    if(openVD?.length > 0) {
+      return openVD[0];
     }
-    if(openVD?.length === 0 && (
-      attendance.data?.length > 0 && attendance.data[0].vId !== undefined
-    )) {
-      return [{vId:null}];
-    }
-    return '';
-  }, [attendance, openVD]);
+    return [];
+  }, [openVD]);
+
+  // const vEnroll = React.useMemo(() => {
+  //   if(openErollVacation?.length > 0) {
+  //     console.log(openErollVacation[0]);
+  //     return openErollVacation[0].date();
+  //   }
+  //   return null;
+  // }, [openErollVacation]);
 
   const emplDetail = React.useMemo(() => {
     if(selectedEmpl > 0 && (
@@ -148,6 +141,14 @@ function App() {
     console.log(target);
     setOpenEamDetail(target);
   };
+
+  const onClickEnrollVac = (target) => {
+    // const year = target.year().toString();
+    // const month = formatter(target.month().toString());
+    // const date = formatter(target.date().toString());
+    // const result = year.concat('-').concat(month).concat('-').concat(date);
+    setEnrollVacation(target);
+  };
   useEffect(() => {
     if (signIn?.data === 'ADMIN') {
       setSelect(getMenu(API.ADMIN));
@@ -168,6 +169,10 @@ function App() {
   useEffect(() => {
     onGetTarget();
   }, [select]);
+
+  useEffect(() => {
+    console.log(openErollVacation);
+  }, [openErollVacation]);
   return (
     <>
 
@@ -179,6 +184,7 @@ function App() {
             onClickVD={onClickVD}
             vDetail={vDetail}
           />}
+      {openErollVacation !== null && console.log('휴가 신청 폼 ~~')}
       {
         alert.open && <Alert status={alert.status} msg={alert.msg}/>
       }
@@ -229,6 +235,7 @@ function App() {
                   selectedId={selectedItem}
                   onClickATD={onClickATD}
                   onClickVD={onClickVD}
+                  onClickEnrollVac={onClickEnrollVac}
                 />)}
             />
           </Wrap>
