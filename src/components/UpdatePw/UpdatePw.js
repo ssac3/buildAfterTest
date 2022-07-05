@@ -44,7 +44,7 @@ export const UpdatePw = () => {
   const Update = () => {
     if (rexCheck === '안전하게 사용하실 수 있는 비밀번호 입니다.') {
       if (nPwCheck === '비밀번호가 일치합니다.') {
-        dispatch(SwpSaprReq(info.password, info.nPassword));
+        dispatch(SwpSaprReq(info.password, info.nPassword, info.nPasswordCheck));
         onChangeInit();
       } else {
         dispatch(openAlert('fail', '새 비밀번호와 비밀번호 확인이 일치하지 않습니다.'));

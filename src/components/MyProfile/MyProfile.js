@@ -3,17 +3,27 @@ import {style} from './MyProfileStyle';
 
 import Douzone from 'assets/myprofile.png';
 import QR from 'assets/qr.png';
-import Img from 'assets/myimg.jpg';
+// import defaultImg from 'assets/defaultImg.png';
 import {useDispatch, useSelector} from 'react-redux';
-import {SwpSavReq} from 'redux/actions/UserAction';
+import {SwpSairReq, SwpSavReq} from 'redux/actions/UserAction';
 // import {useDispatch, useSelector} from "react-redux";
 // import PropTypes from 'prop-types';
+// import {MdModeEdit} from 'react-icons/md';
 
 export const MyProfile = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.UserReducer);
   const [detail, setDetail] = useState({});
+  const [myImg, setmyImg] = useState(null);
 
+  const onChangeImg = (e) => {
+    if(e.target.files) {
+      const uploadFile = e.target.files[0];
+      const formData = new FormData();
+      formData.append('image', uploadFile);
+      setmyImg(formData);
+    }
+  };
   useEffect(() => {
     dispatch(SwpSavReq());
   }, []);
@@ -23,6 +33,12 @@ export const MyProfile = () => {
       setDetail(selector);
     }
   }, [selector]);
+
+  useEffect(() => {
+    if(myImg !== null) {
+      dispatch(SwpSairReq(myImg));
+    }
+  }, [myImg]);
   return(
     <>
       {detail ? (
@@ -62,8 +78,16 @@ export const MyProfile = () => {
                 프로필 사진
               </BotTitle>
               <BotContents>
-                <MyImg alt={'Img'} src={Img}>
+                <MyImg alt={'Img'} src={detail.img}>
                 </MyImg>
+                <MyImgUpdateButton
+                  type={'file'}
+                  id={'logoImg'}
+                  accept={'image/*'}
+                  text={'https://cdn-icons-png.flaticon.com/128/7175/7175371.png'}
+                  enctype={'multipart/form-data'}
+                  onChange={onChangeImg}
+                />
               </BotContents>
             </BotContainer>
           </MyViewBot>
@@ -83,4 +107,5 @@ const {
   MyImg,
   BotTitle,
   BotContents,
+  MyImgUpdateButton
 } = style;
