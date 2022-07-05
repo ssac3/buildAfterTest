@@ -1,7 +1,7 @@
 import styled, {keyframes} from 'styled-components';
 
 const Wrap = styled.div`
-  z-index: 1;
+  z-index: 5;
   position: absolute;
   top: 70px;
   left: 0;
@@ -31,7 +31,7 @@ const Container = styled.div`
   width: 353px;
   height: 100%;
   background-color: white;
-  z-index: 2;
+  z-index: 6;
   box-shadow: 0px 2px 10px #00000010;
   padding: 64px 37px;
   animation-delay: 5s;

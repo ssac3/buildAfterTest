@@ -14,14 +14,22 @@ function UserReducer(state = INIT_STATE, action) {
         email: action.email,
         manager: action.manager,
         location: action.location,
-        qrPath: action.qrPath
+        qrPath: action.qrPath,
+        img: action.img
       };
     case UserType.SWP_SAPR_REQ:
       return {
         password: action.password,
-        nPassword: action.nPassword
+        nPassword: action.nPassword,
+        nPasswordCheck: action.nPasswordCheck
       };
     case UserType.SWP_SAPR_RES:
+      return {};
+    case UserType.SWP_SAIR_REQ:
+      return {
+        data: action.data
+      };
+    case UserType.SWP_SAIR_RES:
       return {};
     case UserType.SWP_DAV_REQ:
       return {

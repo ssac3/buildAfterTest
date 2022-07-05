@@ -8,7 +8,7 @@ import {LOCAL_STORAGE} from 'utils/constants';
 import EmplAttendanceMngment from 'pages/manager/EmplAttendanceMngment';
 
 
-export const Dashboard = ({selectedId, onClickATR}) => {
+export const Dashboard = ({selectedId, onClickATR, onClickEadDetail, onClickEamDetail}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(SwpAtvReq(LOCAL_STORAGE.get('depId')));
@@ -24,7 +24,10 @@ export const Dashboard = ({selectedId, onClickATR}) => {
       />;
     }
     if(selectedId === 4) {
-      return <EmplAttendanceMngment/>;
+      return <EmplAttendanceMngment
+        onClickEadDetail={onClickEadDetail}
+        onClickEamDetail={onClickEamDetail}
+      />;
     }
     return <></>;
   }, [selectedId]);
@@ -35,5 +38,7 @@ export const Dashboard = ({selectedId, onClickATR}) => {
 Dashboard.propTypes = {
   selectedId: PropTypes.number.isRequired,
   onClickATR: PropTypes.func.isRequired,
+  onClickEadDetail: PropTypes.func.isRequired,
+  onClickEamDetail: PropTypes.func.isRequired,
 };
 

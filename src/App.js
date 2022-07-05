@@ -12,8 +12,12 @@ import Setting from 'pages/manager/setting';
 import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
 import RearrangeMngment from 'pages/manager/rearrangeMngment';
-import {EmpInsert} from 'pages/admin/emp_insert/EmpInsert';
-import {EmpDetail} from 'pages/admin/emp_detail/EmpDetail';
+import AttendanceDetail from 'pages/user/attendanceDetail';
+import DetailEmplAtndc from 'pages/manager/DetailEmplAtndc';
+import EamPage from 'pages/manager/EamPage';
+import EmpInsert from 'pages/admin/emp_insert';
+import EmpDetail from 'pages/admin/emp_detail';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function getMenu(role) {
   switch (role) {
@@ -38,6 +42,9 @@ function App() {
   const [selectedEmpl, setSelectedEmpl] = useState(0);
   const [selectedItem, setSelectedItem] = useState(0);
   const [openATR, setOpenATR] = useState(0);
+  const [openATD, setOpenATD] = useState(0);
+  const [openEadDetail, setOpenEadDetail] = useState([]);
+  const [openEamDetail, setOpenEamDetail] = useState([]);
 
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
@@ -92,8 +99,15 @@ function App() {
     setOpenInsertModal(!openInsertModal);
   };
   const onClickDetailEmp = (target) => {
-    console.log(target);
     setSelectedEmpl(target);
+  };
+  const onClickEadDetail = (target) => {
+    setOpenEadDetail(target);
+  };
+
+  const onClickEamDetail = (target) => {
+    console.log(target);
+    setOpenEamDetail(target);
   };
   useEffect(() => {
     if (signIn?.data === 'ADMIN') {
@@ -119,7 +133,6 @@ function App() {
     <>
 
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
-
       {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
       {roleURL !== API.ROOT && (
         <>
@@ -135,6 +148,10 @@ function App() {
       {setting && <Setting open={onClickSetting}/>}
       {openInsertModal && <EmpInsert/>}
       {selectedEmpl !== 0 && <EmpDetail emp={emplDetail} onClickDetailEmp={onClickDetailEmp}/>}
+      {openEadDetail?.length > 0 &&
+        <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
+      {openEamDetail?.length > 0 &&
+        <EamPage/>}
       <BrowserRouter>
         <Switch>
           <Route exact path={API.ROOT} component={SignIn}/>
@@ -153,6 +170,8 @@ function App() {
                 <Dashboard
                   selectedId={selectedItem}
                   onClickATR={onClickATR}
+                  onClickEadDetail={onClickEadDetail}
+                  onClickEamDetail={onClickEamDetail}
                 />)}
             />
             <Route path={API.USER} render={() => <AtdcManagement selectedId={selectedItem}/>}/>

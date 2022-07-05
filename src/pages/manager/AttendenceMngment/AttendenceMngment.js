@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {SwpRavReq} from 'redux/actions/ManagerAction';
 import {cnvrtDate, cnvrtTime} from 'utils/convertDateTime';
 import {LOCAL_STORAGE, MANAGER_APPROVAL_TYPE} from 'utils/constants';
+import Pagination from 'components/Pagination';
 
 const ListItemComponent = ({item, onClickATR}) => {
   let [startHour, startMin, endHour, endMin] = [0, 0, 0, 0];
@@ -63,6 +64,9 @@ const ListItemComponent = ({item, onClickATR}) => {
 export const AttendenceMngment = ({onClickATR}) => {
   const dispatch = useDispatch();
   const [infos, setInfos] = useState([]);
+  const [page, setPage] = useState(1);
+  const limit = 8;
+  const offset = (page - 1) * limit;
   const selector = useSelector((state) => state.MangerReducer);
 
   useEffect(() => {
@@ -96,9 +100,16 @@ export const AttendenceMngment = ({onClickATR}) => {
             <InnerLayout>수정</InnerLayout>
           </HeaderContainer>
 
-          {infos?.map((item) => (
+          {infos?.slice(offset, offset + limit).map((item) => (
             <ListItemComponent key={item.rId} item={item} onClickATR={() => onClickATR(item.rId)}/>
           ))}
+
+          <Pagination
+            total={infos?.length}
+            limit={limit}
+            page={page}
+            setPage={setPage}
+          />
         </ListContainer>
       </Container>
     </Wrapper>
