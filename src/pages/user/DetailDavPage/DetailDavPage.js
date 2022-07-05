@@ -60,7 +60,6 @@ const RearrangeEnrollComponent = ({start, end}) => {
 
 
 export const DetailDavPage = ({detailInfo, onClickDavDetail}) => {
-  console.log(detailInfo);
   const date = detailInfo[0]?.aDate !== null ? detailInfo[0].aDate : detailInfo[0].vDate;
   const status = {status: detailInfo[0]?.aStatus,
     vStatus: detailInfo[0]?.vApprovalFlag,

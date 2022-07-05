@@ -86,15 +86,20 @@ const CustomHeader = ({value, onChange}) => {
     </div>
   );
 };
-export const AtdcCalendar = ({onClickDavDetail}) => {
+export const AtdcCalendar = ({onClickDavDetail, onClickVaeDetail, onClickVavDetail}) => {
   const selector = useSelector((state) => state.UserReducer);
   const dispatch = useDispatch();
   const [selectDate, setSelectDate] = useState(moment());
   const [findDate, setFindDate] = useState(selectDate);
   const [getData, setGetData] = useState([]);
   const today = moment();
+  const initOpen = () => {
+    onClickVaeDetail('');
+    onClickDavDetail([]);
+  };
 
   useEffect(() => {
+    initOpen();
     dispatch(SwpDavReq(getFindMonth(selectDate)));
   }, [findDate]);
 
@@ -162,27 +167,31 @@ export const AtdcCalendar = ({onClickDavDetail}) => {
     );
   };
 
-  const onSelectDate = React.useCallback((value) => {
-    if (today.isBefore(value)) {
-      console.log('미래');
+  const onSelectDate = (value) => {
+    if (today.isBefore(value)) { // 미래 선택
       const filterInfo = getData?.filter((v) => v.vDate === value.format('YYYY-MM-DD'));
       if (filterInfo.length > 0) {
-        onClickDavDetail(filterInfo);
+        if(filterInfo[0].vApprovalFlag === '0') {
+          console.log(filterInfo[0]);
+          onClickVavDetail(filterInfo);
+        } else {
+          onClickDavDetail(filterInfo);
+        }
       } else {
-        console.log('휴가 신청 창');
-        // onClickEnrollVac(value);
+        onClickVaeDetail(value);
       }
-    } else {
-      console.log('과거'); // 무조건 조회
+    } else { // 과거 선택
       const filterInfo = getData?.filter((v) => v.aDate === value.format('YYYY-MM-DD'));
       onClickDavDetail(filterInfo);
     }
     setSelectDate(value);
-  }, [selectDate, getData, findDate]);
+  };
+
   const onPanelChange = (value) => {
-    console.log('panel', value);
     setFindDate(value);
   };
+
+
   return (
     <>
       <div className="site-calendar-customize-header-wrapper">
@@ -191,7 +200,7 @@ export const AtdcCalendar = ({onClickDavDetail}) => {
           locale={locale}
           headerRender={CustomHeader}
           onPanelChange={onPanelChange}
-          value={selectDate}
+          value={selectDate || null}
           onSelect={onSelectDate}
           dateCellRender={dateCellRender}
         />
@@ -201,6 +210,8 @@ export const AtdcCalendar = ({onClickDavDetail}) => {
 };
 AtdcCalendar.propTypes = {
   onClickDavDetail: PropTypes.func.isRequired,
+  onClickVaeDetail: PropTypes.func.isRequired,
+  onClickVavDetail: PropTypes.func.isRequired,
 };
 CustomHeader.propTypes = {
   value   : PropTypes.objectOf(

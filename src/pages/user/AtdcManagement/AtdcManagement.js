@@ -7,7 +7,11 @@ import MyProfile from 'components/MyProfile';
 import UpdatePw from 'components/UpdatePw';
 import {style} from './AtdcManagementStyle';
 
-export const AtdcManagement = ({selectedId, onClickDavDetail}) => {
+export const AtdcManagement = ({
+  selectedId,
+  onClickDavDetail,
+  onClickVaeDetail,
+  onClickVavDetail}) => {
   const renderUI = React.useMemo(() => {
     if (selectedId === 0) {
       return (
@@ -15,6 +19,8 @@ export const AtdcManagement = ({selectedId, onClickDavDetail}) => {
           <AtdcCalendar
             locale={locale}
             onClickDavDetail={onClickDavDetail}
+            onClickVaeDetail={onClickVaeDetail}
+            onClickVavDetail={onClickVavDetail}
           />
         </CalendarLayout>
       );
@@ -45,4 +51,6 @@ const {
 AtdcManagement.propTypes = {
   selectedId:PropTypes.number.isRequired,
   onClickDavDetail: PropTypes.func.isRequired,
+  onClickVaeDetail: PropTypes.func.isRequired,
+  onClickVavDetail: PropTypes.func.isRequired,
 };

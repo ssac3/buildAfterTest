@@ -17,6 +17,8 @@ import EamPage from 'pages/manager/EamPage';
 import EmpInsert from 'pages/admin/emp_insert';
 import EmpDetail from 'pages/admin/emp_detail';
 import DetailDavPage from 'pages/user/DetailDavPage';
+import VacationEnrollPage from 'pages/user/VacationEnrollPage';
+import VacationViewPage from 'pages/user/VacationViewPage';
 
 function getMenu(role) {
   switch (role) {
@@ -44,6 +46,9 @@ function App() {
   const [openEadDetail, setOpenEadDetail] = useState([]); // 근태 담당자 사원별 근태 조회(일별)
   const [openEamDetail, setOpenEamDetail] = useState([]); // 근태 담당자 사원별 근태 조회(월별)
   const [openDavDetail, setOpenDavDetail] = useState([]); // 사원 일별 근태 조회
+  const [openVaeDetail, setOpenVaeDetail] = useState(''); // 사원 휴가 신청
+  const [openVavDetail, setOpenVavDetail] = useState([]); // 사원 휴가 승인 대기 시 조회
+
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
       ...value,
@@ -114,6 +119,14 @@ function App() {
   const onClickDavDetail = (target) => {
     setOpenDavDetail(target);
   };
+
+  const onClickVaeDetail = (target) => {
+    setOpenVaeDetail(target);
+  };
+
+  const onClickVavDetail = (target) => {
+    setOpenVavDetail(target);
+  };
   useEffect(() => {
     if (signIn?.data === 'ADMIN') {
       setSelect(getMenu(API.ADMIN));
@@ -149,6 +162,13 @@ function App() {
 
       {openDavDetail?.length > 0 &&
         <DetailDavPage detailInfo={openDavDetail} onClickDavDetail={onClickDavDetail}/>}
+      {openVaeDetail !== '' &&
+        <VacationEnrollPage
+          openVaeDetail={openVaeDetail}
+          onClickVaeDetail={onClickVaeDetail}
+        />}
+      {openVavDetail?.length > 0 &&
+        <VacationViewPage onClickVavDetail={onClickVavDetail}/>}
 
       {roleURL !== API.ROOT && (
         <>
@@ -189,6 +209,8 @@ function App() {
                 <AtdcManagement
                   selectedId={selectedItem}
                   onClickDavDetail={onClickDavDetail}
+                  onClickVaeDetail={onClickVaeDetail}
+                  onClickVavDetail={onClickVavDetail}
                 />)}
             />
           </Wrap>
