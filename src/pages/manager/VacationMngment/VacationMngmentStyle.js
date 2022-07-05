@@ -16,6 +16,7 @@ const SideContainer = styled.div`
   height: 100%;
 `;
 const ListContainer = styled.div`
+  position:relative;
   padding: 15px 0px;
   //border-radius: 5px;
   width: 70%;

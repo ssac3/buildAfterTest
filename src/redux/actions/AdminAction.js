@@ -27,15 +27,15 @@ export const SwpEmpselRes = (emps) => {
 };
 
 // 사원수정
-export const SwpEmpupReq = (emp) => {
+export const SwpEmpupReq = (change) => {
   return {
     type: AdminType.SWP_EMPUP_REQ,
-    emp
+    change
   };
 };
-export const SwpEmpupRes = (emp) => {
+export const SwpEmpupRes = (change) => {
   return {
     type: AdminType.SWP_EMPUP_RES,
-    emp
+    change
   };
 };

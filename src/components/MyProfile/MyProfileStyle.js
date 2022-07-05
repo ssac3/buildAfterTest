@@ -58,7 +58,7 @@ const BotTitle = styled.div`
 `;
 
 const BotContents = styled.div`
-  ${({theme}) => theme.flexSet('center', 'center', 'row')};
+  ${({theme}) => theme.flexSet('center', 'flex-end', 'row')};
   width: 506px;
   padding-bottom: 30px;
 `;
@@ -66,12 +66,43 @@ const BotContents = styled.div`
 const MyImg = styled.img`
   width: 200px;
   height: 200px;
-  margin: 0 auto;
 `;
 
-const MyButton = styled.button`
-  
+const MyImgUpdateButton = styled.input`
+  cursor: pointer;
+  position: relative;
+  border: 0.5px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_CC};
+  border-radius:7px;
+  background: white;
+  width: 35px;
+  height: 35px;
+  color:black;
+  background-image: url(${({text}) => text});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+  &::file-selector-button {
+    visibility: hidden;
+  }
 `;
+
+const QrCodeDownload = styled.div`
+  cursor: pointer;
+  position: relative;
+  border: 0.5px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_CC};
+  border-radius:7px;
+  background: white;
+  width: 35px;
+  height: 35px;
+  color:black;
+  background-image: url(${({text}) => text});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+`;
+
+
+
 
 export const style = {
   Container,
@@ -84,5 +115,6 @@ export const style = {
   MyImg,
   BotTitle,
   BotContents,
-  MyButton
+  MyImgUpdateButton,
+  QrCodeDownload
 };

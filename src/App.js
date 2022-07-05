@@ -14,8 +14,10 @@ import Alert from 'components/Alert';
 import RearrangeMngment from 'pages/manager/rearrangeMngment';
 import AttendanceDetail from 'pages/user/attendanceDetail';
 import VacationDetail from 'pages/user/vacationDetail';
-import {EmpInsert} from 'pages/admin/emp_insert/EmpInsert';
-import {EmpDetail} from 'pages/admin/emp_detail/EmpDetail';
+import DetailEmplAtndc from 'pages/manager/DetailEmplAtndc';
+import EamPage from 'pages/manager/EamPage';
+import EmpInsert from 'pages/admin/emp_insert';
+import EmpDetail from 'pages/admin/emp_detail';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function getMenu(role) {
@@ -30,11 +32,9 @@ function getMenu(role) {
 }
 
 function App() {
-  const history = useHistory();
   const alert = useSelector((state) => state.AlertReducer);
   const signIn = useSelector((state) => state.SignInReducer);
   const rearrange = useSelector((state) => state.MangerReducer);
-  const attendance = useSelector((state) => state.UserReducer);
   const emplist = useSelector((state) => state.AdminReducer);
   const [roleURL, setRoleURL] = useState(window.location.pathname);
   const [select, setSelect] = useState(getMenu(roleURL));
@@ -43,8 +43,11 @@ function App() {
   const [selectedEmpl, setSelectedEmpl] = useState(0);
   const [selectedItem, setSelectedItem] = useState(0);
   const [openATR, setOpenATR] = useState(0);
-  const [openATD, setOpenATD] = useState(null);
   const [openVD, setOpenVD] = useState(null);
+  const [openATD, setOpenATD] = useState(0);
+  const [openEadDetail, setOpenEadDetail] = useState([]);
+  const [openEamDetail, setOpenEamDetail] = useState([]);
+
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
       ...value,
@@ -85,15 +88,16 @@ function App() {
     console.log(target);
     setOpenVD(target);
   };
+
   const atvDetail = React.useMemo(() => {
     if(openATR > 0 && (
       rearrange.data?.length > 0 && rearrange.data[0].rId !== undefined
     )) {
-      console.log(rearrange.data.filter((v) => v.rId === openATR)[0]);
       return (rearrange.data.filter((v) => v.rId === openATR)[0]);
     }
     return '';
   }, [rearrange, openATR]);
+
   const atDetail = React.useMemo(() => {
     console.log(openATD);
     if(openATD?.length > 0 && (
@@ -121,6 +125,7 @@ function App() {
     }
     return '';
   }, [attendance, openVD]);
+
   const emplDetail = React.useMemo(() => {
     if(selectedEmpl > 0 && (
       emplist?.emps?.length > 0 && emplist.emps[0].username !== undefined
@@ -129,21 +134,26 @@ function App() {
     }
     return {};
   }, [emplist, selectedEmpl]);
-
   const onClickInsertEmp = () => {
     setOpenInsertModal(!openInsertModal);
   };
   const onClickDetailEmp = (target) => {
-    console.log(target);
     setSelectedEmpl(target);
   };
+  const onClickEadDetail = (target) => {
+    setOpenEadDetail(target);
+  };
+
+  const onClickEamDetail = (target) => {
+    console.log(target);
+    setOpenEamDetail(target);
+  };
   useEffect(() => {
-    console.log(signIn);
     if (signIn?.data === 'ADMIN') {
       setSelect(getMenu(API.ADMIN));
     } else if (signIn?.data === 'USER') {
       setSelect(getMenu(API.USER));
-    } else if (signIn?.data === 'MANAGER') {
+    } else {
       setSelect(getMenu(API.MANAGER));
     }
     return (() => {
@@ -158,9 +168,9 @@ function App() {
   useEffect(() => {
     onGetTarget();
   }, [select]);
-
   return (
     <>
+
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
       {openATD?.length > 0 && <AttendanceDetail onClickATD={onClickATD} atDetail={atDetail}/>}
       {openVD?.length > 0
@@ -174,7 +184,7 @@ function App() {
       }
       {roleURL !== API.ROOT && (
         <>
-          <Header role={roleURL} setting={onClickSetting} history={history}/>
+          <Header role={roleURL} setting={onClickSetting}/>
           <Navigation
             role={roleURL}
             menu={select}
@@ -185,7 +195,11 @@ function App() {
       )}
       {setting && <Setting open={onClickSetting}/>}
       {openInsertModal && <EmpInsert/>}
-      {selectedEmpl !== 0 && <EmpDetail emp={emplDetail}/>}
+      {selectedEmpl !== 0 && <EmpDetail emp={emplDetail} onClickDetailEmp={onClickDetailEmp}/>}
+      {openEadDetail?.length > 0 &&
+        <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
+      {openEamDetail?.length > 0 &&
+        <EamPage/>}
       <BrowserRouter>
         <Switch>
           <Route exact path={API.ROOT} component={SignIn}/>
@@ -204,6 +218,8 @@ function App() {
                 <Dashboard
                   selectedId={selectedItem}
                   onClickATR={onClickATR}
+                  onClickEadDetail={onClickEadDetail}
+                  onClickEamDetail={onClickEamDetail}
                 />)}
             />
             <Route

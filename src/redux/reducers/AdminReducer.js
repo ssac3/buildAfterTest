@@ -28,11 +28,18 @@ function AdminReducer(state = INIT_STATE, action) {
       };
     case AdminType.SWP_EMPUP_REQ:
       return {
-        emp:action.emp
+        change:action.change,
+        username: Number(action.change.username),
+        name:action.change.name,
+        gender:action.change.gender,
+        location:action.change.location,
+        position:action.change.position,
+        role:action.change.role,
+        depId: action.change.depId
       };
     case AdminType.SWP_EMPUP_RES:
       return {
-        emp: action.emp
+        change: action.change
       };
     default:
       return state;

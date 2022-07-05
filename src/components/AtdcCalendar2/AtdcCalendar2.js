@@ -118,7 +118,8 @@ const getListData = (value, infos) => {
   let listData;
   if (infos.length > 0) {
     listData = infos.filter(
-      (v) => moment(v.date).month() === value.month() && moment(v.date).date() === value.date()
+      (v) => (moment(v.date).month() === value.month() && moment(v.date).date() === value.date()) ||
+        (moment(v.vDate).month() === value.month() && moment(v.vDate).date() === value.date())
     );
   }
   return listData || [];
@@ -133,7 +134,7 @@ const VacationItem = ({vType, vApprovalFlag}) => {
   );
 };
 
-export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
+export const AtdcCalendar2 = ({selectEmpl, onClickDetail, onClickEadDetail}) => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.MangerReducer);
   const [selectDate, setSelectDate] = useState(moment());
@@ -179,7 +180,7 @@ export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
         {listData.map((item) => (
           <li key={item.date}>
             <Badge
-              status={getStatus(item.status)}
+              status={item.status && getStatus(item.status)}
               text={cnvrtTime(item.startTime)?.concat(' / ').concat(cnvrtTime(item.endTime))}
             />
             {item.vType !== null &&
@@ -196,6 +197,11 @@ export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
     setFindDate(value);
   };
   const onSelectDate = (value) => {
+    const filterData = infos.filter(
+      (v) => (moment(v.date).month() === value.month() && moment(v.date).date() === value.date()) ||
+        (moment(v.vDate).month() === value.month() && moment(v.vDate).date() === value.date())
+    );
+    onClickEadDetail(filterData);
     setSelectDate(value);
   };
   const onClickBack = () => {
@@ -223,7 +229,8 @@ export const AtdcCalendar2 = ({selectEmpl, onClickDetail}) => {
 
 AtdcCalendar2.propTypes = {
   selectEmpl   : PropTypes.number.isRequired,
-  onClickDetail: PropTypes.func.isRequired
+  onClickDetail: PropTypes.func.isRequired,
+  onClickEadDetail: PropTypes.func.isRequired,
 };
 
 CustomHeader.propTypes = {
