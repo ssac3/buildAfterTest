@@ -147,7 +147,8 @@ function App() {
       {openEamDetail?.length > 0 &&
         <EamPage/>}
 
-      {openDavDetail?.length > 0 && <DetailDavPage/>}
+      {openDavDetail?.length > 0 &&
+        <DetailDavPage detailInfo={openDavDetail} onClickDavDetail={onClickDavDetail}/>}
 
       {roleURL !== API.ROOT && (
         <>

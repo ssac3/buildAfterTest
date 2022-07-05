@@ -116,7 +116,6 @@ export const AtdcCalendar = ({onClickDavDetail}) => {
             && moment(v.vDate).date() === value.date())
       );
     }
-    console.log(listData);
     return listData || [];
   };
 
