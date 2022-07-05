@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {style} from './EmplAttendanceMngmentStyle';
 import {useDispatch, useSelector} from 'react-redux';
 import ButtonGroup from 'components/ButtonGroup';
@@ -7,7 +7,7 @@ import {LOCAL_STORAGE, GENDER_TYPE} from 'utils/constants';
 import PropTypes from 'prop-types';
 import {cnvrtDate} from 'utils/convertDateTime';
 import AtdcCalendar2 from 'components/AtdcCalendar2';
-
+import Pagination from 'components/Pagination';
 const ListItemComponent = ({item, onClickDetail}) => {
   return(
     <ListItemContainer>
@@ -25,36 +25,31 @@ const ListItemComponent = ({item, onClickDetail}) => {
   );
 };
 
-export const EmplAttendanceMngment = () => {
+export const EmplAttendanceMngment = ({onClickEadDetail, onClickEamDetail}) => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.MangerReducer);
   const [selectType, setSelectType] = useState('일별');
   const [info, setInfo] = useState([]);
-  const [openCalendar, setOpenCalendar] = useState(false);
+  const [page, setPage] = useState(1);
+  const offset = (page - 1) * 8;
   const [selectEmpl, setSelecEmpl] = useState(0);
   const onClickType = (target) => {
     setSelectType(target);
   };
 
-  const onClickDetail = (target) => {
-    setSelecEmpl(target);
-  };
+  const onClickDetail = useCallback((target) => {
+    if(selectType === '일별') {
+      setSelecEmpl(target);
+    } else {
+      onClickEamDetail(info?.filter((v) => v.username === target));
+    }
+  }, [selectEmpl, selectType]);
 
   useEffect(() => {
     if(selectEmpl === 0) {
       dispatch(SwpEivReq(LOCAL_STORAGE.get('depId')));
     }
-  }, [selectEmpl]);
-
-
-  useEffect(() => {
-    if(selectEmpl !== 0) {
-      setOpenCalendar(true);
-    } else {
-      setOpenCalendar(false);
-    }
-  }, [selectEmpl]);
-
+  }, [selectEmpl, selectType]);
   useEffect(() => {
     if(selector.data?.length > 0 && selector.data[0]?.username !== undefined) {
       setInfo(selector.data);
@@ -64,21 +59,28 @@ export const EmplAttendanceMngment = () => {
   }, [selector]);
 
   return (
-    <>
-      {openCalendar && (
+    <Wrapper>
+      {(selectEmpl > 0 && selectType === '일별') && (
         <CalendarLayout>
-          <AtdcCalendar2 selectEmpl={selectEmpl} onClickDetail={onClickDetail}/>
+          <AtdcCalendar2
+            selectEmpl={selectEmpl}
+            onClickDetail={onClickDetail}
+            onClickEadDetail={onClickEadDetail}
+          />
         </CalendarLayout>
       )}
-      {!openCalendar && (
-        <Wrapper>
-          <TitleContainer>
-            <InnerContainer>
-              <h2>사원별 근태 관리</h2>
-              <ButtonGroup selectType={selectType} onClickType={onClickType}/>
-            </InnerContainer>
-          </TitleContainer>
 
+      {selectEmpl === 0 && (
+        <TitleContainer>
+          <InnerContainer>
+            <h2>사원별 근태 관리</h2>
+            <ButtonGroup selectType={selectType} onClickType={onClickType}/>
+          </InnerContainer>
+        </TitleContainer>
+      )}
+
+      {selectEmpl === 0 && (
+        <>
           <Container>
             <ListContainer>
               <HeaderContainer>
@@ -92,21 +94,36 @@ export const EmplAttendanceMngment = () => {
                 <InnerLayout>상세보기</InnerLayout>
               </HeaderContainer>
 
-              {info?.map((item) => (
-                <ListItemComponent key={item.username} item={item} onClickDetail={onClickDetail}/>
-              ))}
-            </ListContainer>
-          </Container>
-        </Wrapper>
-      )}
+              {info?.slice(offset, offset + 8).map((item) => {
+                return <ListItemComponent
+                  key={item.username}
+                  item={item}
+                  onClickDetail={onClickDetail}
+                />;
+              })}
 
-    </>
+            </ListContainer>
+            <Pagination
+              total={info?.length}
+              limit={8}
+              page={page}
+              setPage={setPage}
+            />
+          </Container>
+        </>
+      )}
+    </Wrapper>
   );
 };
 
 ListItemComponent.propTypes = {
   item: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string])).isRequired,
   onClickDetail: PropTypes.func.isRequired,
+};
+
+EmplAttendanceMngment.propTypes = {
+  onClickEadDetail: PropTypes.func.isRequired,
+  onClickEamDetail: PropTypes.func.isRequired,
 };
 
 const {
@@ -120,5 +137,5 @@ const {
   ListItemContainer,
   ItemContainer,
   BtnContainer,
-  CalendarLayout
+  CalendarLayout,
 } = style;

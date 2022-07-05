@@ -100,7 +100,6 @@ export const SwpEadReq = (username, findDate) => {
 };
 
 export const SwpEadRes = (data) => {
-  console.log(data);
   return {
     type: ManagerType.SWP_EAD_RES,
     data
