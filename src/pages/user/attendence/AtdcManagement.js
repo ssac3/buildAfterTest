@@ -8,7 +8,7 @@ import MyProfile from 'components/MyProfile';
 import UpdatePw from 'components/UpdatePw';
 // import {SwpDavReq} from 'redux/actions/UserAction';
 // import {useDispatch, useSelector} from 'react-redux';
-export const AtdcManagement = ({selectedId, onClickATD}) => {
+export const AtdcManagement = ({selectedId, onClickATD, onClickVD}) => {
   // const dispatch = useDispatch();
   // const selector = useSelector((state) => state.UserReducer);
   // const [attendanceData, setAttendanceData] = useState([]);
@@ -27,7 +27,7 @@ export const AtdcManagement = ({selectedId, onClickATD}) => {
       {selectedId === 0 &&
         (
           // <AtdcCalendar locale={locale} attendance={attendanceData}/>
-          <AtdcCalendar locale={locale} onClickATD={onClickATD}/>
+          <AtdcCalendar locale={locale} onClickATD={onClickATD} onClickVD={onClickVD}/>
         )}
 
       {selectedId === 1 &&
@@ -52,4 +52,5 @@ export const AtdcManagement = ({selectedId, onClickATD}) => {
 AtdcManagement.propTypes = {
   selectedId:PropTypes.number.isRequired,
   onClickATD:PropTypes.func.isRequired,
+  onClickVD:PropTypes.func.isRequired,
 };

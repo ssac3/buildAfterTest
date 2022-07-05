@@ -96,7 +96,7 @@ const CustomHeader = ({value, onChange}) => {
     </div>
   );
 };
-export const AtdcCalendar = ({onClickATD}) => {
+export const AtdcCalendar = ({onClickATD, onClickVD}) => {
   const selector = useSelector((state) => state.UserReducer);
   const dispatch = useDispatch();
   const [selectDate, setSelectDate] = useState(moment());
@@ -193,9 +193,18 @@ export const AtdcCalendar = ({onClickATD}) => {
   };
 
   const onSelectDate = (value) => {
-    console.log(getData);
-    onClickATD(0);
-    console.log(value);
+    const aresult = getData.filter(v => v.aDate === value.format('YYYY-MM-DD'));
+    console.log(aresult);
+    onClickATD(aresult);
+    if(aresult?.length === 0) {
+      const vresult = getData.filter(v => v.vDate === value.format('YYYY-MM-DD'));
+      console.log(vresult);
+      if(vresult?.length === 0) {
+        console.log(vresult);
+        onClickVD([{vId:null}]);
+      }else onClickVD(vresult);
+    }
+    console.log(onClickVD);
     setSelectDate(value);
   };
   return (
@@ -226,6 +235,7 @@ export const AtdcCalendar = ({onClickATD}) => {
 // };
 AtdcCalendar.propTypes = {
   onClickATD: PropTypes.func.isRequired,
+  onClickVD:PropTypes.func.isRequired,
 };
 CustomHeader.propTypes = {
   value   : PropTypes.objectOf(

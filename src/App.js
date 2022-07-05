@@ -13,6 +13,7 @@ import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
 import RearrangeMngment from 'pages/manager/rearrangeMngment';
 import AttendanceDetail from 'pages/user/attendanceDetail';
+import VacationDetail from 'pages/user/vacationDetail';
 import DetailEmplAtndc from 'pages/manager/DetailEmplAtndc';
 import EamPage from 'pages/manager/EamPage';
 import EmpInsert from 'pages/admin/emp_insert';
@@ -42,6 +43,7 @@ function App() {
   const [selectedEmpl, setSelectedEmpl] = useState(0);
   const [selectedItem, setSelectedItem] = useState(0);
   const [openATR, setOpenATR] = useState(0);
+  const [openVD, setOpenVD] = useState(null);
   const [openATD, setOpenATD] = useState(0);
   const [openEadDetail, setOpenEadDetail] = useState([]);
   const [openEamDetail, setOpenEamDetail] = useState([]);
@@ -78,6 +80,14 @@ function App() {
   const onClickATR = (target) => {
     setOpenATR(target);
   };
+  const onClickATD = (target) => {
+    console.log(target);
+    setOpenATD(target);
+  };
+  const onClickVD = (target) => {
+    console.log(target);
+    setOpenVD(target);
+  };
 
   const atvDetail = React.useMemo(() => {
     if(openATR > 0 && (
@@ -87,6 +97,35 @@ function App() {
     }
     return '';
   }, [rearrange, openATR]);
+
+  const atDetail = React.useMemo(() => {
+    console.log(openATD);
+    if(openATD?.length > 0 && (
+      attendance.data?.length > 0 && attendance.data[0].aId !== undefined
+    )) {
+      console.log(attendance.data.filter((v) => v.aId === openATD[0].aId)[0]);
+      return (attendance.data.filter((v) => v.aId === openATD[0].aId)[0]);
+    }
+    return '';
+  }, [attendance, openATD]);
+  const vDetail = React.useMemo(() => {
+    console.log(openVD);
+    console.log(attendance);
+    if(openVD?.length > 0 && (
+      attendance.data?.length > 0 && attendance.data[0].aId !== undefined
+    )) {
+      console.log(attendance);
+      console.log(attendance.data.filter((v) => v?.vId === openVD[0]?.vId)[0]);
+      return (attendance.data.filter((v) => v?.vId === openVD[0].vId)[0]);
+    }
+    if(openVD?.length === 0 && (
+      attendance.data?.length > 0 && attendance.data[0].vId !== undefined
+    )) {
+      return [{vId:null}];
+    }
+    return '';
+  }, [attendance, openVD]);
+
   const emplDetail = React.useMemo(() => {
     if(selectedEmpl > 0 && (
       emplist?.emps?.length > 0 && emplist.emps[0].username !== undefined
@@ -133,7 +172,16 @@ function App() {
     <>
 
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
-      {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
+      {openATD?.length > 0 && <AttendanceDetail onClickATD={onClickATD} atDetail={atDetail}/>}
+      {openVD?.length > 0
+        &&
+          <VacationDetail
+            onClickVD={onClickVD}
+            vDetail={vDetail}
+          />}
+      {
+        alert.open && <Alert status={alert.status} msg={alert.msg}/>
+      }
       {roleURL !== API.ROOT && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>
@@ -174,7 +222,15 @@ function App() {
                   onClickEamDetail={onClickEamDetail}
                 />)}
             />
-            <Route path={API.USER} render={() => <AtdcManagement selectedId={selectedItem}/>}/>
+            <Route
+              path={API.USER}
+              render={() => (
+                <AtdcManagement
+                  selectedId={selectedItem}
+                  onClickATD={onClickATD}
+                  onClickVD={onClickVD}
+                />)}
+            />
           </Wrap>
         </Switch>
       </BrowserRouter>
