@@ -39,7 +39,7 @@ function App() {
   const [roleURL, setRoleURL] = useState(window.location.pathname);
   const [select, setSelect] = useState(getMenu(roleURL));
   const [setting, setSetting] = useState(false);
-  const [openInsertModal, setOpenInsertModal] = useState(false);
+  const [openInsertModal, setOpenInsertModal] = useState(true);
   const [selectedEmpl, setSelectedEmpl] = useState(0);
   const [selectedItem, setSelectedItem] = useState(0);
   const [openATR, setOpenATR] = useState(0);
@@ -109,7 +109,6 @@ function App() {
   const onClickEadDetail = (target) => {
     setOpenEadDetail(target);
   };
-
   const onClickEamDetail = (target) => {
     console.log(target);
     setOpenEamDetail(target);
@@ -181,6 +180,13 @@ function App() {
           />
         </>
       )}
+      {setting && <Setting open={onClickSetting}/>}
+      {openInsertModal === false && <EmpInsert onClickInsertEmp={onClickInsertEmp}/>}
+      {selectedEmpl !== 0 && <EmpDetail emp={emplDetail} onClickDetailEmp={onClickDetailEmp}/>}
+      {openEadDetail?.length > 0 &&
+        <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
+      {openEamDetail?.length > 0 &&
+        <EamPage/>}
       <BrowserRouter>
         <Switch>
           <Route exact path={API.ROOT} component={SignIn}/>

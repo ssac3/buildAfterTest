@@ -74,7 +74,7 @@ const UserProfileLayout = styled.div`
   ${({theme}) => theme.flexSet('flex-end')};
   width: 113px;
   height:100%;
-  background-color: red;
+  background-color: #7A7A7A;
 `;
 
 const CaptionLayout = styled.div`
@@ -104,7 +104,13 @@ const LabelLayout = styled.input`,
   height: 30px;
   border: 1px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
 `;
-
+const LabelLayout2 = styled.div`,
+  padding: 8px;
+  border-radius: 5px;
+  width: 200px;
+  height: 100%;
+  border: 1px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
+`;
 const UserInfoLayout2 = styled.div`
   display: grid;
   grid-template-rows: repeat(8, 1fr);
@@ -112,8 +118,6 @@ const UserInfoLayout2 = styled.div`
   width: 100%;
   height: auto;
 `;
-
-
 const ResultBtnLayout = styled.div`
   ${({theme}) => theme.flexSet('space-around', 'center', 'column')};
   width: 100%;
@@ -142,6 +146,7 @@ export const style = {Wrap,
   UserProfileLayout,
   CaptionLayout,
   LabelLayout,
+  LabelLayout2,
   BtnLayout,
   UserInfoLayout2,
   ResultBtnLayout,
