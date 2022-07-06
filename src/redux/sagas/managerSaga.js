@@ -11,6 +11,7 @@ import {
   SwpVavRes,
   SwpEivRes,
   SwpEadRes,
+  SwpEamRes,
 } from 'redux/actions/ManagerAction';
 import {openAlert} from 'redux/actions/AlertAction';
 
@@ -127,6 +128,20 @@ function eadReq(data) {
     .post(ROUTES.SWP_EAD_REQ, data, getHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_EAD_REQ).SUCCESS);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_EAD_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
+
+function eamReq(data) {
+  const result = axios
+    .post(ROUTES.SWP_EAM_REQ, data, getHeader())
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_EAM_REQ).SUCCESS);
       return res.data;
     })
     .catch((err) => {
@@ -274,6 +289,22 @@ function* postSwpEadReq() {
   }
 }
 
+function* postSwpEamReq() {
+  try {
+    const data = yield select((state) => state.MangerReducer);
+    const packedMsg = {username:data.username, year: data.year};
+    const result = yield call(eamReq, packedMsg);
+
+    if(result.resCode === 0) {
+      yield put(SwpEamRes(result.data));
+    } else {
+      yield put(openAlert('fail', result.resMsg));
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 
 function* watchAlert() {
   yield takeLatest(ManagerType.SWP_ATV_REQ, postSwpAtvReq);
@@ -284,6 +315,7 @@ function* watchAlert() {
   yield takeLatest(ManagerType.SWP_RAR_REQ, postSwpRarReq);
   yield takeLatest(ManagerType.SWP_EIV_REQ, postSwpEivReq);
   yield takeLatest(ManagerType.SWP_EAD_REQ, postSwpEadReq);
+  yield takeLatest(ManagerType.SWP_EAM_REQ, postSwpEamReq);
 }
 
 
