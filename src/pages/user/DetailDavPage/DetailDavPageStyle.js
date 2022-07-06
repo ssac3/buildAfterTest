@@ -2,11 +2,11 @@ import styled, {keyframes} from 'styled-components';
 const fadein = () => {
   return keyframes`
     from {
-      width: 440px;
+      width: 400px;
       opacity: 0;
     }
     to {
-      width: 450px;
+      width: 410px;
       opacity: 1;
     }
   `;
@@ -25,7 +25,7 @@ const Container = styled.div`
   ${({theme}) => theme.flexSet('space-around', '', 'column')};
   position: absolute;
   right:0px;
-  width: 450px;
+  width: 410px;
   height: 100%;
   border-radius: 5px 0px 0px 5px;
   background-color: white;

@@ -57,7 +57,7 @@ export const VacationEnrollPage = ({openVaeDetail, onClickVaeDetail}) => {
           </DataItemLayout>
         </DataWrapper>
         <DataWrapper2>
-          <Title>휴가 신청일</Title>
+          <Title>휴가 사유</Title>
           <InputContainer/>
         </DataWrapper2>
         <BtnLayout>

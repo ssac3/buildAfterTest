@@ -166,7 +166,7 @@ function App() {
           onClickVaeDetail={onClickVaeDetail}
         />}
       {openVavDetail?.length > 0 &&
-        <VacationViewPage onClickVavDetail={onClickVavDetail}/>}
+        <VacationViewPage vav={openVavDetail} onClickVavDetail={onClickVavDetail}/>}
 
       {setting && <Setting open={onClickSetting}/>}
       {openInsertModal && <EmpInsert onClickInsertEmp={onClickInsertEmp}/>}

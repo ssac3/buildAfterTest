@@ -43,8 +43,63 @@ const TextLayout = styled.div`
   border-bottom: 1px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_E1};
 `;
 
+const InputContainer = styled.input`
+  cursor: default;
+  width: ${({w}) => w}%;
+  padding: 5px;
+  border-radius: 4px;
+  border: 1px solid black;
+  font-size: 18px;
+  background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_E1 + 70};
+`;
+const DataWrapper = styled.div`
+  ${({theme}) => theme.flexSet()};
+  width: 100%;
+  height: 10%;
+`;
+
+const DataWrapper2 = styled.div`
+  ${({theme}) => theme.flexSet('', '', 'column')};
+  width: 100%;
+  height: 10%;
+`;
+
+const DataItemLayout = styled.div`
+  ${({theme}) => theme.flexSet('space-around', '', 'column')};
+  width: 50%;
+  height:100%;
+`;
+const Title = styled.div`
+  font-size:15px;
+  font-weight:bold;
+`;
+
+const BtnLayout = styled.div`
+  ${({theme}) => theme.flexSet('space-between', '', 'column')};
+  width: 100%;
+  padding:10px 0px;
+  height: 150px;
+`;
+
+const Btn = styled.button`
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: ${({bgColor}) => bgColor};
+  color: white;
+`;
+
 export const style = {
   Wrapper,
   Container,
   TextLayout,
+  DataWrapper,
+  DataWrapper2,
+  DataItemLayout,
+  Title,
+  InputContainer,
+  BtnLayout,
+  Btn
 };
