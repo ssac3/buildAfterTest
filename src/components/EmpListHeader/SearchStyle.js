@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
 const Container = styled.div`
-  ${({theme}) => theme.flexSet()};
-  //padding: 2px 4px;
-  width: 300px;
+  ${({theme}) => theme.flexSet('flex-end')};
+  width: 100%;
   height: 40px;
   border: 1px solid black;
   border-radius: 5px;
@@ -11,7 +10,7 @@ const Container = styled.div`
 
 const SearchInput = styled.input`
   ${({theme}) => theme.flexSet()};
-  width: 80%;
+  width: 100%;
   height: 100%;
   font-size: 15px;
 `;

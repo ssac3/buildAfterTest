@@ -1,10 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {style} from './DropboxStyle';
 import {MdKeyboardArrowDown} from 'react-icons/md';
+import {style} from './DropboxEmpStyle';
+import PropTypes from 'prop-types';
 
-export const Dropbox = ({open, onClickDropBox, menu, select, onClickDropBoxItem}) => {
-  return (
+export const DropboxEmp = ({open, onClickDropBox, menu, select, onClickDropBoxItem}) => {
+  return(
     <Container>
       <ItemName>{select}</ItemName>
       <MdKeyboardArrowDown size={24} color={'white'} onClick={onClickDropBox} style={{cursor:'pointer'}}/>
@@ -12,7 +12,11 @@ export const Dropbox = ({open, onClickDropBox, menu, select, onClickDropBoxItem}
       {open ? (
         <DropContainer>
           {menu.map(k => (
-            <DropdownItem key={k.id} id={k.title} onClick={onClickDropBoxItem}>
+            <DropdownItem
+              key={k.id}
+              id={k.title}
+              onClick={onClickDropBoxItem}
+            >
               {k.title}
             </DropdownItem>
           ))}
@@ -23,13 +27,12 @@ export const Dropbox = ({open, onClickDropBox, menu, select, onClickDropBoxItem}
     </Container>
   );
 };
-
 const { Container, ItemName, DropContainer, DropdownItem } = style;
-
-Dropbox.propTypes = {
+DropboxEmp.propTypes = {
   open: PropTypes.bool.isRequired,
   onClickDropBox:PropTypes.func.isRequired,
   menu: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   select:PropTypes.string.isRequired,
   onClickDropBoxItem:PropTypes.func.isRequired
 };
+

@@ -4,32 +4,29 @@ const Container = styled.div`
   //background-color: lightblue;
   width: 100%;
   height:100%;
-  
-  #pagename{
-    margin-bottom: 50px;
-  }
-  
-  #wrapper{
-    ${({theme}) => theme.flexSet('space-between')};
-    width: 38%;
-  }
-  
-  #topcomponent{
-    ${({theme}) => theme.flexSet('space-between')};
-    width: 100%;
-    margin-bottom: 75px;
-    
-    #selectbox{
-      width: 120px;
-      padding: 8px 8px;
-      font-size: inherit;
-      line-height: inherit;
-      border: 1px solid;
-      border-radius: 5px;
-    }
-  }
+`;
+const PageNameContainer = styled.div`
+  margin-bottom: 50px;
 `;
 
+const Wrapper = styled.div`
+  ${({theme}) => theme.flexSet('space-between')};
+  width: 38%;
+`;
+const TopComponent = styled.div`
+  ${({theme}) => theme.flexSet('space-between')};
+  width: 100%;
+  margin-bottom: 75px;
+`;
+const DivContainer = styled.div`
+  margin-left: 20px;
+  ${({theme}) => theme.flexSet('space-between')};
+`;
+const SelectBox = styled.div`
+  ${({theme}) => theme.flexSet('flex-end')};
+  width: 150px;
+  font-size: 15px;
+`;
 const DelBtn = styled.button`
   background-color: #E20000;
   ${({theme}) => theme.flexSet()};
@@ -69,8 +66,6 @@ const ListItem = styled.li`
 `;
 const ListItemContainer = styled.div`
   ${({theme}) => theme.flexSet('space-around')};
-  //border-top: 0.5px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_BE};
-  //border-bottom: 0.5px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_BE};
   width: 100%;
   min-height: 25px;
   padding: 15px 8px;
@@ -98,9 +93,13 @@ const BtnLayout = styled.button`
   font-weight: bold;
   margin-right: 30px;
 `;
-
 export const style = {
   Container,
+  PageNameContainer,
+  Wrapper,
+  TopComponent,
+  DivContainer,
+  SelectBox,
   DelBtn,
   RegBtn,
   ListHeader,

@@ -4,8 +4,17 @@ import {style} from './EmpInsertStyle';
 import {MdOutlineClose} from 'react-icons/md';
 import {useDispatch} from 'react-redux';
 import {SwpEmpinReq} from 'redux/actions/AdminAction';
+import PropTypes from 'prop-types';
+import {
+  DEPARTMENT_NAME_TYPE,
+  GENDER_TYPE,
+  LOCATION_TYPE,
+  POSITION_TYPE,
+  ROLE_TYPE
+} from 'utils/constants';
+import {DropboxEmp} from 'components/DropboxEmp/DropboxEmp';
 
-export const EmpInsert = () => {
+export const EmpInsert = ({onClickInsertEmp}) => {
   const dispatch = useDispatch();
   const [emp, setEmp] = useState(
     {
@@ -17,7 +26,7 @@ export const EmpInsert = () => {
       position : '',
       role : '',
       qrPath : '',
-      depId : '',
+      depId : '1',
       password:'test123',
       img:'testest',
     }
@@ -27,22 +36,91 @@ export const EmpInsert = () => {
   };
   const Insert = () => {
     console.log(emp);
+    // const genderFlag = GENDER_TYPE;
     dispatch(SwpEmpinReq(emp));
     // 등록 성공 얼럿
     // dispatch(openAlert('success', '신규 사원을 성공적으로 등록했습니다.'));
     // 등록 실패 얼럿
     // dispatch(openAlert('fail', '에러가 발생했습니다. 다시 시도하세요.'));
   };
+  const onClickInsertCloseEmp = () => {
+    onClickInsertEmp(true);
+  };
+  // 드롭박스
+  const [openGenderDropbox, setOpenGenderDropbox] = useState(false);
+  const [openLocationDropbox, setOpenLocationDropbox] = useState(false);
+  const [openPositionDropbox, setOpenPositionDropbox] = useState(false);
+  const [openRoleDropbox, setOpenRoleDropbox] = useState(false);
+  const [openDepNameDropbox, setOpenDepNameDropbox] = useState(false);
+  const [selectItem, setSelectItem] = useState({
+    gender:'선택하세요',
+    location:'선택하세요',
+    position:'선택하세요',
+    role: '선택하세요',
+    depName: '선택하세요'
+  });
+  const onClickGenderDrop = () => {
+    setOpenGenderDropbox(!openGenderDropbox);
+    setOpenLocationDropbox(false);
+    setOpenPositionDropbox(false);
+    setOpenRoleDropbox(false);
+    setOpenDepNameDropbox(false);
+  };
+  const onClickLocationDrop = () => {
+    setOpenLocationDropbox(!openLocationDropbox);
+    setOpenGenderDropbox(false);
+    setOpenPositionDropbox(false);
+    setOpenRoleDropbox(false);
+    setOpenDepNameDropbox(false);
+  };
+  const onClickPositionDrop = () => {
+    setOpenPositionDropbox(!openPositionDropbox);
+    setOpenGenderDropbox(false);
+    setOpenLocationDropbox(false);
+    setOpenRoleDropbox(false);
+    setOpenDepNameDropbox(false);
+  };
+  const onClickRoleDrop = () => {
+    setOpenRoleDropbox(!openRoleDropbox);
+    setOpenGenderDropbox(false);
+    setOpenDepNameDropbox(false);
+    setOpenPositionDropbox(false);
+    setOpenLocationDropbox(false);
+  };
+  const onClickDepNameDrop = () => {
+    setOpenDepNameDropbox(!openDepNameDropbox);
+    setOpenGenderDropbox(false);
+    setOpenLocationDropbox(false);
+    setOpenPositionDropbox(false);
+    setOpenRoleDropbox(false);
+  };
+  const onClickDropBoxItem = (e, target) => {
+    setSelectItem({...selectItem, [target]: e.target.id});
 
+    if(target === 'gender') {
+      onClickGenderDrop();
+    } else if (target === 'location') {
+      onClickLocationDrop();
+    } else if (target === 'position') {
+      onClickPositionDrop();
+    } else if (target === 'role') {
+      onClickRoleDrop();
+    } else if (target === 'depName') {
+      onClickDepNameDrop();
+    } else {
+      onClickDropBoxItem();
+    }
+  };
+  // 드롭박스 end
   return (
     <Wrap>
       <Container>
         <TextLayout>
           <CloseLayout>
-            <MdOutlineClose size={25} style={{cursor: 'pointer'}}/>
+            <MdOutlineClose size={25} onClick={onClickInsertCloseEmp} style={{cursor: 'pointer'}}/>
           </CloseLayout>
           <h2>신규 사원 등록</h2>
-          <h3>신규 사원을 등록하고 QR코드를 자동으로 생성합니다.</h3>
+          <h3>신규 사원을 등록하고 QR 코드를 자동으로 생성합니다.</h3>
           <hr />
         </TextLayout>
         <InsertForm>
@@ -85,35 +163,51 @@ export const EmpInsert = () => {
             onChange={getDataHandler}
             type={'email'}
           />
-          <LabelLayout
+          <DropboxEmp
             id={'gender'}
-            value={emp.gender}
-            onChange={getDataHandler}
-            type={'gender'}
+            open={openGenderDropbox}
+            onClickDropBox={onClickGenderDrop}
+            menu={GENDER_TYPE}
+            select={selectItem.gender}
+            onClickDropBoxItem={
+              (e) => onClickDropBoxItem(e, 'gender')
+            }
           />
           <CaptionLayout>지사</CaptionLayout>
           <CaptionLayout>직급</CaptionLayout>
-          <LabelLayout
+          <DropboxEmp
             id={'location'}
-            value={emp.location}
-            onChange={getDataHandler}
-            type={'location'}
+            open={openLocationDropbox}
+            onClickDropBox={onClickLocationDrop}
+            menu={LOCATION_TYPE}
+            select={selectItem.location}
+            onClickDropBoxItem={
+            (e) => onClickDropBoxItem(e, 'location')
+          }
           />
-          <LabelLayout
+          <DropboxEmp
             id={'position'}
-            value={emp.position}
-            onChange={getDataHandler}
-            type={'position'}
+            open={openPositionDropbox}
+            onClickDropBox={onClickPositionDrop}
+            menu={POSITION_TYPE}
+            select={selectItem.position}
+            onClickDropBoxItem={
+            (e) => onClickDropBoxItem(e, 'position')
+          }
           />
           <CaptionLayout>담당역할</CaptionLayout>
           <CaptionLayout>QR코드
             <BtnLayout>생성</BtnLayout>
           </CaptionLayout>
-          <LabelLayout
+          <DropboxEmp
             id={'role'}
-            value={emp.role}
-            onChange={getDataHandler}
-            type={'role'}
+            open={openRoleDropbox}
+            onClickDropBox={onClickRoleDrop}
+            menu={ROLE_TYPE}
+            select={selectItem.role}
+            onClickDropBoxItem={
+            (e) => onClickDropBoxItem(e, 'role')
+          }
           />
           <LabelLayout
             id={'qrPath'}
@@ -123,20 +217,27 @@ export const EmpInsert = () => {
           />
           <CaptionLayout>부서</CaptionLayout>
           <div/>
-          <LabelLayout
-            id={'depId'}
-            value={emp.depId}
-            onChange={getDataHandler}
-            type={'depId'}
+          <DropboxEmp
+            id={'depName'}
+            open={openDepNameDropbox}
+            onClickDropBox={onClickDepNameDrop}
+            menu={DEPARTMENT_NAME_TYPE}
+            select={selectItem.depName}
+            onClickDropBoxItem={
+            (e) => onClickDropBoxItem(e, 'depName')
+          }
           />
         </UserInfoLayout2>
         <ResultBtnLayout>
-          <Btn color={theme.colorSet.SECONDARY.GRAY_BE}>취소</Btn>
+          <Btn color={theme.colorSet.SECONDARY.GRAY_BE} onClick={onClickInsertCloseEmp}>취소</Btn>
           <Btn color={theme.colorSet.SECONDARY.GRAY_79} onClick={Insert}>확인</Btn>
         </ResultBtnLayout>
       </Container>
     </Wrap>
   );
+};
+EmpInsert.propTypes = {
+  onClickInsertEmp: PropTypes.func.isRequired,
 };
 const {Wrap,
   Container,

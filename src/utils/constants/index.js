@@ -74,13 +74,41 @@ export const MANAGER_MENU = [
 export const ADMIN_MENU = [
   {id: 0, title: '사원 관리', sub: [], check: true}
 ];
-
+export const POSITION_TYPE = [
+  {id: 0, title: '인턴'},
+  {id: 1, title: '사원'},
+  {id: 2, title: '주임'},
+  {id: 3, title: '대리'},
+  {id: 4, title: '과장'},
+  {id: 5, title: '차장'},
+  {id: 6, title: '부장'},
+];
+export const LOCATION_TYPE = [
+  {id: 1, title: '강촌'},
+  {id: 2, title: '부산'},
+  {id: 3, title: '서울'}
+];
+export const ROLE_TYPE = [
+  {id: 0, title: '관리자'},
+  {id: 1, title: '매니저'},
+  {id: 2, title: '일반사원'},
+];
+export const ATTENDENCE_MANAGER_TYPE = [
+  {id: 0, title: '박채연'},
+  {id: 1, title: '하성록'}
+];
+export const DEPARTMENT_NAME_TYPE = [
+  {id: 0, title: '개발1팀'},
+  {id: 1, title: '영업1팀'},
+  {id: 2, title: '개발2팀'},
+];
 
 export const VACATION_TYPE = [
   {id: 0, title: '전일'},
   {id: 1, title: '오전'},
   {id: 2, title: '오후'},
 ];
+
 
 export const MANAGER_APPROVAL_TYPE = [
   {id: 0, title: '요청'},
