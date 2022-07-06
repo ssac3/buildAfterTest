@@ -97,10 +97,11 @@ export const ATTENDENCE_MANAGER_TYPE = [
   {id: 0, title: '박채연'},
   {id: 1, title: '하성록'}
 ];
+// 부서 depId, depName
 export const DEPARTMENT_NAME_TYPE = [
-  {id: 0, title: '개발1팀'},
-  {id: 1, title: '영업1팀'},
-  {id: 2, title: '개발2팀'},
+  {id: 1, title: '개발1팀'},
+  {id: 2, title: '영업1팀'},
+  {id: 3, title: '개발2팀'},
 ];
 
 export const VACATION_TYPE = [

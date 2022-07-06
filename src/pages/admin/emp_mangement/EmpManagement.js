@@ -1,12 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import Search from 'components/EmpListHeader';
+import Search from 'components/SearchEmp';
 import {useDispatch, useSelector} from 'react-redux';
 import {SwpEmpselReq} from 'redux/actions/AdminAction';
 import {style} from './EmpManagementStyle';
 import {cnvrtDate} from 'utils/convertDateTime';
 import Pagination from 'components/Pagination';
-import {POSITION_TYPE} from 'utils/constants';
+import {DEPARTMENT_NAME_TYPE, GENDER_TYPE, POSITION_TYPE} from 'utils/constants';
 import Dropbox from 'components/Dropbox';
 
 const ListItemComponent = ({emp, onClickDetailEmp}) => {
@@ -15,11 +15,11 @@ const ListItemComponent = ({emp, onClickDetailEmp}) => {
       <ItemContainer >{emp.username}</ItemContainer>
       <ItemContainer>{emp.name}</ItemContainer>
       <ItemContainer>{emp.email}</ItemContainer>
-      <ItemContainer>{emp.gender}</ItemContainer>
-      <ItemContainer>{emp.depId}</ItemContainer>
-      <ItemContainer >{emp.position}</ItemContainer>
-      <ItemContainer >{cnvrtDate(new Date(emp.createdAt))}</ItemContainer>
-      <ItemContainer >
+      <ItemContainer>{GENDER_TYPE[emp.gender].title}</ItemContainer>
+      <ItemContainer>{DEPARTMENT_NAME_TYPE[emp.depId - 1].title}</ItemContainer>
+      <ItemContainer>{emp.position}</ItemContainer>
+      <ItemContainer>{cnvrtDate(new Date(emp.createdAt))}</ItemContainer>
+      <ItemContainer>
         <BtnLayout onClick={() => onClickDetailEmp(emp.username)}>보기</BtnLayout>
       </ItemContainer>
     </ListItemContainer>
@@ -31,7 +31,7 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
   const [emps, setEmps] = useState([]);
   // 페이지네이션
   const [page, setPage] = useState(1);
-  const offset = (page - 1) * 4;
+  const offset = (page - 1) * 6;
   // 드롭박스
   const [openDropbox, setOpenDropbox] = useState(false);
   const [openStatusDropbox, setOpenStatusDropbox] = useState(false);
@@ -53,7 +53,6 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
       onClickStatus();
     }
   };
-  // 드롭박스 끝
   useEffect(() => {
     dispatch(SwpEmpselReq());
   }, []);
@@ -93,8 +92,7 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
           <ListItem w={100}>입사일</ListItem>
           <ListItem w={100}>상세보기</ListItem>
         </ListHeader>
-        {emps?.slice(offset, offset + 4).map((v) => {
-          // console.log(v);
+        {emps?.slice(offset, offset + 6).map((v) => {
           return <ListItemComponent
             key={v.username}
             emp={v}
@@ -104,7 +102,7 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
       </Container>
       <Pagination
         total={emps?.length}
-        limit={4}
+        limit={6}
         page={page}
         setPage={setPage}
       />
