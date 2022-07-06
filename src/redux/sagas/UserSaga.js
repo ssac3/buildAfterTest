@@ -8,7 +8,6 @@ import {openAlert} from 'redux/actions/AlertAction';
 axios.defaults.baseURL = ROUTES.BASE_URL;
 const getHeader = () => {
   const headers = { Authorization: LOCAL_STORAGE.get('Authorization')};
-  console.log(headers);
   return {
     headers,
   };
@@ -70,21 +69,18 @@ function davReq(data) {
     .post(ROUTES.SWP_DAV_REQ, data, getHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_DAV_REQ).SUCCESS);
-      console.log(res);
       return res.data;
     })
     .catch((err) => {
       console.log(LOG(ROUTES.SWP_DAV_REQ).ERROR);
       return err;
     });
-  console.log(result);
   return result;
 }
 
 function* postSwpSavReq() {
   try {
     const result = yield call(savReq);
-    console.log(result.data);
     if (result.resCode === 0) {
       const {name, username, department, position, email, manager, location, qrPath, img} =
         result.data;
@@ -145,11 +141,8 @@ function* postSwpDavReq() {
     const data = yield select((state) => {
       return state.UserReducer;
     });
-    console.log(data);
     const result = yield call(davReq, data);
-    console.log(result);
     if(result.resCode === 0) {
-      console.log(result.data);
       yield put(SwpDavRes(result.data));
     } else {
       yield put('fail', result.resMsg);

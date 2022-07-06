@@ -2,25 +2,15 @@ import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import './index.css';
 import {Badge, Calendar, Col, Row, Select} from 'antd';
+import VacationItem from 'components/VacationItem';
 import locale from 'antd/es/calendar/locale/ko_KR';
 import {useDispatch, useSelector} from 'react-redux';
-// import {style} from './AtdcCalendarStyle';
 import {SwpDavReq} from 'redux/actions/UserAction';
 import moment from 'moment';
-import FloatBtn from '../FloatBtn';
-
-// const ListItemComponent = () => {
-//   return(
-//     <ListItemContainer>
-//     </ListItemContainer>
-//   );
-// };
 
 const getFindMonth = (date) => {
-  console.log(date);
   const findYear = (date.year()).toString();
   const findMonth = (date.month() + 1).toString().length > 1 ? (date.month() + 1).toString() : '0'.concat((date.month() + 1).toString());
-  console.log(findYear.concat('-').concat(findMonth));
   return findYear.concat('-').concat(findMonth);
 };
 const CustomHeader = ({value, onChange}) => {
@@ -96,146 +86,132 @@ const CustomHeader = ({value, onChange}) => {
     </div>
   );
 };
-export const AtdcCalendar = ({onClickATD, onClickVD}) => {
+export const AtdcCalendar = ({onClickDavDetail, onClickVaeDetail, onClickVavDetail}) => {
   const selector = useSelector((state) => state.UserReducer);
   const dispatch = useDispatch();
   const [selectDate, setSelectDate] = useState(moment());
   const [findDate, setFindDate] = useState(selectDate);
   const [getData, setGetData] = useState([]);
+  const today = moment();
+  const initOpen = () => {
+    onClickVaeDetail('');
+    onClickDavDetail([]);
+  };
 
   useEffect(() => {
+    initOpen();
     dispatch(SwpDavReq(getFindMonth(selectDate)));
   }, [findDate]);
+
   useEffect(() => {
-    if(selector.data?.length > 0) {
+    if (selector.data?.length > 0) {
       setGetData(selector.data);
     }
   }, [selector]);
-  useEffect(() => {
-  }, [getData]);
-  const getListData = (value) => {
-    const listData = [
-      {
-        type : null,
-        content: null,
-        vacation : null,
-        approval : null
-      }
-    ];
-    const date = value.format('YYYY-MM-DD');
-    for(let i = 0; i < 31; i += 1) {
-      const aDate = getData[i]?.aDate;
-      const workIn = (getData[i]?.aStartTime === null) ? '출근 정보 없음' : getData[i]?.aStartTime;
-      if(date === aDate || date === getData[i]?.vDate) {
-        switch (getData[i].aStatus) {
-          case '0':
-            listData[0].type = 'success';
-            listData[0].content = workIn;
-            break;
-          case '1':
-            listData[0].type = 'warning';
-            listData[0].content = workIn;
-            break;
-          case '2':
-            listData[0].type = 'error';
-            listData[0].content = workIn;
-            break;
-          default:
-        }
-        if(getData[i]?.vId !== null) {
-          const approve = getData[i].vApprovalFlag;
-          switch (getData[i]?.vType) {
-            case '0':
-              listData[0].vacation = '전일휴가';
-              listData[0].approval = approve;
-              break;
-            case '1':
-              listData[0].vacation = '오전휴가';
-              listData[0].approval = approve;
-              break;
-            case '2':
-              listData[0].vacation = '오후휴가';
-              listData[0].approval = approve;
-              break;
-            default:
-          }
-        }
-      }
+
+
+  const getListData = (value, infos) => {
+    let listData;
+    if (infos.length > 0) {
+      listData = infos.filter(
+        (v) => (moment(v.aDate).month() === value.month()
+            && moment(v.aDate).date() === value.date())
+          ||
+          (moment(v.vDate).month() === value.month()
+            && moment(v.vDate).date() === value.date())
+      );
     }
     return listData || [];
   };
+
   const dateCellRender = (value) => {
-    useEffect(() => {
-    }, []);
-    const listData = getListData(value);
-    const getDetail = (val) => {
-      console.log(val);
+    const listData = getListData(value, getData);
+    const getStatus = (status) => {
+      let result;
+      switch (status) {
+        case '0':
+          result = 'success';
+          break;
+        case '1':
+          result = 'warning';
+          break;
+        case '2':
+          result = 'error';
+          break;
+        default:
+          result = 'default';
+          break;
+      }
+      return result;
     };
 
-    // const onClickDate = () => {
-    //   console.log('testtest');
-    // };
+    const cnvrtTime = (time) => {
+      return time?.substring(0, 5);
+    };
     return (
-      <ul type={'button'} className="events">
+      <ul className="events">
         {listData.map((item) => (
-          <li key={item.content}>
-            { item.vacation !== null && item.content === '출근 정보 없음' ?
-              null : <Badge status={item.type} text={item.content} onClick={getDetail}/>}
-            { item.approval === '1' ? <Badge className={'approve'} status={''} text={item.vacation}></Badge> : <Badge className={'denied'} status={''} text={item.vacation}></Badge>}
+          <li key={item?.aDate}>
+            <Badge
+              status={item.aStatus && getStatus(item.aStatus)}
+              text={cnvrtTime(item?.aStartTime)?.concat(' / ').concat(cnvrtTime(item?.aEndTime))}
+            />
+            {item.vType !== null &&
+            <VacationItem
+              vType={item.vType}
+              vApprovalFlag={item.vApprovalFlag}
+            />}
           </li>
         ))}
       </ul>
     );
   };
+
+  const onSelectDate = (value) => {
+    if (today.isBefore(value)) { // 미래 선택
+      const filterInfo = getData?.filter((v) => v.vDate === value.format('YYYY-MM-DD'));
+      if (filterInfo.length > 0) {
+        if(filterInfo[0].vApprovalFlag === '0') {
+          console.log(filterInfo[0]);
+          onClickVavDetail(filterInfo);
+        } else {
+          onClickDavDetail(filterInfo);
+        }
+      } else {
+        onClickVaeDetail(value);
+      }
+    } else { // 과거 선택
+      const filterInfo = getData?.filter((v) => v.aDate === value.format('YYYY-MM-DD'));
+      onClickDavDetail(filterInfo);
+    }
+    setSelectDate(value);
+  };
+
   const onPanelChange = (value) => {
-    console.log(value);
     setFindDate(value);
   };
 
-  const onSelectDate = (value) => {
-    const aresult = getData.filter(v => v.aDate === value.format('YYYY-MM-DD'));
-    console.log(aresult);
-    onClickATD(aresult);
-    if(aresult?.length === 0) {
-      const vresult = getData.filter(v => v.vDate === value.format('YYYY-MM-DD'));
-      console.log(vresult);
-      if(vresult?.length === 0) {
-        console.log(vresult);
-        onClickVD([{vId:null}]);
-      }else onClickVD(vresult);
-    }
-    console.log(onClickVD);
-    setSelectDate(value);
-  };
+
   return (
     <>
-      <FloatBtn/>
       <div className="site-calendar-customize-header-wrapper">
         <Calendar
           fullscreen
           locale={locale}
           headerRender={CustomHeader}
           onPanelChange={onPanelChange}
-          value={selectDate}
+          value={selectDate || null}
           onSelect={onSelectDate}
-          dateCellRender={(value) => dateCellRender(value, getData)}
+          dateCellRender={dateCellRender}
         />
       </div>
     </>
   );
 };
-// const {
-//   ListItemContainer,
-// } = style;
-// AtdcCalendar.propTypes = {
-//   attendanceData:PropTypes.arrayOf(
-//     PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))
-//   ).isRequired,
-//
-// };
 AtdcCalendar.propTypes = {
-  onClickATD: PropTypes.func.isRequired,
-  onClickVD:PropTypes.func.isRequired,
+  onClickDavDetail: PropTypes.func.isRequired,
+  onClickVaeDetail: PropTypes.func.isRequired,
+  onClickVavDetail: PropTypes.func.isRequired,
 };
 CustomHeader.propTypes = {
   value   : PropTypes.objectOf(

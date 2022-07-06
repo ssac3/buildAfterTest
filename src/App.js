@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
 import Dashboard from 'pages/manager/dashboard';
 import EmpManagement from 'pages/admin/emp_mangement';
-import AtdcManagement from 'pages/user/attendence';
+import AtdcManagement from 'pages/user/AtdcManagement';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
@@ -12,12 +12,13 @@ import Setting from 'pages/manager/setting';
 import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
 import RearrangeMngment from 'pages/manager/rearrangeMngment';
-import AttendanceDetail from 'pages/user/attendanceDetail';
-import VacationDetail from 'pages/user/vacationDetail';
 import DetailEmplAtndc from 'pages/manager/DetailEmplAtndc';
 import EamPage from 'pages/manager/EamPage';
 import EmpInsert from 'pages/admin/emp_insert';
 import EmpDetail from 'pages/admin/emp_detail';
+import DetailDavPage from 'pages/user/DetailDavPage';
+import VacationEnrollPage from 'pages/user/VacationEnrollPage';
+import VacationViewPage from 'pages/user/VacationViewPage';
 
 function getMenu(role) {
   switch (role) {
@@ -35,7 +36,6 @@ function App() {
   const signIn = useSelector((state) => state.SignInReducer);
   const rearrange = useSelector((state) => state.MangerReducer);
   const emplist = useSelector((state) => state.AdminReducer);
-  const attendance = useSelector((state) => state.UserReducer);
   const [roleURL, setRoleURL] = useState(window.location.pathname);
   const [select, setSelect] = useState(getMenu(roleURL));
   const [setting, setSetting] = useState(false);
@@ -43,10 +43,11 @@ function App() {
   const [selectedEmpl, setSelectedEmpl] = useState(0);
   const [selectedItem, setSelectedItem] = useState(0);
   const [openATR, setOpenATR] = useState(0);
-  const [openVD, setOpenVD] = useState(null);
-  const [openATD, setOpenATD] = useState(0);
-  const [openEadDetail, setOpenEadDetail] = useState([]);
-  const [openEamDetail, setOpenEamDetail] = useState([]);
+  const [openEadDetail, setOpenEadDetail] = useState([]); // 근태 담당자 사원별 근태 조회(일별)
+  const [openEamDetail, setOpenEamDetail] = useState([]); // 근태 담당자 사원별 근태 조회(월별)
+  const [openDavDetail, setOpenDavDetail] = useState([]); // 사원 일별 근태 조회
+  const [openVaeDetail, setOpenVaeDetail] = useState(''); // 사원 휴가 신청
+  const [openVavDetail, setOpenVavDetail] = useState([]); // 사원 휴가 승인 대기 시 조회
 
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
@@ -80,14 +81,6 @@ function App() {
   const onClickATR = (target) => {
     setOpenATR(target);
   };
-  const onClickATD = (target) => {
-    console.log(target);
-    setOpenATD(target);
-  };
-  const onClickVD = (target) => {
-    console.log(target);
-    setOpenVD(target);
-  };
 
   const atvDetail = React.useMemo(() => {
     if(openATR > 0 && (
@@ -98,33 +91,6 @@ function App() {
     return '';
   }, [rearrange, openATR]);
 
-  const atDetail = React.useMemo(() => {
-    console.log(openATD);
-    if(openATD?.length > 0 && (
-      attendance.data?.length > 0 && attendance.data[0].aId !== undefined
-    )) {
-      console.log(attendance.data.filter((v) => v.aId === openATD[0].aId)[0]);
-      return (attendance.data.filter((v) => v.aId === openATD[0].aId)[0]);
-    }
-    return '';
-  }, [attendance, openATD]);
-  const vDetail = React.useMemo(() => {
-    console.log(openVD);
-    console.log(attendance);
-    if(openVD?.length > 0 && (
-      attendance.data?.length > 0 && attendance.data[0].aId !== undefined
-    )) {
-      console.log(attendance);
-      console.log(attendance.data.filter((v) => v?.vId === openVD[0]?.vId)[0]);
-      return (attendance.data.filter((v) => v?.vId === openVD[0].vId)[0]);
-    }
-    if(openVD?.length === 0 && (
-      attendance.data?.length > 0 && attendance.data[0].vId !== undefined
-    )) {
-      return [{vId:null}];
-    }
-    return '';
-  }, [attendance, openVD]);
 
   const emplDetail = React.useMemo(() => {
     if(selectedEmpl > 0 && (
@@ -147,6 +113,19 @@ function App() {
     console.log(target);
     setOpenEamDetail(target);
   };
+
+
+  const onClickDavDetail = (target) => {
+    setOpenDavDetail(target);
+  };
+
+  const onClickVaeDetail = (target) => {
+    setOpenVaeDetail(target);
+  };
+
+  const onClickVavDetail = (target) => {
+    setOpenVavDetail(target);
+  };
   useEffect(() => {
     if (signIn?.data === 'ADMIN') {
       setSelect(getMenu(API.ADMIN));
@@ -167,20 +146,29 @@ function App() {
   useEffect(() => {
     onGetTarget();
   }, [select]);
+
   return (
     <>
-
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
-      {openATD?.length > 0 && <AttendanceDetail onClickATD={onClickATD} atDetail={atDetail}/>}
-      {openVD?.length > 0
-        &&
-          <VacationDetail
-            onClickVD={onClickVD}
-            vDetail={vDetail}
-          />}
-      {
-        alert.open && <Alert status={alert.status} msg={alert.msg}/>
-      }
+      {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
+      {setting && <Setting open={onClickSetting}/>}
+      {openInsertModal && <EmpInsert/>}
+      {selectedEmpl !== 0 && <EmpDetail emp={emplDetail} onClickDetailEmp={onClickDetailEmp}/>}
+      {openEadDetail?.length > 0 &&
+        <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
+      {openEamDetail?.length > 0 &&
+        <EamPage/>}
+
+      {openDavDetail?.length > 0 &&
+        <DetailDavPage detailInfo={openDavDetail} onClickDavDetail={onClickDavDetail}/>}
+      {openVaeDetail !== '' &&
+        <VacationEnrollPage
+          openVaeDetail={openVaeDetail}
+          onClickVaeDetail={onClickVaeDetail}
+        />}
+      {openVavDetail?.length > 0 &&
+        <VacationViewPage onClickVavDetail={onClickVavDetail}/>}
+
       {roleURL !== API.ROOT && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>
@@ -226,8 +214,9 @@ function App() {
               render={() => (
                 <AtdcManagement
                   selectedId={selectedItem}
-                  onClickATD={onClickATD}
-                  onClickVD={onClickVD}
+                  onClickDavDetail={onClickDavDetail}
+                  onClickVaeDetail={onClickVaeDetail}
+                  onClickVavDetail={onClickVavDetail}
                 />)}
             />
           </Wrap>
