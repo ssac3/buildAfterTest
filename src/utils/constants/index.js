@@ -29,7 +29,9 @@ export const ROUTES = {
   SWP_EMPUP_REQ: API.ADMIN.concat('/updateEmp'),
   SWP_SAPR_REQ: API.USER.concat('/updatePw'),
   SWP_EAS_REQ: API.LOGOUT.concat(''),
-  SWP_SAIR_REQ: API.USER.concat('/myImgUpdate')
+  SWP_SAIR_REQ: API.USER.concat('/myImgUpdate'),
+  SWP_VA_REQ: API.USER.concat('/regVacation'),
+  SWP_AAR_REQ: API.USER.concat('/rearrangeAttendance')
 };
 
 export const LOG = (target) => {

@@ -63,15 +63,34 @@ export const SwpDavRes = (data) => {
     data
   };
 };
-// export const SwpVaReq = (eNum, vDate, vacationType, vContents) => {
-//   return {
-//     type: UserType.SWP_VA_REQ,
-//     eNum,
-//     vDate,
-//     vacationType,
-//     vContents
-//   };
-// };
+export const SwpVaReq = (aId, date, vacationType, contents) => {
+  return {
+    type: UserType.SWP_VA_REQ,
+    aId,
+    date,
+    vacationType,
+    contents
+  };
+};
+export const SwpVaRes = () => {
+  return {
+    type: UserType.SWP_VA_RES
+  };
+};
+export const SwpAarReq = (aId, startTime, endTime, contents) => {
+  return {
+    type: UserType.SWP_AAR_REQ,
+    aId,
+    startTime,
+    endTime,
+    contents
+  };
+};
+export const SwpAarRes = () => {
+  return {
+    type:UserType.SWP_AAR_RES
+  };
+};
 // export const SwpVaRes = () => {
 //   return {
 //     type: UserType.SWP_VA_RES
@@ -89,14 +108,5 @@ export const SwpDavRes = (data) => {
 //     type: UserType.SWP_VC_RES
 //   };
 // };
-// export const SwpAarReq = () => {
-//   return {
-//     type: UserType.SWP_AAR_REQ
-//   };
-// };
-// export const SwpAarRes = () => {
-//   return {
-//     type:UserType.SWP_AAR_RES
-//   };
-// };
+
 
