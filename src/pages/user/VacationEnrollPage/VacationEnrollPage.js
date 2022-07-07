@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {style} from './VacationEnrollStyle';
 import PropTypes from 'prop-types';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -7,12 +7,18 @@ import { CalendarPicker } from '@mui/x-date-pickers/CalendarPicker';
 import theme from 'styles/theme';
 import Dropbox from 'components/Dropbox';
 import {VACATION_TYPE} from 'utils/constants';
+import {useDispatch} from 'react-redux';
+import {SwpVaReq} from 'redux/actions/UserAction';
 
 export const VacationEnrollPage = ({openVaeDetail, onClickVaeDetail}) => {
+  const dispatch = useDispatch();
   const clickDate = openVaeDetail !== '' && openVaeDetail.format('YYYY-MM-DD');
   const [enrollDate] = useState(new Date(clickDate));
   const [openVType, setOpenVType] = useState(false);
   const [selectVType, setSelectVType] = useState('선택하세요');
+  const [contents, setConetents] = useState('');
+  const [vacationType, setVacationType] = useState('');
+  const aId = null;
   const onClosePage = () => {
     onClickVaeDetail('');
   };
@@ -26,6 +32,34 @@ export const VacationEnrollPage = ({openVaeDetail, onClickVaeDetail}) => {
     setSelectVType(e.target.id);
     onCloseDropBox();
   };
+
+  const onReqVac = (e) => {
+    console.log(e.target.id);
+    console.log(aId);
+    console.log(contents);
+    console.log(vacationType);
+    console.log(clickDate);
+    dispatch(SwpVaReq(aId, clickDate, vacationType, contents));
+  };
+
+  const onChangeContents = (e) => {
+    setConetents(e.target.value);
+  };
+
+  useEffect(() => {
+    switch (selectVType) {
+      case '전일':
+        setVacationType('0');
+        break;
+      case '오전':
+        setVacationType('1');
+        break;
+      case '오후':
+        setVacationType('2');
+        break;
+      default:
+    }
+  }, [selectVType]);
   return (
     <Wrapper onClick={onClosePage}>
       <Container onClick={(e) => e.stopPropagation()}>
@@ -58,11 +92,11 @@ export const VacationEnrollPage = ({openVaeDetail, onClickVaeDetail}) => {
         </DataWrapper>
         <DataWrapper2>
           <Title>휴가 사유</Title>
-          <InputContainer/>
+          <InputContainer value={contents} onChange={onChangeContents}/>
         </DataWrapper2>
         <BtnLayout>
           <Btn bgColor={theme.colorSet.SECONDARY.GRAY_CC} onClick={onClosePage}>취소</Btn>
-          <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B}>확인</Btn>
+          <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B} onClick={onReqVac} >확인 </Btn>
         </BtnLayout>
       </Container>
     </Wrapper>

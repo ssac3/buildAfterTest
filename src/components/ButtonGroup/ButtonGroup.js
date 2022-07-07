@@ -3,7 +3,6 @@ import {style} from './ButtonGroupStyle';
 import PropTypes from 'prop-types';
 
 export const ButtonGroup = ({selectType, onClickType}) => {
-  console.log(selectType);
   const onClickItem = (e) => {
     onClickType(e.target.id);
   };

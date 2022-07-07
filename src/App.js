@@ -50,7 +50,7 @@ function App() {
   const [openDavDetail, setOpenDavDetail] = useState([]); // 사원 일별 근태 조회
   const [openVaeDetail, setOpenVaeDetail] = useState(''); // 사원 휴가 신청
   const [openVavDetail, setOpenVavDetail] = useState([]); // 사원 휴가 승인 대기 시 조회
-
+  const [findYear, setFindYear] = useState(new Date()); // 근태 담당자 사원별 근태 조회 년도 선택
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
       ...value,
@@ -112,7 +112,6 @@ function App() {
     setOpenEadDetail(target);
   };
   const onClickEamDetail = (target) => {
-    console.log(target);
     setOpenEamDetail(target);
   };
 
@@ -127,6 +126,10 @@ function App() {
 
   const onClickVavDetail = (target) => {
     setOpenVavDetail(target);
+  };
+
+  const onClickFindYear = (newYear) => {
+    setFindYear(newYear);
   };
   useEffect(() => {
     if (signIn?.data === 'ADMIN') {
@@ -149,6 +152,7 @@ function App() {
     onGetTarget();
   }, [select]);
 
+
   return (
     <>
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
@@ -157,8 +161,6 @@ function App() {
       {selectedEmpl !== 0 && <EmpDetail emp={emplDetail} onClickDetailEmp={onClickDetailEmp}/>}
       {openEadDetail?.length > 0 &&
         <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
-      {openEamDetail?.length > 0 &&
-        <EamPage/>}
 
       {openDavDetail?.length > 0 &&
         <DetailDavPage detailInfo={openDavDetail} onClickDavDetail={onClickDavDetail}/>}
@@ -176,8 +178,12 @@ function App() {
       {openEadDetail?.length > 0 &&
         <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
       {openEamDetail?.length > 0 &&
-        <EamPage/>}
-      {roleURL !== API.ROOT && roleURL !== API.SCANNER && (
+        <EamPage
+          openEamDetail={openEamDetail}
+          onClickEamDetail={onClickEamDetail}
+          findYear={findYear}
+        />}
+      {roleURL !== API.ROOT && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>
           <Navigation
@@ -209,6 +215,8 @@ function App() {
                   onClickATR={onClickATR}
                   onClickEadDetail={onClickEadDetail}
                   onClickEamDetail={onClickEamDetail}
+                  findYear={findYear}
+                  onClickFindYear={onClickFindYear}
                 />)}
             />
             <Route

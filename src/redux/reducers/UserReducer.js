@@ -38,21 +38,25 @@ function UserReducer(state = INIT_STATE, action) {
     case UserType.SWP_DAV_RES:
       return {
         data: action.data
-        // empId: action.empId,
-        // aId: action.aId,
-        // aStatus: action.aStatus,
-        // aStartTime: action.aStartTime,
-        // aEndTime: action.aEndTime,
-        // rId: action.rId,
-        // rStartTime: action.rStartTime,
-        // rEndTime: action.rEndTime,
-        // rContents: action.rrContents,
-        // rApprovalFlag: action.rApprovalFlag,
-        // vId: action.vId,
-        // vDate: action.vDate,
-        // vacationType: action.vacationType,
-        // vApprovalFlag: action.rApprovalFlag,
-        // vContents:action.vContents
+      };
+    case UserType.SWP_VA_REQ:
+      return {
+        aId: action.aId,
+        date: action.date,
+        vacationType: action.vacationType,
+        contents: action.contents
+      };
+    case UserType.SWP_VA_RES:
+      return {};
+    case UserType.SWP_AAR_REQ:
+      return {
+        aId: action.aId,
+        startTime: action.startTime,
+        endTime: action.endTime,
+        contents: action.contents
+      };
+    case UserType.SWP_AAR_RES:
+      return {
       };
     default:
       return state;
