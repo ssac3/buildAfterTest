@@ -39,7 +39,6 @@ export const SwpVavReq = (id) => {
 };
 
 export const SwpVavRes = (data) => {
-  console.log(data);
   return {
     type: ManagerType.SWP_VAV_RES,
     data,
@@ -102,6 +101,21 @@ export const SwpEadReq = (username, findDate) => {
 export const SwpEadRes = (data) => {
   return {
     type: ManagerType.SWP_EAD_RES,
+    data
+  };
+};
+
+export const SwpEamReq = (username, year) => {
+  return {
+    type: ManagerType.SWP_EAM_REQ,
+    username,
+    year
+  };
+};
+
+export const SwpEamRes = (data) => {
+  return {
+    type: ManagerType.SWP_EAM_RES,
     data
   };
 };

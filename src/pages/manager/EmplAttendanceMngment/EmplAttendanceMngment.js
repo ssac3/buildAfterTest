@@ -8,6 +8,11 @@ import PropTypes from 'prop-types';
 import {cnvrtDate} from 'utils/convertDateTime';
 import AtdcCalendar2 from 'components/AtdcCalendar2';
 import Pagination from 'components/Pagination';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import TextField from '@mui/material/TextField';
+
 const ListItemComponent = ({item, onClickDetail}) => {
   return(
     <ListItemContainer>
@@ -25,7 +30,11 @@ const ListItemComponent = ({item, onClickDetail}) => {
   );
 };
 
-export const EmplAttendanceMngment = ({onClickEadDetail, onClickEamDetail}) => {
+export const EmplAttendanceMngment = ({
+  onClickEadDetail,
+  onClickEamDetail,
+  findYear,
+  onClickFindYear}) => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.MangerReducer);
   const [selectType, setSelectType] = useState('일별');
@@ -57,7 +66,6 @@ export const EmplAttendanceMngment = ({onClickEadDetail, onClickEamDetail}) => {
       setInfo([]);
     }
   }, [selector]);
-
   return (
     <Wrapper>
       {(selectEmpl > 0 && selectType === '일별') && (
@@ -76,6 +84,28 @@ export const EmplAttendanceMngment = ({onClickEadDetail, onClickEamDetail}) => {
             <h2>사원별 근태 관리</h2>
             <ButtonGroup selectType={selectType} onClickType={onClickType}/>
           </InnerContainer>
+          <YearSelectorLayout>
+            {(selectType === '월별') && (
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  views={['year']}
+                  label="조회할 년도"
+                  value={findYear}
+                  onChange={(newValue) => {
+                    onClickFindYear(newValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      size={'small'}
+                      {...params}
+                      helperText={null}
+                      style={{backgroundColor:'white'}}
+                    />
+                  )}
+                />
+              </LocalizationProvider>
+            )}
+          </YearSelectorLayout>
         </TitleContainer>
       )}
 
@@ -124,6 +154,10 @@ ListItemComponent.propTypes = {
 EmplAttendanceMngment.propTypes = {
   onClickEadDetail: PropTypes.func.isRequired,
   onClickEamDetail: PropTypes.func.isRequired,
+  findYear:PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.func])
+  ).isRequired,
+  onClickFindYear:PropTypes.func.isRequired,
 };
 
 const {
@@ -138,4 +172,5 @@ const {
   ItemContainer,
   BtnContainer,
   CalendarLayout,
+  YearSelectorLayout,
 } = style;

@@ -6,9 +6,15 @@ import AttendenceMngment from 'pages/manager/AttendenceMngment';
 import {useDispatch} from 'react-redux';
 import {LOCAL_STORAGE} from 'utils/constants';
 import EmplAttendanceMngment from 'pages/manager/EmplAttendanceMngment';
+import ReportEmvPage from 'pages/manager/ReportEmvPage';
 
-
-export const Dashboard = ({selectedId, onClickATR, onClickEadDetail, onClickEamDetail}) => {
+export const Dashboard = ({
+  selectedId,
+  onClickATR,
+  onClickEadDetail,
+  onClickEamDetail,
+  findYear,
+  onClickFindYear}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(SwpAtvReq(LOCAL_STORAGE.get('depId')));
@@ -27,10 +33,15 @@ export const Dashboard = ({selectedId, onClickATR, onClickEadDetail, onClickEamD
       return <EmplAttendanceMngment
         onClickEadDetail={onClickEadDetail}
         onClickEamDetail={onClickEamDetail}
+        findYear={findYear}
+        onClickFindYear={onClickFindYear}
       />;
     }
+    if(selectedId === 6) {
+      return <ReportEmvPage/>;
+    }
     return <></>;
-  }, [selectedId]);
+  }, [selectedId, findYear]);
 
   return renderUI;
 };
@@ -40,5 +51,9 @@ Dashboard.propTypes = {
   onClickATR: PropTypes.func.isRequired,
   onClickEadDetail: PropTypes.func.isRequired,
   onClickEamDetail: PropTypes.func.isRequired,
+  findYear:PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.func])
+  ).isRequired,
+  onClickFindYear:PropTypes.func.isRequired,
 };
 

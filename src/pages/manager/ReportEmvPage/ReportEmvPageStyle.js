@@ -6,14 +6,12 @@ const Wrapper = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  ${({theme}) => theme.flexSet('space-around')};
+  ${({theme}) => theme.flexSet('flex-start')};
   width: 40%;
   height: 75px;
-`;
-
-const InnerContainer = styled.div`
-  ${({theme}) => theme.flexSet('space-between')};
-  width: 250px;
+  font-weight: normal;
+  font-size:20px;
+  color:${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
 `;
 
 const Container = styled.div`
@@ -79,22 +77,10 @@ const BtnContainer = styled.div`
   }
 `;
 
-const CalendarLayout = styled.div`
-  ${({theme}) => theme.flexSet()};
-  width: 100%;
-  padding: 15px;
-  background-color: white;
-  position: relative;
-`;
-
-const YearSelectorLayout = styled.div`
-  width:200px;
-`;
 
 export const style = {
   Wrapper,
   TitleContainer,
-  InnerContainer,
   Container,
   ListContainer,
   HeaderContainer,
@@ -102,6 +88,4 @@ export const style = {
   ListItemContainer,
   ItemContainer,
   BtnContainer,
-  CalendarLayout,
-  YearSelectorLayout,
 };

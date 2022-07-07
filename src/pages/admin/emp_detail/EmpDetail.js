@@ -5,9 +5,100 @@ import {style} from './EmpDetailStyle';
 import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {SwpEmpupReq} from 'redux/actions/AdminAction';
+import {
+  ATTENDENCE_MANAGER_TYPE,
+  DEPARTMENT_NAME_TYPE,
+  GENDER_TYPE,
+  LOCATION_TYPE,
+  POSITION_TYPE,
+  ROLE_TYPE
+} from 'utils/constants';
+import {DropboxEmp} from 'components/DropboxEmp/DropboxEmp';
 
 export const EmpDetail = ({emp, onClickDetailEmp}) => {
   // 드롭박스
+  const [openGenderDropbox, setOpenGenderDropbox] = useState(false);
+  const [openLocationDropbox, setOpenLocationDropbox] = useState(false);
+  const [openPositionDropbox, setOpenPositionDropbox] = useState(false);
+  const [openRoleDropbox, setOpenRoleDropbox] = useState(false);
+  const [openDepNameDropbox, setOpenDepNameDropbox] = useState(false);
+  const [openManagerDropbox, setOpenManagerDropbox] = useState(false);
+  const onClickGenderDrop = () => {
+    setOpenGenderDropbox(!openGenderDropbox);
+    setOpenLocationDropbox(false);
+    setOpenPositionDropbox(false);
+    setOpenRoleDropbox(false);
+    setOpenDepNameDropbox(false);
+    setOpenManagerDropbox(false);
+  };
+  const onClickLocationDrop = () => {
+    setOpenLocationDropbox(!openLocationDropbox);
+    setOpenGenderDropbox(false);
+    setOpenPositionDropbox(false);
+    setOpenRoleDropbox(false);
+    setOpenDepNameDropbox(false);
+    setOpenManagerDropbox(false);
+  };
+  const onClickPositionDrop = () => {
+    setOpenPositionDropbox(!openPositionDropbox);
+    setOpenGenderDropbox(false);
+    setOpenLocationDropbox(false);
+    setOpenRoleDropbox(false);
+    setOpenDepNameDropbox(false);
+    setOpenManagerDropbox(false);
+  };
+  const onClickRoleDrop = () => {
+    setOpenRoleDropbox(!openRoleDropbox);
+    setOpenGenderDropbox(false);
+    setOpenDepNameDropbox(false);
+    setOpenPositionDropbox(false);
+    setOpenLocationDropbox(false);
+    setOpenManagerDropbox(false);
+  };
+  const onClickDepNameDrop = () => {
+    setOpenDepNameDropbox(!openDepNameDropbox);
+    setOpenGenderDropbox(false);
+    setOpenLocationDropbox(false);
+    setOpenPositionDropbox(false);
+    setOpenRoleDropbox(false);
+    setOpenManagerDropbox(false);
+  };
+  const onClickManagerDrop = () => {
+    setOpenManagerDropbox(!openManagerDropbox);
+    setOpenGenderDropbox(false);
+    setOpenLocationDropbox(false);
+    setOpenPositionDropbox(false);
+    setOpenRoleDropbox(false);
+    setOpenDepNameDropbox(false);
+  };
+  const [selectItem, setSelectItem] = useState({
+    gender: GENDER_TYPE[emp.gender].title,
+    location: LOCATION_TYPE[emp.depId - 1].title,
+    position: POSITION_TYPE[emp.depId - 1].title,
+    role: ROLE_TYPE[emp.role].title,
+    depName: DEPARTMENT_NAME_TYPE[emp.depId - 1].title,
+    manager: ATTENDENCE_MANAGER_TYPE[(emp.role > 1) - 1].title,
+  });
+  console.log('이거확인', emp);
+  // console.log('고른드롭박스', LOCATION_TYPE[emp.location - 1].title);
+  const onClickDropBoxItem = (e, target) => {
+    setSelectItem({...selectItem, [target]: e.target.id});
+    if(target === 'gender') {
+      onClickGenderDrop();
+    } else if (target === 'location') {
+      onClickLocationDrop();
+    } else if (target === 'position') {
+      onClickPositionDrop();
+    } else if (target === 'role') {
+      onClickRoleDrop();
+    } else if (target === 'depName') {
+      onClickDepNameDrop();
+    } else if (target === 'manager') {
+      onClickManagerDrop();
+    } else {
+      onClickDropBoxItem();
+    }
+  };
   // 통신
   const dispatch = useDispatch();
   const [change, setChange] = useState(
@@ -15,22 +106,27 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
       username: emp.username,
       name: emp.name,
       email: emp.email,
-      gender: emp.gender,
-      location: emp.location,
-      position: emp.position,
-      role: emp.role,
       qrPath: emp.qrPath,
-      depId: emp.depId,
-      manager: emp.manager,
       img: emp.img
     }
   );
   const onClickDetailCloseEmp = () => {
     onClickDetailEmp(0);
   };
-
   const Update = () => {
-    dispatch(SwpEmpupReq(change));
+    console.log(emp);
+    console.log(selectItem);
+    const convertData = {
+      gender : GENDER_TYPE.filter((v) => v.title === selectItem?.gender)[0].id,
+      location: LOCATION_TYPE.filter((v) => v.title === selectItem?.location)[0].id,
+      position: POSITION_TYPE.filter((v) => v.title === selectItem?.position)[0].title,
+      role: ROLE_TYPE.filter((v) => v.title === selectItem?.role)[0].id,
+      depId: DEPARTMENT_NAME_TYPE.filter((v) => v.title === selectItem?.depName)[0].id,
+      manager: ATTENDENCE_MANAGER_TYPE.filter((v) => v.title === selectItem?.manager)[0].title,
+    };
+    // change + packedMsg
+    const packedMsg = Object.assign(change, convertData);
+    dispatch(SwpEmpupReq(packedMsg));
   };
   const onChange = (e) => {
     setChange({...change, [e.target.id]: e.target.value});
@@ -46,7 +142,7 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
           </CloseLayout>
           <h2>사원 상세 정보</h2>
           <h3>해당 사원의 상세 내역을 조회하고 수정합니다.</h3>
-          <hr />
+          <hr/>
         </TextLayout>
         <InsertForm>
           <UserInfoWrap>
@@ -70,36 +166,54 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
           <UserProfileLayout/>
         </InsertForm>
         <UserInfoLayout2>
-          <CaptionLayout >이메일</CaptionLayout>
+          <CaptionLayout>이메일</CaptionLayout>
           <CaptionLayout>성별</CaptionLayout>
           <LabelLayout
             readOnly
             style={{backgroundColor: '#EFEFEF'}}
             value={emp.email || ''}
           />
-          <LabelLayout
-            id={'gender'}
-            value={change?.gender}
-            onChange={onChange}
+          <DropboxEmp
+            // id={'gender'}
+            open={openGenderDropbox}
+            onClickDropBox={onClickGenderDrop}
+            menu={GENDER_TYPE}
+            select={selectItem.gender}
+            onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'gender')}
           />
           <CaptionLayout>지사</CaptionLayout>
           <CaptionLayout>직급</CaptionLayout>
-          <LabelLayout
-            id={'location'}
-            onChange={() => console.log('지사 바꿔야해')}
-            value={change?.depId}
+          <DropboxEmp
+            // id={'location'}
+            open={openLocationDropbox}
+            onClickDropBox={onClickLocationDrop}
+            menu={LOCATION_TYPE}
+            select={selectItem.location}
+            onClickDropBoxItem={
+              (e) => onClickDropBoxItem(e, 'location')
+            }
           />
-          <LabelLayout
-            id={'position'}
-            value={change?.position}
-            onChange={onChange}
+          <DropboxEmp
+            // id={'position'}
+            open={openPositionDropbox}
+            onClickDropBox={onClickPositionDrop}
+            menu={POSITION_TYPE}
+            select={selectItem.position}
+            onClickDropBoxItem={
+              (e) => onClickDropBoxItem(e, 'position')
+            }
           />
           <CaptionLayout>담당역할</CaptionLayout>
           <CaptionLayout>QR코드</CaptionLayout>
-          <LabelLayout
+          <DropboxEmp
             id={'role'}
-            value={change?.role}
-            onChange={onChange}
+            open={openRoleDropbox}
+            onClickDropBox={onClickRoleDrop}
+            menu={ROLE_TYPE}
+            select={selectItem.role}
+            onClickDropBoxItem={
+              (e) => onClickDropBoxItem(e, 'role')
+            }
           />
           <LabelLayout
             readOnly
@@ -109,15 +223,25 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
           </LabelLayout>
           <CaptionLayout>부서</CaptionLayout>
           <CaptionLayout>근태담당자</CaptionLayout>
-          <LabelLayout
-            id={'depId'}
-            value={change?.depId}
-            onChange={onChange}
+          <DropboxEmp
+            id={'depName'}
+            open={openDepNameDropbox}
+            onClickDropBox={onClickDepNameDrop}
+            menu={DEPARTMENT_NAME_TYPE}
+            select={selectItem.depName}
+            onClickDropBoxItem={
+              (e) => onClickDropBoxItem(e, 'depName')
+            }
           />
-          <LabelLayout
+          <DropboxEmp
             id={'manager'}
-            value={change?.manager}
-            onChange={onChange}
+            open={openManagerDropbox}
+            onClickDropBox={onClickManagerDrop}
+            menu={ATTENDENCE_MANAGER_TYPE}
+            select={selectItem.manager}
+            onClickDropBoxItem={
+              (e) => onClickDropBoxItem(e, 'manager')
+            }
           />
         </UserInfoLayout2>
         <ResultBtnLayout>
