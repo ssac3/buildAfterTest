@@ -6,7 +6,7 @@ import AttendenceMngment from 'pages/manager/AttendenceMngment';
 import {useDispatch} from 'react-redux';
 import {LOCAL_STORAGE} from 'utils/constants';
 import EmplAttendanceMngment from 'pages/manager/EmplAttendanceMngment';
-
+import ReportEmvPage from 'pages/manager/ReportEmvPage';
 
 export const Dashboard = ({
   selectedId,
@@ -36,6 +36,9 @@ export const Dashboard = ({
         findYear={findYear}
         onClickFindYear={onClickFindYear}
       />;
+    }
+    if(selectedId === 6) {
+      return <ReportEmvPage/>;
     }
     return <></>;
   }, [selectedId, findYear]);
