@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {style} from './DetailDavPageStyle';
 import AtndcLabel from 'components/AtndcLabel';
 import PropTypes from 'prop-types';
@@ -8,12 +8,28 @@ import {LocalizationProvider} from '@mui/x-date-pickers';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {TextField} from '@mui/material';
 import theme from 'styles/theme';
+import {useDispatch} from 'react-redux';
+import {SwpAarReq} from 'redux/actions/UserAction';
 
-const RearrangeEnrollComponent = ({start, end}) => {
+const RearrangeEnrollComponent = ({start, end, detailInfo}) => {
+  const dispatch = useDispatch();
   console.log(start, end);
   const [startTime, setStartTime] = useState(new Date(start) || null);
   const [endTime, setEndTime] = useState(new Date(end) || null);
-
+  const [reqSTime, setReqSTime] = useState();
+  const [reqETime, setReqETime] = useState();
+  const [contents, setContents] = useState();
+  const onReaReq = () => {
+    console.log(detailInfo[0]);
+    dispatch(SwpAarReq(detailInfo[0].aId, detailInfo[0].aDate.concat(' ') + reqSTime, detailInfo[0].aDate.concat(' ') + reqETime, contents));
+  };
+  const onChangeConText = (e) => {
+    setContents(e.target.value);
+  };
+  useEffect(() => {
+    setReqSTime(startTime.toTimeString().substring(0, 8));
+    setReqETime(endTime.toTimeString().substring(0, 8));
+  }, [startTime, endTime]);
   return (
     <>
       <RearrangeTitle>
@@ -49,10 +65,10 @@ const RearrangeEnrollComponent = ({start, end}) => {
           </LocalizationProvider>
         </InputLayout>
       </TimeLayout>
-      <ContentLayout placeholder={'조정사유를 입력하세요'} multiline/>
+      <ContentLayout onChange={onChangeConText} value={contents} placeholder={'조정사유를 입력하세요'} multiline/>
       <BtnLayout>
         <Btn bgColor={theme.colorSet.SECONDARY.GRAY_CC}>취소</Btn>
-        <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B}>확인</Btn>
+        <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B} onClick={onReaReq}>확인</Btn>
       </BtnLayout>
     </>
   );
@@ -108,6 +124,7 @@ export const DetailDavPage = ({detailInfo, onClickDavDetail}) => {
             <RearrangeEnrollComponent
               start={detailInfo[0]?.aStartTime ?? ''}
               end={detailInfo[0]?.aEndTime ?? ''}
+              detailInfo={detailInfo}
             />}
         </RearrangeLayout>
       </Container>
@@ -143,4 +160,7 @@ DetailDavPage.propTypes = {
 RearrangeEnrollComponent.propTypes = {
   start: PropTypes.string.isRequired,
   end :PropTypes.string.isRequired,
+  detailInfo:PropTypes.arrayOf(PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  )).isRequired,
 };

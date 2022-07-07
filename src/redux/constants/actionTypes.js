@@ -45,12 +45,13 @@ export const UserType = {
   SWP_SAIR_RES: 'SWP_SAIR_RES',
   SWP_DAV_REQ: 'SWP_DAV_REQ',
   SWP_DAV_RES: 'SWP_DAV_RES',
-  // SWP_VA_REQ: 'SWP_VA_REQ',
-  // SWP_VA_RES: 'SWP_VA_RES',
+  SWP_VA_REQ: 'SWP_VA_REQ',
+  SWP_VA_RES: 'SWP_VA_RES',
+  SWP_AAR_REQ: 'SWP_AAR_REQ',
+  SWP_AAR_RES: 'SWP_AAR_RES'
   // SWP_VC_REQ: 'SWP_VC_REQ',
-  // SWP_VC_RES: 'SWP_VC_RES',
-  // SWP_AAR_REQ: 'SWP_AAR_REQ',
-  // SWP_AAR_RES: 'SWP_AAR_RES'
+  // SWP_VC_RES: 'SWP_VC_RES'
+
 };
 
 export const SignInType = {
