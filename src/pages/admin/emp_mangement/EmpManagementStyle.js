@@ -18,6 +18,25 @@ const TopComponent = styled.div`
   width: 100%;
   margin-bottom: 75px;
 `;
+const SchContainer = styled.div`
+  ${({theme}) => theme.flexSet('flex-end')};
+  width: 100%;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 5px;
+`;
+const SchBtnContainer = styled.div`
+  ${({theme}) => theme.flexSet()};
+  cursor: pointer;
+  width:30px;
+  height: 100%;
+`;
+const SchInput = styled.input`
+  ${({theme}) => theme.flexSet()};
+  width: 100%;
+  height: 100%;
+  font-size: 15px;
+`;
 const DivContainer = styled.div`
   margin-left: 20px;
   ${({theme}) => theme.flexSet('space-between')};
@@ -96,8 +115,11 @@ const BtnLayout = styled.button`
 export const style = {
   Container,
   PageNameContainer,
-  Wrapper,
   TopComponent,
+  Wrapper,
+  SchContainer,
+  SchBtnContainer,
+  SchInput,
   DivContainer,
   SelectBox,
   DelBtn,

@@ -23,13 +23,24 @@ export const EmpInsert = ({onClickInsertEmp}) => {
       email : '',
       qrPath : '',
       password:'test123',
-      img:'testest',
+      img:'',
     }
   );
+  // 사원번호 랜덤생성
+  // const mkUsername = (emp) => {
+  //   // username.length === 6
+  // };
+  // 사진 업로드
+  const [empImg, setEmpImg] = useState(null);
+  const onInsertImg = (e) => {
+    if(e.target.files) {
+      const uploadFile = e.target.files[0];
+      setEmpImg(uploadFile);
+    }
+  };
   const getDataHandler = (e) => {
     setEmp({...emp, [e.target.id]: e.target.value});
   };
-
   const onClickInsertCloseEmp = () => {
     onClickInsertEmp(true);
   };
@@ -98,17 +109,18 @@ export const EmpInsert = ({onClickInsertEmp}) => {
     }
   };
   const Insert = () => {
-    console.log(emp);
-    console.log(selectItem);
     const convertData = {
       gender : GENDER_TYPE.filter((v) => v.title === selectItem?.gender)[0].id,
       location: LOCATION_TYPE.filter((v) => v.title === selectItem?.location)[0].id,
       position: POSITION_TYPE.filter((v) => v.title === selectItem?.position)[0].title,
       role: ROLE_TYPE.filter((v) => v.title === selectItem?.role)[0].id,
-      depId: DEPARTMENT_NAME_TYPE.filter((v) => v.title === selectItem?.depName)[0].id,
+      depId: DEPARTMENT_NAME_TYPE.filter((v) => v.title === selectItem?.depName)[0].id
     };
     const packedMsg = Object.assign(emp, convertData);
-    dispatch(SwpEmpinReq(packedMsg));
+    const insertForm = new FormData();
+    insertForm.append('image', empImg);
+    insertForm.append('data', new Blob([JSON.stringify(packedMsg)], {type:'application/json'}));
+    dispatch(SwpEmpinReq(insertForm));
     onClickInsertCloseEmp();
   };
   return (
@@ -149,7 +161,13 @@ export const EmpInsert = ({onClickInsertEmp}) => {
               />
             </UserInfoLayout>
           </UserInfoWrap>
-          <UserProfileLayout/>
+          <UserProfileLayout
+            type={'file'}
+            id={'profileImg'}
+            accept={'image/*'}
+            enctype={'multipart/form-data'}
+            onChange={onInsertImg}
+          />
         </InsertForm>
         <UserInfoLayout2>
           <CaptionLayout >이메일
@@ -169,11 +187,6 @@ export const EmpInsert = ({onClickInsertEmp}) => {
             menu={GENDER_TYPE}
             select={selectItem.gender}
             onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'gender')}
-            // select={selectItem.gender}
-            // onClickDropBoxItem={onClickItem}
-            // onClickDropBoxItem={
-            //   (e) => onClickDropBoxItem(e, 'gender')
-            // }
           />
           <CaptionLayout>지사</CaptionLayout>
           <CaptionLayout>직급</CaptionLayout>

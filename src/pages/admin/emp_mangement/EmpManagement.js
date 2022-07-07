@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import Search from 'components/SearchEmp';
 import {useDispatch, useSelector} from 'react-redux';
 import {SwpEmpselReq} from 'redux/actions/AdminAction';
 import {style} from './EmpManagementStyle';
@@ -8,11 +7,12 @@ import {cnvrtDate} from 'utils/convertDateTime';
 import Pagination from 'components/Pagination';
 import {DEPARTMENT_NAME_TYPE, GENDER_TYPE, POSITION_TYPE} from 'utils/constants';
 import Dropbox from 'components/Dropbox';
+import {MdSearch} from 'react-icons/md';
 
 const ListItemComponent = ({emp, onClickDetailEmp}) => {
   return (
     <ListItemContainer>
-      <ItemContainer >{emp.username}</ItemContainer>
+      <ItemContainer>{emp.username}</ItemContainer>
       <ItemContainer>{emp.name}</ItemContainer>
       <ItemContainer>{emp.email}</ItemContainer>
       <ItemContainer>{GENDER_TYPE[emp.gender].title}</ItemContainer>
@@ -29,6 +29,15 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.AdminReducer);
   const [emps, setEmps] = useState([]);
+  // console.log(emps);
+  // 검색
+  // const [schVal, setSchVal] = useState('');
+  // const handleSchValChange = (e) => {
+  //   setSchVal(e.target.value);
+  // };
+  // const usernameSch = emps.filter((emps) => {
+  //   return emps.emp.username.includes(schVal);
+  // });
   // 페이지네이션
   const [page, setPage] = useState(1);
   const offset = (page - 1) * 6;
@@ -72,7 +81,18 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
         </PageNameContainer>
         <TopComponent>
           <Wrapper>
-            <Search />
+            <SchContainer>
+              <SchBtnContainer>
+                <MdSearch size={25}/>
+              </SchBtnContainer>
+              <SchInput
+                autoFocus
+                // value={schVal}
+                placeholder="사원번호 혹은 사원명을 입력하세요."
+                // onChange={handleSchValChange}
+                // data={usernameSch}
+              />
+            </SchContainer>
             <DivContainer>
               <SelectBox>
                 <Dropbox id={'position'} open={openDropbox} onClickDropBox={onClickType} menu={POSITION_TYPE} select={selectItem.position} onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'position')}/>
@@ -96,6 +116,7 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
           return <ListItemComponent
             key={v.username}
             emp={v}
+            // data={usernameSch}
             onClickDetailEmp={onClickDetailEmp}
           />;
         })}
@@ -118,6 +139,9 @@ ListItemComponent.propTypes = {
   emp: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   ).isRequired,
+  // data: PropTypes.objectOf(
+  //   PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+  // ).isRequired,
   onClickDetailEmp: PropTypes.func.isRequired,
 };
 const {
@@ -125,6 +149,9 @@ const {
   PageNameContainer,
   TopComponent,
   Wrapper,
+  SchContainer,
+  SchBtnContainer,
+  SchInput,
   DivContainer,
   SelectBox,
   DelBtn,
