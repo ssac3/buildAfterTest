@@ -1,11 +1,10 @@
 import React from 'react';
 import {MdOutlineClose} from 'react-icons/md';
 import {style} from './vacationDetailStyle';
-// import moment from "moment";
-// import DatePicker from '@mui/x-date-pickers-pro/DatePicker';
-// import DatePicker from '@mui/x-date-pickers/DatePicker';
-// import { DatePicker } from '@mui/x-date-pickers-pro';
-// import { DatePicker } from '@mui/x-date-pickers';
+import {TimePicker} from '@mui/x-date-pickers/TimePicker';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import {LocalizationProvider} from '@mui/x-date-pickers';
+import {TextField} from '@mui/material';
 export const vacationDetail = ({onClickVD, vDetail}) => {
   console.log(vDetail);
   // const getVTitle = () => {
@@ -21,6 +20,14 @@ export const vacationDetail = ({onClickVD, vDetail}) => {
           <h3>해당 날짜의 휴가정보를 조회합니다.</h3>
         </Title>
         <ItemLayout>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <TimePicker
+              label="출근 시간"
+              value={'00:00:00'}
+              ampm={false}
+              renderInput={(params) => <TextField {...params} color={'grey'}/>}
+            />
+          </LocalizationProvider>
         </ItemLayout>
 
       </Container>
