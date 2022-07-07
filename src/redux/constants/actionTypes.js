@@ -60,3 +60,8 @@ export const SignOutType = {
   SWP_EAS_REQ: 'SWP_EAS_REQ',
   SWP_EAS_RES: 'SWP_EAS_RES'
 };
+
+export const ScannerType = {
+  SWP_QCS_REQ: 'SWP_QCS_REQ',
+  SWP_QCS_RES: 'SWP_QCS_RES'
+};

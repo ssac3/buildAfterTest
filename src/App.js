@@ -19,6 +19,8 @@ import EmpDetail from 'pages/admin/emp_detail';
 import DetailDavPage from 'pages/user/DetailDavPage';
 import VacationEnrollPage from 'pages/user/VacationEnrollPage';
 import VacationViewPage from 'pages/user/VacationViewPage';
+import Scanner from 'components/Scanner';
+
 
 function getMenu(role) {
   switch (role) {
@@ -175,7 +177,7 @@ function App() {
         <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
       {openEamDetail?.length > 0 &&
         <EamPage/>}
-      {roleURL !== API.ROOT && (
+      {roleURL !== API.ROOT && roleURL !== API.SCANNER && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>
           <Navigation
@@ -188,6 +190,7 @@ function App() {
       )}
       <BrowserRouter>
         <Switch>
+          <Route path={API.SCANNER} component={Scanner}/>
           <Route exact path={API.ROOT} component={SignIn}/>
           <Wrap p={position()}>
             <Route
