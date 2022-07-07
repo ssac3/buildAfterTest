@@ -21,12 +21,7 @@ export const EmpInsert = ({onClickInsertEmp}) => {
       username : '',
       name : '',
       email : '',
-      gender : '',
-      location : '',
-      position : '',
-      role : '',
       qrPath : '',
-      depId : '1',
       password:'test123',
       img:'testest',
     }
@@ -34,15 +29,7 @@ export const EmpInsert = ({onClickInsertEmp}) => {
   const getDataHandler = (e) => {
     setEmp({...emp, [e.target.id]: e.target.value});
   };
-  const Insert = () => {
-    console.log(emp);
-    // const genderFlag = GENDER_TYPE;
-    dispatch(SwpEmpinReq(emp));
-    // 등록 성공 얼럿
-    // dispatch(openAlert('success', '신규 사원을 성공적으로 등록했습니다.'));
-    // 등록 실패 얼럿
-    // dispatch(openAlert('fail', '에러가 발생했습니다. 다시 시도하세요.'));
-  };
+
   const onClickInsertCloseEmp = () => {
     onClickInsertEmp(true);
   };
@@ -96,7 +83,6 @@ export const EmpInsert = ({onClickInsertEmp}) => {
   };
   const onClickDropBoxItem = (e, target) => {
     setSelectItem({...selectItem, [target]: e.target.id});
-
     if(target === 'gender') {
       onClickGenderDrop();
     } else if (target === 'location') {
@@ -111,7 +97,20 @@ export const EmpInsert = ({onClickInsertEmp}) => {
       onClickDropBoxItem();
     }
   };
-  // 드롭박스 end
+  const Insert = () => {
+    console.log(emp);
+    console.log(selectItem);
+    const convertData = {
+      gender : GENDER_TYPE.filter((v) => v.title === selectItem?.gender)[0].id,
+      location: LOCATION_TYPE.filter((v) => v.title === selectItem?.location)[0].id,
+      position: POSITION_TYPE.filter((v) => v.title === selectItem?.position)[0].title,
+      role: ROLE_TYPE.filter((v) => v.title === selectItem?.role)[0].id,
+      depId: DEPARTMENT_NAME_TYPE.filter((v) => v.title === selectItem?.depName)[0].id,
+    };
+    const packedMsg = Object.assign(emp, convertData);
+    dispatch(SwpEmpinReq(packedMsg));
+    onClickInsertCloseEmp();
+  };
   return (
     <Wrap>
       <Container>
@@ -169,9 +168,12 @@ export const EmpInsert = ({onClickInsertEmp}) => {
             onClickDropBox={onClickGenderDrop}
             menu={GENDER_TYPE}
             select={selectItem.gender}
-            onClickDropBoxItem={
-              (e) => onClickDropBoxItem(e, 'gender')
-            }
+            onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'gender')}
+            // select={selectItem.gender}
+            // onClickDropBoxItem={onClickItem}
+            // onClickDropBoxItem={
+            //   (e) => onClickDropBoxItem(e, 'gender')
+            // }
           />
           <CaptionLayout>지사</CaptionLayout>
           <CaptionLayout>직급</CaptionLayout>

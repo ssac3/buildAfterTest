@@ -74,7 +74,7 @@ const UserProfileLayout = styled.div`
   ${({theme}) => theme.flexSet('flex-end')};
   width: 113px;
   height:100%;
-  background-color: red;
+  background-color: #7A7A7A;
 `;
 
 const CaptionLayout = styled.div`

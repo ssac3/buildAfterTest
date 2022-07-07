@@ -66,20 +66,22 @@ const InfoInputComponent = ({text}) => {
 
 const UserInfoComponent = ({detail, detailInit}) => {
   const dispatch = useDispatch();
+  // 드롭박스 활성화
   const [drop, setDrop] = useState(false);
+  // 값변경 함수
   const [change, setChange] = useState('');
   useEffect(() => {
     if(detail?.approvalFlag) {
       setChange(MANAGER_APPROVAL_TYPE[detail.approvalFlag].title);
+      console.log('cahnge확인111', MANAGER_APPROVAL_TYPE[detail.approvalFlag].title);
     }
   }, [detail]);
-
   const onClickDrop = () => {
     setDrop(!drop);
   };
-
   const onClickItem = (e) => {
     setChange(e.target.id);
+    console.log('cahnge확인222', e.target.id);
     onClickDrop();
   };
 
@@ -132,6 +134,7 @@ const UserInfoComponent = ({detail, detailInit}) => {
     </UserInfoContainer>
   );
 };
+// UserInfoComponent end
 
 export const VacationMngment = () => {
   const dispatch = useDispatch();
@@ -213,9 +216,27 @@ export const VacationMngment = () => {
             <InnerLayout><InputComponent type={'text'}/></InnerLayout>
             <InnerLayout><InputComponent type={'text'}/></InnerLayout>
             <InnerLayout><InputComponent type={'date'}/></InnerLayout>
-            <InnerLayout><Dropbox id={'vacation'} open={openDropbox} onClickDropBox={onClickType} menu={VACATION_TYPE} select={selectItem.vacation} onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'vacation')}/></InnerLayout>
+            <InnerLayout>
+              <Dropbox
+                id={'vacation'}
+                open={openDropbox}
+                onClickDropBox={onClickType}
+                menu={VACATION_TYPE}
+                select={selectItem.vacation}
+                onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'vacation')}
+              />
+            </InnerLayout>
             <InnerLayout><InputComponent type={'text'}/></InnerLayout>
-            <InnerLayout><Dropbox id={'status'} open={openStatusDropbox} onClickDropBox={onClickStatus} menu={MANAGER_APPROVAL_TYPE} select={selectItem.status} onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'status')}/></InnerLayout>
+            <InnerLayout>
+              <Dropbox
+                id={'status'}
+                open={openStatusDropbox}
+                onClickDropBox={onClickStatus}
+                menu={MANAGER_APPROVAL_TYPE}
+                select={selectItem.status}
+                onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'status')}
+              />
+            </InnerLayout>
             <InnerLayout>-</InnerLayout>
           </HeaderContainer>
 
