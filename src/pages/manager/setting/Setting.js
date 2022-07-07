@@ -17,21 +17,33 @@ export const Setting = ({open}) => {
   const reducer = useSelector((state) => {
     return state.MangerReducer;
   });
-  const [startTime, setStartTime] = useState(new Date(reducer.startTime) || null);
-  const [endTime, setEndTime] = useState(new Date(reducer.endTime) || null);
-  const [workingTime, setWorkingTime] = useState(formatter((endTime.getHours() - 1) - startTime.getHours()).concat('시간 ').concat(formatter(endTime.getMinutes() - startTime.getMinutes())).concat('분'));
-
+  const startTimeSlice = reducer.startTime.split(':');
+  const endTimeSlice = reducer.endTime.split(':');
+  const [startTime, setStartTime] = useState(
+    new Date(0, 0, 0, startTimeSlice[0], startTimeSlice[1], startTimeSlice[2])
+  );
+  const [endTime, setEndTime] = useState(
+    new Date(0, 0, 0, endTimeSlice[0], endTimeSlice[1], endTimeSlice[2])
+  );
+  const [workingTime, setWorkingTime] = useState(
+    formatter((endTime.getHours() - 1) - startTime.getHours())
+      .concat('시간 ')
+      .concat(formatter(endTime.getMinutes() - startTime.getMinutes()))
+      .concat('분')
+  );
   useEffect(() => {
-    setWorkingTime(formatter(((endTime.getHours() - 1) - startTime.getHours()).toString()).concat('시간 ').concat(formatter((endTime.getMinutes() - startTime.getMinutes()).toString()).concat('분')));
+    setWorkingTime(
+      formatter(Math.abs((endTime.getHours() - 1) - startTime.getHours()).toString())
+        .concat('시간 ')
+        .concat(formatter(Math.abs(endTime.getMinutes() - startTime.getMinutes()).toString()))
+        .concat('분')
+    );
   }, [startTime, endTime]);
-
 
   const onClickSubmit = () => {
     dispatch(SwpAtrReq(LOCAL_STORAGE.get('depId'), cnvrtDateTime(startTime), cnvrtDateTime(endTime)));
     open();
   };
-
-
   return (
     <Wrap>
       <Container>

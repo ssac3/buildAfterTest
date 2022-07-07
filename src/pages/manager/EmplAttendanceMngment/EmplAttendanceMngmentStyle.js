@@ -6,8 +6,8 @@ const Wrapper = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  ${({theme}) => theme.flexSet('flex-start')};
-  width: 100%;
+  ${({theme}) => theme.flexSet('space-around')};
+  width: 40%;
   height: 75px;
 `;
 
@@ -87,6 +87,10 @@ const CalendarLayout = styled.div`
   position: relative;
 `;
 
+const YearSelectorLayout = styled.div`
+  width:200px;
+`;
+
 export const style = {
   Wrapper,
   TitleContainer,
@@ -99,4 +103,5 @@ export const style = {
   ItemContainer,
   BtnContainer,
   CalendarLayout,
+  YearSelectorLayout,
 };
