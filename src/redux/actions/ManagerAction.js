@@ -119,3 +119,18 @@ export const SwpEamRes = (data) => {
     data
   };
 };
+
+export const SwpEavReq = (username, findDate) => {
+  return {
+    type: ManagerType.SWP_EAV_REQ,
+    username,
+    findDate
+  };
+};
+
+export const SwpEavRes = (data) => {
+  return {
+    type: ManagerType.SWP_EAV_RES,
+    data
+  };
+};

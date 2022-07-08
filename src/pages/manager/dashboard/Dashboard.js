@@ -14,7 +14,10 @@ export const Dashboard = ({
   onClickEadDetail,
   onClickEamDetail,
   findYear,
-  onClickFindYear}) => {
+  onClickFindYear,
+  onClickEavDetail,
+  findDate,
+  onClickFindDate}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(SwpAtvReq(LOCAL_STORAGE.get('depId')));
@@ -38,7 +41,11 @@ export const Dashboard = ({
       />;
     }
     if(selectedId === 6) {
-      return <ReportEmvPage/>;
+      return <ReportEmvPage
+        onClickEavDetail={onClickEavDetail}
+        findDate={findDate}
+        onClickFindDate={onClickFindDate}
+      />;
     }
     return <></>;
   }, [selectedId, findYear]);
@@ -55,5 +62,10 @@ Dashboard.propTypes = {
     PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.func])
   ).isRequired,
   onClickFindYear:PropTypes.func.isRequired,
+  onClickEavDetail:PropTypes.func.isRequired,
+  findDate:PropTypes.objectOf(
+    PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.func])
+  ).isRequired,
+  onClickFindDate:PropTypes.func.isRequired,
 };
 
