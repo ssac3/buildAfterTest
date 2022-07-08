@@ -7,6 +7,7 @@ import {useDispatch} from 'react-redux';
 import {LOCAL_STORAGE} from 'utils/constants';
 import EmplAttendanceMngment from 'pages/manager/EmplAttendanceMngment';
 import ReportEmvPage from 'pages/manager/ReportEmvPage';
+import EovPage from 'pages/manager/EovPage';
 
 export const Dashboard = ({
   selectedId,
@@ -47,8 +48,12 @@ export const Dashboard = ({
         onClickFindDate={onClickFindDate}
       />;
     }
+
+    if(selectedId === 7) {
+      return <EovPage/>;
+    }
     return <></>;
-  }, [selectedId, findYear]);
+  }, [selectedId, findYear, findDate]);
 
   return renderUI;
 };
