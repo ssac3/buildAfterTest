@@ -19,6 +19,7 @@ import EmpDetail from 'pages/admin/emp_detail';
 import DetailDavPage from 'pages/user/DetailDavPage';
 import VacationEnrollPage from 'pages/user/VacationEnrollPage';
 import VacationViewPage from 'pages/user/VacationViewPage';
+import Scanner from 'components/Scanner';
 import ReportEavDetailPage from 'pages/manager/ReportEavDetailPage';
 
 function getMenu(role) {
@@ -212,6 +213,7 @@ function App() {
       )}
       <BrowserRouter>
         <Switch>
+          <Route path={API.SCANNER} component={Scanner}/>
           <Route exact path={API.ROOT} component={SignIn}/>
           <Wrap p={position()}>
             <Route

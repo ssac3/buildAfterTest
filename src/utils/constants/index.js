@@ -6,7 +6,8 @@ export const API = {
   MANAGER: '/manager',
   USER: '/user',
   LOGIN: '/login',
-  LOGOUT: '/logout'
+  LOGOUT: '/logout',
+  SCANNER: '/scanner'
 };
 
 
@@ -32,6 +33,7 @@ export const ROUTES = {
   SWP_SAPR_REQ: API.USER.concat('/updatePw'),
   SWP_EAS_REQ: API.LOGOUT.concat(''),
   SWP_SAIR_REQ: API.USER.concat('/myImgUpdate'),
+  SWP_QCS_REQ: API.SCANNER.concat(''),
   SWP_VA_REQ: API.USER.concat('/regVacation'),
   SWP_AAR_REQ: API.USER.concat('/rearrangeAttendance')
 };
