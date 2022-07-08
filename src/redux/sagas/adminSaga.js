@@ -13,10 +13,18 @@ const getHeader = () => {
     headers,
   };
 };
+const getImgHeader = () => {
+  const headers = {
+    Authorization: LOCAL_STORAGE.get('Authorization'),
+    'Content-Type': 'multipart/form-data',
+  };
+  return { headers };
+};
 // 사원등록
 function empinReq(data) {
+  console.log(data);
   const result = axios
-    .post(ROUTES.SWP_EMPIN_REQ, data, getHeader())
+    .post(ROUTES.SWP_EMPIN_REQ, data, getImgHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_EMPIN_REQ).SUCCESS);
       return res.data;
@@ -30,13 +38,11 @@ function empinReq(data) {
 function* postSwpEmpinReq() {
   try {
     const data = yield select((state) => { return state.AdminReducer; });
-    console.log(data);
-    const result = yield call(empinReq, data);
-
+    console.log(' adminSaga111', data.emp.get('image'));
+    const result = yield call(empinReq, data.emp);
     if(result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
       yield put(SwpEmpselReq());
-      // put
     } else {
       yield put(openAlert('fail', result.resMsg));
     }

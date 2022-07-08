@@ -80,7 +80,6 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
     manager: ATTENDENCE_MANAGER_TYPE[(emp.role > 1) - 1].title,
   });
   console.log('이거확인', emp);
-  // console.log('고른드롭박스', LOCATION_TYPE[emp.location - 1].title);
   const onClickDropBoxItem = (e, target) => {
     setSelectItem({...selectItem, [target]: e.target.id});
     if(target === 'gender') {
@@ -99,6 +98,17 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
       onClickDropBoxItem();
     }
   };
+  // 이미지 수정
+  const [empUpImg, setEmpUpImg] = useState(null);
+  const onChangeImg = (e) => {
+    if(e.target.files) {
+      const uploadFile = e.target.files[0];
+      // formData로 담아서 한꺼번에 전송할거얌
+      // const formData = new FormData();
+      // formData.append('image', uploadFile);
+      setEmpUpImg(uploadFile);
+    }
+  };
   // 통신
   const dispatch = useDispatch();
   const [change, setChange] = useState(
@@ -107,7 +117,7 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
       name: emp.name,
       email: emp.email,
       qrPath: emp.qrPath,
-      img: emp.img
+      // img: emp.img
     }
   );
   const onClickDetailCloseEmp = () => {
@@ -124,8 +134,9 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
       depId: DEPARTMENT_NAME_TYPE.filter((v) => v.title === selectItem?.depName)[0].id,
       manager: ATTENDENCE_MANAGER_TYPE.filter((v) => v.title === selectItem?.manager)[0].title,
     };
-    // change + packedMsg
     const packedMsg = Object.assign(change, convertData);
+    const updateForm = new FormData();
+    updateForm.append('image', empUpImg);
     dispatch(SwpEmpupReq(packedMsg));
   };
   const onChange = (e) => {
@@ -163,7 +174,15 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
               />
             </UserInfoLayout>
           </UserInfoWrap>
-          <UserProfileLayout/>
+          <UserProfileLayout
+            alt={'Img'}
+            src={emp.img}
+            type={'file'}
+            id={'profileImg'}
+            accept={'image/*'}
+            enctype={'multipart/form-data'}
+            onChange={onChangeImg}
+          />
         </InsertForm>
         <UserInfoLayout2>
           <CaptionLayout>이메일</CaptionLayout>

@@ -70,11 +70,19 @@ const UserInfoLayout = styled.div`
   width: 100%;
   height: 80px;
 `;
-const UserProfileLayout = styled.div`
+const UserProfileLayout = styled.input`
   ${({theme}) => theme.flexSet('flex-end')};
   width: 113px;
   height:100%;
   background-color: #7A7A7A;
+  &::file-selector-button {
+    visibility: hidden;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip:rect(0,0,0,0);
+    border: 0;
+  }
 `;
 
 const CaptionLayout = styled.div`
