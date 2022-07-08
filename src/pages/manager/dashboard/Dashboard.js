@@ -48,7 +48,7 @@ export const Dashboard = ({
       />;
     }
     return <></>;
-  }, [selectedId, findYear]);
+  }, [selectedId, findYear, findDate]);
 
   return renderUI;
 };
