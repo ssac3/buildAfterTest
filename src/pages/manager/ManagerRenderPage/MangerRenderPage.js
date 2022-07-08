@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {SwpAtvReq} from 'redux/actions/ManagerAction';
+import Dashboard from 'pages/manager/Dashboard';
 import VacationMngment from 'pages/manager/VacationMngment';
 import AttendenceMngment from 'pages/manager/AttendenceMngment';
 import {useDispatch} from 'react-redux';
@@ -9,7 +10,7 @@ import EmplAttendanceMngment from 'pages/manager/EmplAttendanceMngment';
 import ReportEmvPage from 'pages/manager/ReportEmvPage';
 import EovPage from 'pages/manager/EovPage';
 
-export const Dashboard = ({
+export const MangerRenderPage = ({
   selectedId,
   onClickATR,
   onClickEadDetail,
@@ -25,6 +26,9 @@ export const Dashboard = ({
   }, []);
 
   const renderUI = React.useMemo(() => {
+    if(selectedId === 0) {
+      return <Dashboard/>;
+    }
     if (selectedId === 2) {
       return <VacationMngment/>;
     }
@@ -58,7 +62,7 @@ export const Dashboard = ({
   return renderUI;
 };
 
-Dashboard.propTypes = {
+MangerRenderPage.propTypes = {
   selectedId: PropTypes.number.isRequired,
   onClickATR: PropTypes.func.isRequired,
   onClickEadDetail: PropTypes.func.isRequired,

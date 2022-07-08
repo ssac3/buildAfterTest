@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
-import Dashboard from 'pages/manager/dashboard';
+import Dashboard from 'pages/manager/ManagerRenderPage';
 import EmpManagement from 'pages/admin/emp_mangement';
 import AtdcManagement from 'pages/user/AtdcManagement';
 import SignIn from 'pages/signin';
