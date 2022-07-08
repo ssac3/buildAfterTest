@@ -47,11 +47,6 @@ export const ReportEmvPage = ({onClickEavDetail, findDate, onClickFindDate}) => 
       setInfo([]);
     }
   }, [selector]);
-
-  useEffect(() => {
-    console.log(findDate);
-  }, []);
-
   return (
     <Wrapper>
       <TitleContainer>

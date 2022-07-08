@@ -19,6 +19,8 @@ export const ManagerType = {
   SWP_EAM_RES: 'SWP_EAM_RES',
   SWP_EAV_REQ: 'SWP_EAV_REQ',
   SWP_EAV_RES: 'SWP_EAV_RES',
+  SWP_EOV_REQ: 'SWP_EOV_REQ',
+  SWP_EOV_RES: 'SWP_EOV_RES',
 };
 
 export const AdminType = {
