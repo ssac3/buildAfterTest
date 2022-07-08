@@ -22,6 +22,7 @@ export const ROUTES = {
   SWP_EIV_REQ: API.MANAGER.concat('/eivView'),
   SWP_EAD_REQ: API.MANAGER.concat('/eadView'),
   SWP_EAM_REQ: API.MANAGER.concat('/eamView'),
+  SWP_EAV_REQ: API.MANAGER.concat('/eavView'),
   SWP_SAV_REQ: API.USER.concat('/myView'),
   SWP_DAV_REQ: API.USER.concat('/getAllAttendance'),
   SWP_EAC_REQ: API.LOGIN.concat(''),
