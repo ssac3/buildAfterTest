@@ -1,28 +1,30 @@
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
+  ${({theme}) => theme.flexSet('space-around', '', 'column')};
   width: 100%;
   height: 100%;
 `;
 
 const Container = styled.div`
-  display: grid;
-  grid-template-rows: repeat(2, 1fr);
-  grid-template-columns: repeat(2, 1fr);
   width: 100%;
   height: calc(100% - 75px);
 `;
 
+const InnerContainer = styled.div`
+  ${({theme}) => theme.flexSet('space-between')};
+  width:100%;
+  height: 100%;
+`;
+
 const Card = styled.div`
-  margin:10px;
-  ${({theme}) => theme.flexSet('flex-start', '', 'column')};
+  ${({theme}) => theme.flexSet('flex-start', 'center', 'column')};
   width: ${({w}) => w}%;
+  height: 90%;
   padding: 30px 40px;
   background-color: white;
   border-radius: 5px;
   box-shadow: 5px 5px 10px #00000020;
-  background-image: url(${({url}) => url});
-  background-size : cover;
 `;
 
 const CardTitle = styled.div`
@@ -53,6 +55,79 @@ const Circle = styled.div`
   }
 `;
 
+const ImageCard = styled.div`
+  ${({theme}) => theme.flexSet('', '', 'column')};
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px #00000020;
+  background-size: cover;
+  
+`;
+const ImageLayout = styled.div`
+  width: 100%;
+  height: 240px;
+  border-radius: 5px 5px 0px 0px;
+  background: url(${({url}) => url}) no-repeat center;
+  background-size: cover;
+`;
+
+const DepInfoLayout = styled.div`
+  ${({theme}) => theme.flexSet('space-around')};
+  height: calc(100% - 240px);
+  padding: 40px;
+  #depName{
+    ${({theme}) => theme.flexSet('', '', 'column')};
+    font-weight: bold;
+    font-size: 20px;
+    #text {
+      font-weight: normal;
+      color:${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
+      font-size:15px;
+    }
+  }
+  
+  #positionInfo{
+    ${({theme}) => theme.flexSet('space-around')};
+    width: 500px;
+    height: 100%;
+
+    #position{
+      ${({theme}) => theme.flexSet('center', 'center', 'column')};
+      font-weight: normal;
+      font-size: 15px;
+      height: 100%;
+      #count {
+        font-weight: bold;
+        color:black;
+        font-size:20px;
+      }
+    }
+  }
+
+  #sumInfo{
+    ${({theme}) => theme.flexSet('', '', 'column')};
+    font-weight: bold;
+    font-size: 15px;
+    #sum {
+      color: black;
+      font-size:20px;
+    }
+  }
+
+    
+  #h1{
+    font-weight: bold;
+    font-size: 15px;
+  }
+  
+  #divider{
+    height: 70%;
+    width: 1px;
+    background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
+  }
+`;
+
 export const style = {
   Wrapper,
   Container,
@@ -60,4 +135,8 @@ export const style = {
   CardTitle,
   CircleLayout,
   Circle,
+  InnerContainer,
+  ImageCard,
+  ImageLayout,
+  DepInfoLayout,
 };
