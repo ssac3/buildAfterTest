@@ -70,7 +70,9 @@ const RegBtn = styled.button`
   color: white;
   font-weight: bold;
 `;
-
+const HeaderDiv = styled.div`
+  background-color: red;
+`;
 const ListHeader = styled.ul`
   ${({theme}) => theme.flexSet('space-around')};
     width:100%;
@@ -125,6 +127,7 @@ export const style = {
   DelBtn,
   RegBtn,
   ListHeader,
+  HeaderDiv,
   ListItem,
   ListItemContainer,
   ItemContainer,

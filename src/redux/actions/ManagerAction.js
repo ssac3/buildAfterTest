@@ -149,3 +149,17 @@ export const SwpEovRes = (data) => {
     data
   };
 };
+
+export const SwpEmpReq = (depId) => {
+  return {
+    type: ManagerType.SWP_EMP_REQ,
+    depId,
+  };
+};
+
+export const SwpEmpRes = (empData) => {
+  return {
+    type: ManagerType.SWP_EMP_RES,
+    empData
+  };
+};
