@@ -8,13 +8,18 @@ import Pagination from 'components/Pagination';
 import {DEPARTMENT_NAME_TYPE, GENDER_TYPE, POSITION_TYPE} from 'utils/constants';
 import Dropbox from 'components/Dropbox';
 import {MdSearch} from 'react-icons/md';
+import Checkbox from 'components/Checkbox';
 
 const ListItemComponent = ({emp, onClickDetailEmp}) => {
+  const onClick2 = () => {
+    alert('ddd');
+  };
   return (
     <ListItemContainer>
+      <Checkbox onclick={onClick2}/>
       <ItemContainer>{emp.username}</ItemContainer>
       <ItemContainer>{emp.name}</ItemContainer>
-      <ItemContainer>{emp.email}</ItemContainer>
+      <ItemContainer>{emp.username}</ItemContainer>
       <ItemContainer>{GENDER_TYPE[emp.gender].title}</ItemContainer>
       <ItemContainer>{DEPARTMENT_NAME_TYPE[emp.depId - 1].title}</ItemContainer>
       <ItemContainer>{emp.position}</ItemContainer>
@@ -29,7 +34,6 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.AdminReducer);
   const [emps, setEmps] = useState([]);
-  // console.log(emps);
   // 검색
   // const [schVal, setSchVal] = useState('');
   // const handleSchValChange = (e) => {
@@ -66,7 +70,6 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
     dispatch(SwpEmpselReq());
   }, []);
   useEffect(() => {
-    console.log(selector);
     if(selector.emps?.length > 0 && selector.emps[0]?.username !== undefined) {
       setEmps(selector.emps);
     } else {
@@ -87,10 +90,7 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
               </SchBtnContainer>
               <SchInput
                 autoFocus
-                // value={schVal}
                 placeholder="사원번호 혹은 사원명을 입력하세요."
-                // onChange={handleSchValChange}
-                // data={usernameSch}
               />
             </SchContainer>
             <DivContainer>
@@ -116,7 +116,6 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
           return <ListItemComponent
             key={v.username}
             emp={v}
-            // data={usernameSch}
             onClickDetailEmp={onClickDetailEmp}
           />;
         })}
@@ -139,9 +138,6 @@ ListItemComponent.propTypes = {
   emp: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   ).isRequired,
-  // data: PropTypes.objectOf(
-  //   PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-  // ).isRequired,
   onClickDetailEmp: PropTypes.func.isRequired,
 };
 const {

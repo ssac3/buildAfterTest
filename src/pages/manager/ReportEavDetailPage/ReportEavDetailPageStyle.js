@@ -81,11 +81,6 @@ const FirstChartLayout = styled.div`
   }
 `;
 
-const SecondChartLayout = styled.div`
-  width: 100%;
-  height: 40%;
-`;
-
 const RearrangeStatus = styled.div`
   ${({theme}) => theme.flexSet('space-around')};
   margin: 0 auto;
@@ -100,6 +95,47 @@ const RearrangeStatus = styled.div`
     color: ${({theme}) => theme.colorSet.PRIMARY.BLUE_1A};
   }
 `;
+
+
+const SecondChartLayout = styled.div`
+  width: 100%;
+  height: 40%;
+  padding: 20px;
+  
+  #dataLayout{
+    ${({theme}) => theme.flexSet('space-around')};
+
+    #partition1{
+      width: 38%;
+      height:80%;
+      border-right: 1px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_E1};
+    }
+    
+    #partition2{
+      ${({theme}) => theme.flexSet('space-around')};
+      width: 58%;
+      height:100%;
+    }
+  }
+`;
+
+const VacDataLayout = styled.div`
+  ${({theme}) => theme.flexSet('space-around', 'flex-end', 'column')};
+  width: 220px;
+  height: 150px;
+  #text{
+    ${({theme}) => theme.flexSet('space-between')};
+    width:100%;
+    font-weight: bold;
+    font-size:16px;
+    color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
+    #value{
+      font-size:17px;
+      color:black;
+    }
+  }
+`;
+
 export const style = {
   Wrap,
   Container,
@@ -108,4 +144,5 @@ export const style = {
   FirstChartLayout,
   SecondChartLayout,
   RearrangeStatus,
+  VacDataLayout,
 };

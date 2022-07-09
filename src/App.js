@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
-import Dashboard from 'pages/manager/dashboard';
+import Dashboard from 'pages/manager/ManagerRenderPage';
 import EmpManagement from 'pages/admin/emp_mangement';
 import AtdcManagement from 'pages/user/AtdcManagement';
 import SignIn from 'pages/signin';
@@ -52,7 +52,7 @@ function App() {
   const [openVavDetail, setOpenVavDetail] = useState([]); // 사원 휴가 승인 대기 시 조회
   const [findYear, setFindYear] = useState(new Date()); // 근태 담당자 사원별 근태 조회 년도 선택
   const [openEavDetail, setOpenEavDetail] = useState([]); // 근태 담당자 사원별 근태 현황 조회
-  const [findDate, setFindDate] = useState(new Date()); // 근태 담당자 사원별 근태 현황 조회 년도/월 선택
+  const [findDate, setFindDate] = useState(new Date()); // 근태 담당자 사원별 근태 현황 조회 (년/월)
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
       ...value,
@@ -141,6 +141,8 @@ function App() {
   const onClickFindDate = (newDate) => {
     setFindDate(newDate);
   };
+
+
 
   useEffect(() => {
     if (signIn?.data === 'ADMIN') {

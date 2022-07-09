@@ -134,3 +134,18 @@ export const SwpEavRes = (data) => {
     data
   };
 };
+
+export const SwpEovReq = (depId, findDate) => {
+  return {
+    type: ManagerType.SWP_EOV_REQ,
+    depId,
+    findDate
+  };
+};
+
+export const SwpEovRes = (data) => {
+  return {
+    type: ManagerType.SWP_EOV_RES,
+    data
+  };
+};

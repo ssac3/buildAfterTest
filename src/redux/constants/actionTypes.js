@@ -19,9 +19,14 @@ export const ManagerType = {
   SWP_EAM_RES: 'SWP_EAM_RES',
   SWP_EAV_REQ: 'SWP_EAV_REQ',
   SWP_EAV_RES: 'SWP_EAV_RES',
+  SWP_EOV_REQ: 'SWP_EOV_REQ',
+  SWP_EOV_RES: 'SWP_EOV_RES',
 };
 
 export const AdminType = {
+  // 사번생성
+  SWP_EMPMK_REQ: 'SWP_EMPMK_REQ',
+  SWP_EMPMK_RES: 'SWP_EMPMK_RES',
   // 사원등록
   SWP_EMPIN_REQ: 'SWP_EMPIN_REQ',
   SWP_EMPIN_RES: 'SWP_EMPIN_RES',
