@@ -5,10 +5,11 @@ export const SwpEmpmkReq = () => {
     type: AdminType.SWP_EMPMK_REQ,
   };
 };
-export const SwpEmpMkRes = (mkUsername) => {
+export const SwpEmpmkRes = (mkUsername, qrPath) => {
   return {
     type: AdminType.SWP_EMPMK_RES,
-    mkUsername
+    mkUsername,
+    qrPath
   };
 };
 
