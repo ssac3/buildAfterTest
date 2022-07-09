@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import {SwpAtvReq} from 'redux/actions/ManagerAction';
-import Dashboard from 'pages/manager/Dashboard';
+import Dashboard from 'pages/manager/dashboard';
 import VacationMngment from 'pages/manager/VacationMngment';
 import AttendenceMngment from 'pages/manager/AttendenceMngment';
 import {useDispatch} from 'react-redux';
