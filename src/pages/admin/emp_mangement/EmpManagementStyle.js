@@ -96,7 +96,7 @@ const ItemContainer = styled.div`
   ${({theme}) => theme.flexSet()};
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  //white-space: nowrap;
   vertical-align: middle;
   horiz-align: center;
   width: 130px;

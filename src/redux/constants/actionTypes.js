@@ -22,6 +22,9 @@ export const ManagerType = {
 };
 
 export const AdminType = {
+  // 사번생성
+  SWP_EMPMK_REQ: 'SWP_EMPMK_REQ',
+  SWP_EMPMK_RES: 'SWP_EMPMK_RES',
   // 사원등록
   SWP_EMPIN_REQ: 'SWP_EMPIN_REQ',
   SWP_EMPIN_RES: 'SWP_EMPIN_RES',

@@ -3,7 +3,7 @@ import {LOCAL_STORAGE, LOG, ROUTES} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {openAlert} from 'redux/actions/AlertAction';
 import {AdminType} from 'redux/constants';
-import {SwpEmpselReq, SwpEmpselRes} from 'redux/actions/AdminAction';
+import {SwpEmpMkRes, SwpEmpselReq, SwpEmpselRes} from 'redux/actions/AdminAction';
 
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -20,6 +20,34 @@ const getImgHeader = () => {
   };
   return { headers };
 };
+// 사번생성
+function empmkReq() {
+  const result = axios
+    // .get(ROUTES.SWP_EMPMK_REQ, '', getHeader())
+    .get(ROUTES.SWP_EMPMK_REQ, getHeader())
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_EMPMK_REQ).SUCCESS);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_EMPMK_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
+function* getSwpEmpmkReq() {
+  try {
+    const result = yield call(empmkReq);
+    if (result.resCode === 0) {
+      console.log('result_postSwpEmpmkReq', result);
+      // 얼럿 띄울게 기다려
+      yield put(openAlert('success', result.resMsg));
+      yield put(SwpEmpMkRes(result.data));
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
 // 사원등록
 function empinReq(data) {
   console.log(data);
@@ -38,7 +66,7 @@ function empinReq(data) {
 function* postSwpEmpinReq() {
   try {
     const data = yield select((state) => { return state.AdminReducer; });
-    console.log(' adminSaga111', data.emp.get('image'));
+    // console.log(' adminSaga111', data.emp.get('image'));
     const result = yield call(empinReq, data.emp);
     if(result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
@@ -50,13 +78,13 @@ function* postSwpEmpinReq() {
     console.log(e);
   }
 }
-
 // 사원목록
 function empselReq() {
   const result = axios
     .get(ROUTES.SWP_EMPSEL_REQ, getHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_EMPSEL_REQ).SUCCESS);
+      console.log('res일 떄 : ', res.data);
       return res.data;
     })
     .catch((err) => {
@@ -108,6 +136,7 @@ function* postSwpEmpupReq() {
 
 
 function* watchAdmin() {
+  yield takeLatest(AdminType.SWP_EMPMK_REQ, getSwpEmpmkReq);
   yield takeLatest(AdminType.SWP_EMPIN_REQ, postSwpEmpinReq);
   yield takeLatest(AdminType.SWP_EMPSEL_REQ, getSwpEmpselReq);
   yield takeLatest(AdminType.SWP_EMPUP_REQ, postSwpEmpupReq);

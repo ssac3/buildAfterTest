@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import theme from 'styles/theme';
 import {style} from './EmpInsertStyle';
 import {MdOutlineClose} from 'react-icons/md';
-import {useDispatch} from 'react-redux';
-import {SwpEmpinReq} from 'redux/actions/AdminAction';
+import {useDispatch, useSelector} from 'react-redux';
+import {SwpEmpinReq, SwpEmpmkReq} from 'redux/actions/AdminAction';
 import PropTypes from 'prop-types';
 import {
   DEPARTMENT_NAME_TYPE,
@@ -18,18 +18,32 @@ export const EmpInsert = ({onClickInsertEmp}) => {
   const dispatch = useDispatch();
   const [emp, setEmp] = useState(
     {
-      username : '',
       name : '',
-      email : '',
-      qrPath : '',
       password:'test123',
       img:'',
     }
   );
-  // 사원번호 랜덤생성
-  // const mkUsername = (emp) => {
-  //   // username.length === 6
-  // };
+  // 사원번호 생성
+  const [mkemp, setMkemp] = useState({
+    username :'',
+    email :'',
+    qrPath :''
+  });
+  // get으로 한 거 selector에 담아와
+  const selector = useSelector((state) => state.AdminReducer);
+  useEffect(() => {
+    console.log(selector);
+    if (selector?.mkUsername !== undefined) {
+      setMkemp({...mkemp, username : selector.mkUsername});
+    }
+  }, [selector]);
+
+  useEffect(() => {
+    console.log(mkemp);
+  }, [mkemp]);
+  const onClickMkUsername = () => {
+    dispatch(SwpEmpmkReq());
+  };
   // 사진 업로드
   const [empImg, setEmpImg] = useState(null);
   const onInsertImg = (e) => {
@@ -109,6 +123,7 @@ export const EmpInsert = ({onClickInsertEmp}) => {
     }
   };
   const Insert = () => {
+    // 드롭박스 값
     const convertData = {
       gender : GENDER_TYPE.filter((v) => v.title === selectItem?.gender)[0].id,
       location: LOCATION_TYPE.filter((v) => v.title === selectItem?.location)[0].id,
@@ -116,7 +131,7 @@ export const EmpInsert = ({onClickInsertEmp}) => {
       role: ROLE_TYPE.filter((v) => v.title === selectItem?.role)[0].id,
       depId: DEPARTMENT_NAME_TYPE.filter((v) => v.title === selectItem?.depName)[0].id
     };
-    const packedMsg = Object.assign(emp, convertData);
+    const packedMsg = Object.assign(emp, convertData, mkemp);
     const insertForm = new FormData();
     insertForm.append('image', empImg);
     insertForm.append('data', new Blob([JSON.stringify(packedMsg)], {type:'application/json'}));
@@ -139,13 +154,19 @@ export const EmpInsert = ({onClickInsertEmp}) => {
             <UserInfoLayout>
               <CaptionLayout>
                 사원번호
-                <BtnLayout>생성</BtnLayout>
+                <BtnLayout
+                  onClick={onClickMkUsername}
+                >
+                  생성
+                </BtnLayout>
               </CaptionLayout>
               <LabelLayout
-                id={'username'}
-                value={emp.username}
-                onChange={getDataHandler}
+                id={''}
+                placeholder={'  버튼클릭'}
+                value={mkemp?.username}
                 type={'username'}
+                disabled
+                // readOnly
               />
             </UserInfoLayout>
             <UserInfoLayout>
@@ -161,13 +182,23 @@ export const EmpInsert = ({onClickInsertEmp}) => {
               />
             </UserInfoLayout>
           </UserInfoWrap>
-          <UserProfileLayout
-            type={'file'}
-            id={'profileImg'}
-            accept={'image/*'}
-            enctype={'multipart/form-data'}
-            onChange={onInsertImg}
-          />
+          <UserProfileLayout htmlFor="img" onChange={onInsertImg}>
+            {empImg && (
+              <img
+                src={URL.createObjectURL(empImg)}
+                style={{ width: '100%', height: '100%' }}
+                alt={'Img'}
+              />
+            )}
+            {!empImg && <h6>.</h6>}
+            <UserProfileLayoutBtn
+              type={'file'}
+              id={'profileImg'}
+              accept={'image/*'}
+              enctype={'multipart/form-data'}
+              onChange={onInsertImg}
+            />
+          </UserProfileLayout>
         </InsertForm>
         <UserInfoLayout2>
           <CaptionLayout >이메일
@@ -176,9 +207,11 @@ export const EmpInsert = ({onClickInsertEmp}) => {
           <CaptionLayout>성별</CaptionLayout>
           <LabelLayout
             id={'email'}
-            value={emp.email}
-            onChange={getDataHandler}
+            placeholder={'  자동할당'}
+            value={mkemp?.username}
             type={'email'}
+            disabled
+            // readOnly
           />
           <DropboxEmp
             id={'gender'}
@@ -226,9 +259,11 @@ export const EmpInsert = ({onClickInsertEmp}) => {
           />
           <LabelLayout
             id={'qrPath'}
-            value={emp.qrPath}
-            onChange={getDataHandler}
+            placeholder={'  자동할당'}
+            value={mkemp?.username}
             type={'qrPath'}
+            disabled
+            // readOnly
           />
           <CaptionLayout>부서</CaptionLayout>
           <div/>
@@ -262,6 +297,7 @@ const {Wrap,
   UserInfoWrap,
   UserInfoLayout,
   UserProfileLayout,
+  UserProfileLayoutBtn,
   CaptionLayout,
   UserInfoLayout2,
   BtnLayout,
