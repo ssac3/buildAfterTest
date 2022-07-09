@@ -1,4 +1,16 @@
 import {AdminType} from 'redux/constants/actionTypes';
+// 사번생성
+export const SwpEmpmkReq = () => {
+  return {
+    type: AdminType.SWP_EMPMK_REQ,
+  };
+};
+export const SwpEmpMkRes = (mkUsername) => {
+  return {
+    type: AdminType.SWP_EMPMK_RES,
+    mkUsername
+  };
+};
 
 // 사원등록 req, res
 export const SwpEmpinReq = (emp) => {
