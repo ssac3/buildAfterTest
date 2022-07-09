@@ -24,6 +24,7 @@ export const ROUTES = {
   SWP_EAD_REQ: API.MANAGER.concat('/eadView'),
   SWP_EAM_REQ: API.MANAGER.concat('/eamView'),
   SWP_EAV_REQ: API.MANAGER.concat('/eavView'),
+  SWP_EOV_REQ: API.MANAGER.concat('/eovView'),
   SWP_SAV_REQ: API.USER.concat('/myView'),
   SWP_DAV_REQ: API.USER.concat('/getAllAttendance'),
   SWP_EAC_REQ: API.LOGIN.concat(''),
@@ -122,6 +123,7 @@ export const MANAGER_APPROVAL_TYPE = [
   {id: 0, title: '요청'},
   {id: 1, title: '승인'},
   {id: 2, title: '반려'},
+  {id: 3, title: '취소'},
 ];
 
 export const GENDER_TYPE = [
