@@ -11,12 +11,9 @@ import {MdSearch} from 'react-icons/md';
 import Checkbox from 'components/Checkbox';
 
 const ListItemComponent = ({emp, onClickDetailEmp}) => {
-  const onClick2 = () => {
-    alert('ddd');
-  };
   return (
     <ListItemContainer>
-      <Checkbox onclick={onClick2}/>
+      <Checkbox />
       <ItemContainer>{emp.username}</ItemContainer>
       <ItemContainer>{emp.name}</ItemContainer>
       <ItemContainer>{emp.username}</ItemContainer>
@@ -34,6 +31,7 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.AdminReducer);
   const [emps, setEmps] = useState([]);
+  // console.log(emps);
   // 검색
   // const [schVal, setSchVal] = useState('');
   // const handleSchValChange = (e) => {
@@ -76,6 +74,10 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
       setEmps([]);
     }
   }, [selector]);
+  // search
+  const onClickSearch = () => {
+    alert('검색');
+  };
   return(
     <>
       <Container>
@@ -86,11 +88,14 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
           <Wrapper>
             <SchContainer>
               <SchBtnContainer>
-                <MdSearch size={25}/>
+                <MdSearch onClick={onClickSearch} size={25}/>
               </SchBtnContainer>
               <SchInput
                 autoFocus
+                // value={schVal}
                 placeholder="사원번호 혹은 사원명을 입력하세요."
+                // onChange={handleSchValChange}
+                // data={usernameSch}
               />
             </SchContainer>
             <DivContainer>
@@ -103,6 +108,7 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
           <RegBtn value="regBtn" onClick={onClickInsertEmp}>추가</RegBtn>
         </TopComponent>
         <ListHeader>
+          <HeaderDiv />
           <ListItem w={100}>사원 번호</ListItem>
           <ListItem w={100}>사원명</ListItem>
           <ListItem w={150}>이메일</ListItem>
@@ -116,6 +122,7 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
           return <ListItemComponent
             key={v.username}
             emp={v}
+            // data={usernameSch}
             onClickDetailEmp={onClickDetailEmp}
           />;
         })}
@@ -153,6 +160,7 @@ const {
   DelBtn,
   RegBtn,
   ListHeader,
+  HeaderDiv,
   ListItem,
   ListItemContainer,
   ItemContainer,

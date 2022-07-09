@@ -97,19 +97,6 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
       onClickDropBoxItem();
     }
   };
-  // 이미지 수정
-  const [empUpImg, setEmpUpImg] = useState(null);
-  const onSelImg = () => {
-  };
-  const onChangeImg = (e) => {
-    if(e.target.files) {
-      const uploadFile = e.target.files[0];
-      // formData로 담아서 한꺼번에 전송할거얌
-      // const formData = new FormData();
-      // formData.append('image', uploadFile);
-      setEmpUpImg(uploadFile);
-    }
-  };
   // 통신
   const dispatch = useDispatch();
   const [change, setChange] = useState(
@@ -133,10 +120,10 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
       manager: ATTENDENCE_MANAGER_TYPE.filter((v) => v.title === selectItem?.manager)[0].title,
     };
     const packedMsg = Object.assign(change, convertData);
-    const updateForm = new FormData();
-    updateForm.append('image', empUpImg);
-    updateForm.append('data', new Blob([JSON.stringify(packedMsg)], {type:'application/json'}));
     dispatch(SwpEmpupReq(packedMsg));
+    console.log(emp.email);
+    console.log('이거화긴링', change.email);
+    console.log('updateupdate', packedMsg);
     onClickDetailCloseEmp();
   };
   const onChange = (e) => {
@@ -174,7 +161,7 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
               />
             </UserInfoLayout>
           </UserInfoWrap>
-          <UserProfileLayout htmlFor="img" onChange={onSelImg}>
+          <UserProfileLayout htmlFor="img">
             {emp.img && (
               <img
                 src={emp.img}
@@ -188,7 +175,6 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
               id={'profileImg'}
               accept={'image/*'}
               enctype={'multipart/form-data'}
-              onChange={onChangeImg}
             />
           </UserProfileLayout>
         </InsertForm>

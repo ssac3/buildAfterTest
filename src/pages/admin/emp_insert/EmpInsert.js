@@ -26,10 +26,9 @@ export const EmpInsert = ({onClickInsertEmp}) => {
   // 사원번호 생성
   const [mkemp, setMkemp] = useState({
     username :'',
-    email :'',
-    qrPath :''
+    // email :'',
+    // qrPath :''
   });
-  // get으로 한 거 selector에 담아와
   const selector = useSelector((state) => state.AdminReducer);
   useEffect(() => {
     console.log(selector);
@@ -37,9 +36,7 @@ export const EmpInsert = ({onClickInsertEmp}) => {
       setMkemp({...mkemp, username : selector.mkUsername});
     }
   }, [selector]);
-
   useEffect(() => {
-    console.log(mkemp);
   }, [mkemp]);
   const onClickMkUsername = () => {
     dispatch(SwpEmpmkReq());
@@ -131,7 +128,11 @@ export const EmpInsert = ({onClickInsertEmp}) => {
       role: ROLE_TYPE.filter((v) => v.title === selectItem?.role)[0].id,
       depId: DEPARTMENT_NAME_TYPE.filter((v) => v.title === selectItem?.depName)[0].id
     };
-    const packedMsg = Object.assign(emp, convertData, mkemp);
+    const converEmpData = {
+      email: mkemp.username,
+      qrPath: mkemp.username,
+    };
+    const packedMsg = Object.assign(emp, convertData, mkemp, converEmpData);
     const insertForm = new FormData();
     insertForm.append('image', empImg);
     insertForm.append('data', new Blob([JSON.stringify(packedMsg)], {type:'application/json'}));
@@ -165,8 +166,8 @@ export const EmpInsert = ({onClickInsertEmp}) => {
                 placeholder={'  버튼클릭'}
                 value={mkemp?.username}
                 type={'username'}
-                disabled
-                // readOnly
+                // disabled
+                readOnly
               />
             </UserInfoLayout>
             <UserInfoLayout>
@@ -208,10 +209,10 @@ export const EmpInsert = ({onClickInsertEmp}) => {
           <LabelLayout
             id={'email'}
             placeholder={'  자동할당'}
-            value={mkemp?.username}
+            value={mkemp.username}
             type={'email'}
-            disabled
-            // readOnly
+            // disabled
+            readOnly
           />
           <DropboxEmp
             id={'gender'}
@@ -262,8 +263,8 @@ export const EmpInsert = ({onClickInsertEmp}) => {
             placeholder={'  자동할당'}
             value={mkemp?.username}
             type={'qrPath'}
-            disabled
-            // readOnly
+            // disabled
+            readOnly
           />
           <CaptionLayout>부서</CaptionLayout>
           <div/>

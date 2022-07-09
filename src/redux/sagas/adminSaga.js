@@ -39,8 +39,6 @@ function* getSwpEmpmkReq() {
   try {
     const result = yield call(empmkReq);
     if (result.resCode === 0) {
-      console.log('result_postSwpEmpmkReq', result);
-      // 얼럿 띄울게 기다려
       yield put(openAlert('success', result.resMsg));
       yield put(SwpEmpMkRes(result.data));
     }
