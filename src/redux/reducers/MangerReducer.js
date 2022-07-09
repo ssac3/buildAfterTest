@@ -152,6 +152,21 @@ function MangerReducer(state = INIT_STATE, action) {
         endTime:state.endTime,
         data: action.data
       };
+    case ManagerType.SWP_EMP_REQ:
+      return {
+        name: state.name,
+        startTime: state.startTime,
+        endTime:state.endTime,
+        depId: action.depId
+      };
+
+    case ManagerType.SWP_EMP_RES:
+      return {
+        name: state.name,
+        startTime: state.startTime,
+        endTime:state.endTime,
+        empData: action.empData
+      };
     default:
       return state;
   }

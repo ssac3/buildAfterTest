@@ -14,6 +14,7 @@ import {
   SwpEamRes,
   SwpEavRes,
   SwpEovRes,
+  SwpEmpRes,
 } from 'redux/actions/ManagerAction';
 import {openAlert} from 'redux/actions/AlertAction';
 
@@ -172,6 +173,20 @@ function eovReq(data) {
     .post(ROUTES.SWP_EOV_REQ, data, getHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_EAV_REQ).SUCCESS);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_EAD_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
+
+function empReq(data) {
+  const result = axios
+    .post(ROUTES.SWP_EMP_REQ, data, getHeader())
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_EMP_REQ).SUCCESS);
       return res.data;
     })
     .catch((err) => {
@@ -369,6 +384,24 @@ function* postSwpEovReq() {
   }
 }
 
+function* postSwpEmpReq() {
+  try {
+    const data = yield select((state) => state.MangerReducer);
+    const packedMsg = {depId: data.depId};
+    const result = yield call(empReq, packedMsg);
+    console.log(result);
+    if(result.resCode === 0) {
+      yield put(SwpEmpRes(result.data));
+    } else {
+      yield put(openAlert('fail', '에러가 발생했습니다.'));
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+
+
 function* watchAlert() {
   yield takeLatest(ManagerType.SWP_ATV_REQ, postSwpAtvReq);
   yield takeLatest(ManagerType.SWP_ATR_REQ, postSwpAtrReq);
@@ -381,6 +414,7 @@ function* watchAlert() {
   yield takeLatest(ManagerType.SWP_EAM_REQ, postSwpEamReq);
   yield takeLatest(ManagerType.SWP_EAV_REQ, postSwpEavReq);
   yield takeLatest(ManagerType.SWP_EOV_REQ, postSwpEovReq);
+  yield takeLatest(ManagerType.SWP_EMP_REQ, postSwpEmpReq);
 }
 
 
