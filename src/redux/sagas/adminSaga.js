@@ -3,7 +3,7 @@ import {LOCAL_STORAGE, LOG, ROUTES} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {openAlert} from 'redux/actions/AlertAction';
 import {AdminType} from 'redux/constants';
-import {SwpEmpMkRes, SwpEmpselReq, SwpEmpselRes} from 'redux/actions/AdminAction';
+import {SwpEmpmkRes, SwpEmpselReq, SwpEmpselRes} from 'redux/actions/AdminAction';
 
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -40,7 +40,7 @@ function* getSwpEmpmkReq() {
     const result = yield call(empmkReq);
     if (result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
-      yield put(SwpEmpMkRes(result.data));
+      yield put(SwpEmpmkRes(result.data));
     }
   } catch (e) {
     console.log(e);

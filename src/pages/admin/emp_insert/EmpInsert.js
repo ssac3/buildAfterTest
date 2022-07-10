@@ -26,14 +26,14 @@ export const EmpInsert = ({onClickInsertEmp}) => {
   // 사원번호 생성
   const [mkemp, setMkemp] = useState({
     username :'',
-    // email :'',
-    // qrPath :''
+    email :'',
+    qrPath :''
   });
   const selector = useSelector((state) => state.AdminReducer);
   useEffect(() => {
     console.log(selector);
     if (selector?.mkUsername !== undefined) {
-      setMkemp({...mkemp, username : selector.mkUsername});
+      setMkemp({...mkemp, username : selector.mkUsername.username, email: (selector.mkUsername.username).concat('@douzone.co.kr'), qrPath: selector.mkUsername.qrPath});
     }
   }, [selector]);
   useEffect(() => {
@@ -128,11 +128,7 @@ export const EmpInsert = ({onClickInsertEmp}) => {
       role: ROLE_TYPE.filter((v) => v.title === selectItem?.role)[0].id,
       depId: DEPARTMENT_NAME_TYPE.filter((v) => v.title === selectItem?.depName)[0].id
     };
-    const converEmpData = {
-      email: mkemp.username,
-      qrPath: mkemp.username,
-    };
-    const packedMsg = Object.assign(emp, convertData, mkemp, converEmpData);
+    const packedMsg = Object.assign(emp, convertData, mkemp);
     const insertForm = new FormData();
     insertForm.append('image', empImg);
     insertForm.append('data', new Blob([JSON.stringify(packedMsg)], {type:'application/json'}));
@@ -209,7 +205,7 @@ export const EmpInsert = ({onClickInsertEmp}) => {
           <LabelLayout
             id={'email'}
             placeholder={'  자동할당'}
-            value={mkemp.username}
+            value={mkemp.email}
             type={'email'}
             // disabled
             readOnly
@@ -261,7 +257,7 @@ export const EmpInsert = ({onClickInsertEmp}) => {
           <LabelLayout
             id={'qrPath'}
             placeholder={'  자동할당'}
-            value={mkemp?.username}
+            value={mkemp?.qrPath}
             type={'qrPath'}
             // disabled
             readOnly

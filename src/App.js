@@ -202,7 +202,7 @@ function App() {
           findDate={findDate}
         />}
 
-      {roleURL !== API.ROOT && (
+      {roleURL !== API.ROOT && roleURL !== API.SCANNER && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>
           <Navigation
