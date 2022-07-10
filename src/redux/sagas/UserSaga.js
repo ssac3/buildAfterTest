@@ -7,7 +7,9 @@ import {openAlert} from 'redux/actions/AlertAction';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
 const getHeader = () => {
-  const headers = { Authorization: LOCAL_STORAGE.get('Authorization')};
+  const headers = { Authorization: LOCAL_STORAGE.get('Authorization'),
+    Refresh_token: LOCAL_STORAGE.get('Refresh_token')
+  };
   return {
     headers,
   };
@@ -137,7 +139,9 @@ function uagReq(data) {
 function* postSwpSavReq() {
   try {
     const result = yield call(savReq);
-    if (result.resCode === 0) {
+    if (result.resCode === 999) {
+      LOCAL_STORAGE.clear();
+    } else if (result.resCode === 0) {
       const {name, username, department, position, email, manager, location, qrPath, img} =
         result.data;
       yield put(
@@ -197,13 +201,10 @@ function* postSwpDavReq() {
     const data = yield select((state) => {
       return state.UserReducer;
     });
-    const {history} = data;
     const result = yield call(davReq, data);
-    console.log(result);
     if(result.resCode === 0) {
       yield put(SwpDavRes(result.data));
       yield put(openAlert('success', result.resMsg));
-      history.push('/user');
     } else {
       yield put('fail', result.resMsg);
     }

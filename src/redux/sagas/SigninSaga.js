@@ -84,7 +84,6 @@ function* postSwpEasReq() {
     });
     const {history} = selector;
     const result = yield call(easReq);
-    console.log(result.resCode);
     if (result.resCode === 0) {
       LOCAL_STORAGE.clear();
       history.push('/');
