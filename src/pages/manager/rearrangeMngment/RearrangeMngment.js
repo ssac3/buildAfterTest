@@ -15,9 +15,12 @@ export const RearrangeMngment = ({onClickATR, atvDetail}) => {
   const [openDrop, setOpenDrop] = useState(false);
   const [change, setChange] = useState(MANAGER_APPROVAL_TYPE[atvDetail?.approvalFlag]?.title);
 
-  if(atvDetail.startTime !== null && atvDetail.endTime !== null) {
-    const startTime = atvDetail.startTime.split(':');
-    const endTime = atvDetail.endTime.split(':');
+  if(atvDetail.startTime !== null
+    && atvDetail.endTime !== null
+    && atvDetail.startTime !== undefined
+    && atvDetail.endTime !== undefined) {
+    const startTime = atvDetail?.startTime?.split(':');
+    const endTime = atvDetail?.endTime?.split(':');
     startHour = Number(startTime[0]);
     startMin = Number(startTime[1]);
     endHour = Number(endTime[0]);

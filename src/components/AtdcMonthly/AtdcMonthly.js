@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import PropTypes from 'prop-types';
 import {style} from './AtdcMonthlyStyle';
 import {useDispatch, useSelector} from 'react-redux';
@@ -9,26 +9,117 @@ import krLocale from 'date-fns/locale/ko';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import {formatter} from 'utils/convertDateTime';
 import TextField from '@mui/material/TextField';
-import {PieChart, Pie, Cell, Legend, Tooltip} from 'recharts';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import {PieChart, Pie, Cell, Legend, Tooltip, Sector, BarChart, XAxis, Bar} from 'recharts';
+import {TableContainer, Table, TableBody, TableCell, TableHead, TableRow, TablePagination} from '@mui/material';
 import theme from 'styles/theme';
-import TablePagination from '@mui/material/TablePagination';
 const COLORS = [
   theme.colorSet.ATTENDANCE_STATUS.OK,
   theme.colorSet.ATTENDANCE_STATUS.LATE,
   theme.colorSet.ATTENDANCE_STATUS.ABSENCE
 ];
 
+const convertTime = (target) => {
+  return (Math.floor(target / 60).toString())
+    .concat('시간 ')
+    .concat((target % 60).toString())
+    .concat('분');
+};
+const renderActiveShape = (props) => {
+  const {
+    cx,
+    cy,
+    innerRadius,
+    outerRadius,
+    startAngle,
+    endAngle,
+    payload,
+  } = props;
+
+  return (
+    <g>
+      <text x={cx} y={cy} dy={10} textAnchor="middle" fill={theme.colorSet.ATTENDANCE_STATUS.VACATION}>
+        <tspan fontSize={18} fontWeight={'bold'} textAnchor="middle" x={cx} dy={0}>{convertTime(payload.value)}</tspan>
+        <tspan fontWeight={'normal'} textAnchor="middle" x={cx} dy={20}>{payload.name}</tspan>
+      </text>
+      <Sector
+        fill={theme.colorSet.ATTENDANCE_STATUS.VACATION}
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+      />
+      <Sector />
+    </g>
+  );
+};
+const MonthlyOverTime = ({data}) => {
+  const tmp = [];
+  const pie = [];
+  if(data !== undefined) {
+    tmp.push({name: '근무 시간', workTime: data.workTime});
+    tmp.push({name: '연장 시간', overTime: data.overTime});
+    pie.push({name: '총 근무 시간', value: data.workTime + data.overTime});
+    pie.push({name:'', value:1000});
+  }
+
+  return (
+    <>
+      <BarChart
+        data={tmp}
+        width={150}
+        height={200}
+        barGap={-23}
+        barSize={20}
+      >
+        <XAxis
+          dy={10}
+          type="category"
+          dataKey={'name'}
+          tickLine={false}
+          axisLine={false}
+          minTickGap={15}
+        />
+
+        <Bar
+          dataKey={'workTime'}
+          name={'근무시간'}
+          height={40}
+          radius={5}
+          fill={theme.colorSet.PRIMARY.BLUE_1A}
+        />
+        <Bar
+          dataKey={'overTime'}
+          name={'연장시간'}
+          height={40}
+          radius={5}
+          fill={theme.colorSet.SECONDARY.GRAY_CC}
+        />
+        <Tooltip cursor={false} formatter={(value) => [convertTime(value)]}/>
+      </BarChart>
+      <PieChart width={200} height={200}>
+        <Pie
+          activeIndex={0}
+          activeShape={renderActiveShape}
+          data={pie}
+          cx={100}
+          cy={100}
+          innerRadius={60}
+          outerRadius={80}
+          fill={theme.colorSet.SECONDARY.GRAY_CC}
+          dataKey="value"
+        />
+      </PieChart>
+    </>
+  );
+};
+
 const MonthlyWorkDetail = ({data}) => {
   const [chartData, setChartData] = useState([]);
   const convertTitle = ['정상', '지각', '결근'];
   useEffect(() => {
     if(data !== undefined) {
-      console.log(data);
       const tmp = [];
       Object.keys(data).forEach(key => {
         tmp.push({name: key, value: data[key]});
@@ -57,10 +148,9 @@ const MonthlyWorkDetail = ({data}) => {
   );
 };
 
-const MonthlyWorkTime = () => {
+const MonthlyWorkTime = ({data}) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -71,105 +161,115 @@ const MonthlyWorkTime = () => {
   };
 
   const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+    { id: 'date', label: '일자', minWidth: 170 },
+    { id: 'start_time', label: '출근 시간', minWidth: 100 },
     {
-      id: 'population',
-      label: 'Population',
+      id: 'end_time',
+      label: '퇴근 시간',
       minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
     },
     {
-      id: 'size',
-      label: 'Size\u00a0(km\u00b2)',
+      id: 'workTime',
+      label: '근무 시간',
       minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-      id: 'density',
-      label: 'Density',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toFixed(2),
     },
   ];
 
-  function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-  }
-
-  const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-  ];
   return (
     <>
-      <Table stickyHeader aria-label="sticky table">
-        <TableHead>
-          <TableRow>
-            {columns.map((column) => (
-              <TableCell
-                key={column.id}
-                align={column.align}
-                style={{minWidth: column.minWidth}}
-              >
-                {column.label}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map((row) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number'
-                          ? column.format(value)
-                          : value}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
+      <TableContainer>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              {columns.map((column) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{minWidth: column.minWidth}}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.date}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {value === undefined
+                            ? '-'
+                            : value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
+        count={data?.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        style={{height:'100px'}}
       />
     </>
   );
 };
+
+const MonthlyVacTime = ({usedTime, restTime}) => {
+  const [chartInfo, setChartInfo] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const onPieEnter = useCallback(
+    (_, index) => {
+      setActiveIndex(index);
+    },
+    [setActiveIndex]
+  );
+  useEffect(() => {
+    if(usedTime !== undefined && restTime !== undefined) {
+      const convertData = [
+        {name: '사용 휴가 시간', value: usedTime},
+        {name: '남은 휴가 시간', value: restTime},
+      ];
+      setChartInfo(convertData);
+    }
+  }, [usedTime, restTime]);
+  return(
+    <PieChart width={200} height={200}>
+      <Pie
+        activeIndex={activeIndex}
+        activeShape={renderActiveShape}
+        data={chartInfo}
+        cx={100}
+        cy={100}
+        innerRadius={60}
+        outerRadius={80}
+        fill={theme.colorSet.SECONDARY.GRAY_CC}
+        dataKey="value"
+        onMouseEnter={onPieEnter}
+      />
+    </PieChart>
+  );
+};
+
 export const AtdcMonthly = () => {
   const [findDate, setFindDate] = useState(new Date());
+  const [monthlyOverTime, setMonthlyOverTime] = useState({});
   const [monthlyWorkDetail, setMonthlyWorkDetail] = useState(undefined);
+  const [monthlyWorkTime, setMonthlyWorkTime] = useState([]);
+  const [monthlyVacTime, setMonthlyVacTime] = useState({});
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.UserReducer);
   useEffect(() => {
@@ -183,8 +283,20 @@ export const AtdcMonthly = () => {
   useEffect(() => {
     console.log(selector);
 
+    if(selector?.data?.overtime !== undefined && selector?.data?.totalWorkTIme !== undefined) {
+      setMonthlyOverTime({workTime: selector.data.totalWorkTIme, overTime: selector.data.overtime});
+    }
+
     if(selector?.data?.timeMap?.ok_count !== undefined) {
       setMonthlyWorkDetail(selector.data.timeMap);
+    }
+
+    if(selector?.data?.startList?.length > 0) {
+      setMonthlyWorkTime(selector.data.startList);
+    }
+
+    if(selector?.data?.restTime !== undefined && selector?.data?.totalUseVac !== undefined) {
+      setMonthlyVacTime({usedTime: selector.data.totalUseVac, restTime: selector.data.restTime});
     }
   }, [selector]);
 
@@ -221,6 +333,9 @@ export const AtdcMonthly = () => {
             월별 근무 시간
             <div id={'subTitle'}>해당 월의 근무 시간입니다.</div>
           </CardTitle>
+          <ChartLayout>
+            <MonthlyOverTime data={monthlyOverTime}/>
+          </ChartLayout>
         </Card>
         <Card>
           <CardTitle>
@@ -236,15 +351,30 @@ export const AtdcMonthly = () => {
             상세 근무 시간
             <div id={'subTitle'}>이번달 상세 근무 시간입니다. </div>
           </CardTitle>
-          <ChartLayout>
-            <MonthlyWorkTime/>
-          </ChartLayout>
+          <TableLayout>
+            <MonthlyWorkTime data={monthlyWorkTime}/>
+          </TableLayout>
         </Card>
         <Card>
           <CardTitle>
             월별 휴가 사용 시간
             <div id={'subTitle'}>부서별 해당 월에 사용한 휴가 현황입니다.</div>
           </CardTitle>
+          <ChartLayout>
+            <DisplayLayout>
+              <div id={'title'}>사용 시간</div>
+              <div id={'timeLayout'}>
+                <div id={'item'}>{formatter((monthlyVacTime.usedTime / 60).toString())}</div>
+                <div id={'display'}>시간</div>
+                <div id={'item'}>{formatter((monthlyVacTime.usedTime % 60).toString())}</div>
+                <div id={'display'}>분</div>
+              </div>
+            </DisplayLayout>
+            <MonthlyVacTime
+              usedTime={monthlyVacTime?.usedTime}
+              restTime={monthlyVacTime?.restTime}
+            />
+          </ChartLayout>
         </Card>
       </Container>
     </Wrapper>
@@ -257,9 +387,43 @@ const {
   Container,
   Card,
   CardTitle,
-  ChartLayout
+  ChartLayout,
+  DisplayLayout,
+  TableLayout,
 } = style;
+
+MonthlyOverTime.propTypes = {
+  data: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number])).isRequired,
+};
+MonthlyWorkDetail.propTypes = {
+  data: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number])).isRequired,
+};
 
 MonthlyWorkDetail.propTypes = {
   data: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number])).isRequired,
+};
+
+MonthlyWorkTime.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))
+  ).isRequired,
+};
+
+MonthlyVacTime.propTypes = {
+  usedTime: PropTypes.number.isRequired,
+  restTime: PropTypes.number.isRequired,
+};
+
+renderActiveShape.propTypes = {
+  cx: PropTypes.number.isRequired,
+  cy: PropTypes.number.isRequired,
+  innerRadius:PropTypes.number.isRequired,
+  outerRadius:PropTypes.number.isRequired,
+  startAngle:PropTypes.number.isRequired,
+  endAngle:PropTypes.number.isRequired,
+  fill:PropTypes.string.isRequired,
+  payload:PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
+  data:PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))
+  ).isRequired,
 };

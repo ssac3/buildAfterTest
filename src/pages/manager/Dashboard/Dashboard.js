@@ -65,7 +65,7 @@ const renderActiveShape = (props) => {
     <g>
       <text x={cx} y={cy} dy={10} textAnchor="middle" fill={theme.colorSet.PRIMARY.BLUE_1A}>
         <tspan fontSize={18} fontWeight={'bold'} textAnchor="middle" x={cx} dy={0}>{payload.value.toString().concat('%')}</tspan>
-        <tspan fontWeight={'normal'} textAnchor="middle" x={cx} dy={20}>{payload.name}</tspan>
+        <tspan fontWeight={'normal'} textAnchor="middle" x={cx} dy={20}>{'현재 '.concat(payload.name)}</tspan>
       </text>
       <Sector
         fill={theme.colorSet.PRIMARY.BLUE_1A}

@@ -62,7 +62,7 @@ const VacInfoPiChart = ({data}) => {
   );
 };
 
-const InputComponent = ({type}) => {
+const InputComponent = ({id, type, item, onChange}) => {
   const [open, setOpen] = useState(false);
   const onClickCalendar = () => {
     setOpen(!open);
@@ -76,7 +76,7 @@ const InputComponent = ({type}) => {
     <SearchContainer>
       {type === 'text' &&
         <MdSearch size={25} color={'white'}/> }
-      <SearchInput/>
+      <SearchInput id={id} onChange={onChange} value={item.id}/>
       {type === 'date' &&
         <MdCalendarToday
           size={25}
@@ -191,6 +191,7 @@ export const VacationMngment = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.MangerReducer);
   const [data, setData] = useState([]);
+  const [copyData, setCopyData] = useState([]);
   const [openDropbox, setOpenDropbox] = useState(false);
   const [openStatusDropbox, setOpenStatusDropbox] = useState(false);
   const [detail, setDetail] = useState({});
@@ -199,11 +200,12 @@ export const VacationMngment = () => {
   const [filterData, setFilterData] = useState([]); // 해당 일자에 전체 사원 중 휴가 사원 비율 구하기
   const limit = 7;
   const offset = (page - 1) * limit;
-  const [selectItem, setSelectItem] = useState({
-    vacation:'선택하세요',
-    status:'선택하세요'
+  const [filterItem, setFilterItem] = useState({
+    username :'',
+    name: '',
+    vacation:'',
+    status:'',
   });
-
   useEffect(() => {
     dispatch(SwpVavReq(LOCAL_STORAGE.get('depId')));
   }, []);
@@ -211,6 +213,7 @@ export const VacationMngment = () => {
   useEffect(() => {
     if(selector.data?.length > 0 && selector.data[0]?.vId !== undefined) {
       setData(selector.data);
+      setCopyData(selector.data);
     } else {
       setData([]);
     }
@@ -257,7 +260,7 @@ export const VacationMngment = () => {
   };
 
   const onClickDropBoxItem = (e, target) => {
-    setSelectItem({...selectItem, [target]: e.target.id});
+    setFilterItem({...filterItem, [target]: e.target.id});
     if(target === 'vacation') {
       onClickType();
     }else{
@@ -268,7 +271,41 @@ export const VacationMngment = () => {
   const onChangeFindDate = (newDate) => {
     setFindDate(newDate);
   };
+  const onChangeFilter = (e) => {
+    console.log(e.target.value);
+    setFilterItem({...filterItem, [e.target.id]: e.target.value});
+  };
 
+  useEffect(() => {
+    let result = [];
+    if(filterItem.username === '' &&
+      filterItem.name === '' &&
+      filterItem.vacation === '' &&
+      filterItem.status === '') {
+      result = data;
+    }
+    const filterInfo = (Object.keys(filterItem)).filter((key) => filterItem[key] !== '');
+    if(filterInfo.length > 0) {
+      let temp = data;
+      filterInfo.forEach((item) => {
+        if(item === 'username') {
+          temp = temp.filter((v) => v.username === Number(filterItem[item]));
+        }
+        if(item === 'name') {
+          temp = temp.filter((v) => v.name === filterItem[item]);
+        }
+        if(item === 'vacation') {
+          temp = temp.filter((v) => VACATION_TYPE[v.type]?.title === filterItem[item]);
+        }
+        if(item === 'status') {
+          temp = temp.filter((v) => MANAGER_APPROVAL_TYPE[v.approvalFlag]?.title ===
+            filterItem[item]);
+        }
+        result = temp;
+      });
+    }
+    setCopyData(result);
+  }, [filterItem]);
 
   return (
     <Wrapper>
@@ -283,40 +320,42 @@ export const VacationMngment = () => {
             <InnerLayout>신청 사유</InnerLayout>
             <InnerLayout>상태</InnerLayout>
             <InnerLayout>세부 사항</InnerLayout>
-            <InnerLayout><InputComponent type={'text'}/></InnerLayout>
-            <InnerLayout><InputComponent type={'text'}/></InnerLayout>
-            <InnerLayout><InputComponent type={'date'}/></InnerLayout>
+            <InnerLayout><InputComponent type={'text'} id={'username'} item={filterItem} onChange={onChangeFilter}/></InnerLayout>
+            <InnerLayout><InputComponent type={'text'} id={'name'} item={filterItem} onChange={onChangeFilter}/></InnerLayout>
+            <InnerLayout>-</InnerLayout>
             <InnerLayout>
               <Dropbox
                 id={'vacation'}
                 open={openDropbox}
                 onClickDropBox={onClickType}
                 menu={VACATION_TYPE}
-                select={selectItem.vacation}
+                select={filterItem.vacation}
+                onChangeFilter={onChangeFilter}
                 onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'vacation')}
               />
             </InnerLayout>
-            <InnerLayout><InputComponent type={'text'}/></InnerLayout>
+            <InnerLayout>-</InnerLayout>
             <InnerLayout>
               <Dropbox
                 id={'status'}
                 open={openStatusDropbox}
                 onClickDropBox={onClickStatus}
-                menu={MANAGER_APPROVAL_TYPE.slice(0, 3)}
-                select={selectItem.status}
+                menu={MANAGER_APPROVAL_TYPE}
+                select={filterItem.status}
+                onChangeFilter={onChangeFilter}
                 onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'status')}
               />
             </InnerLayout>
             <InnerLayout>-</InnerLayout>
           </HeaderContainer>
 
-          {data?.slice(offset, offset + limit).map((item) => (
+          {copyData?.slice(offset, offset + limit).map((item) => (
             <ListItemComponent key={item.vId} item={item} onClickDetail={onClickDetail}/>
           ))}
 
 
           <Pagination
-            total={data?.length}
+            total={copyData?.length}
             limit={8}
             page={page}
             setPage={setPage}
@@ -383,6 +422,9 @@ const {
 
 InputComponent.propTypes = {
   type:PropTypes.string.isRequired,
+  id:PropTypes.string.isRequired,
+  item:PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
+  onChange:PropTypes.func.isRequired,
 };
 
 ListItemComponent.propTypes = {
