@@ -71,10 +71,25 @@ const UserInfoLayout = styled.div`
   height: 80px;
 `;
 const UserProfileLayout = styled.div`
+  border: 1px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
   ${({theme}) => theme.flexSet('flex-end')};
-  width: 113px;
+  width: 180px;
   height:100%;
-  background-color: #7A7A7A;
+  //background-color: #7A7A7A;
+`;
+const UserProfileLayoutBtn = styled.input`
+  //display: none;
+  ${({theme}) => theme.flexSet()};
+  width: 150px;
+  height: 100%;
+  color: white;
+  border-radius: 2px;
+  background-color: white;
+  font-weight: bold;
+  font-size: 13px;
+  &::file-selector-button {
+    visibility: hidden;
+  }
 `;
 
 const CaptionLayout = styled.div`
@@ -144,6 +159,7 @@ export const style = {Wrap,
   UserInfoWrap,
   UserInfoLayout,
   UserProfileLayout,
+  UserProfileLayoutBtn,
   CaptionLayout,
   LabelLayout,
   LabelLayout2,

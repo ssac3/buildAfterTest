@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
-import Dashboard from 'pages/manager/dashboard';
+import Dashboard from 'pages/manager/ManagerRenderPage';
 import EmpManagement from 'pages/admin/emp_mangement';
 import AtdcManagement from 'pages/user/AtdcManagement';
 import SignIn from 'pages/signin';
@@ -19,6 +19,8 @@ import EmpDetail from 'pages/admin/emp_detail';
 import DetailDavPage from 'pages/user/DetailDavPage';
 import VacationEnrollPage from 'pages/user/VacationEnrollPage';
 import VacationViewPage from 'pages/user/VacationViewPage';
+import Scanner from 'components/Scanner';
+import ReportEavDetailPage from 'pages/manager/ReportEavDetailPage';
 
 function getMenu(role) {
   switch (role) {
@@ -50,6 +52,8 @@ function App() {
   const [openVavDetail, setOpenVavDetail] = useState([]); // 사원 휴가 승인 대기 시 조회
   const [findYear, setFindYear] = useState(new Date()); // 근태 담당자 사원별 근태 조회 년도 선택
   const [closeDetail, setCloseDetail] = useState('')
+  const [openEavDetail, setOpenEavDetail] = useState([]); // 근태 담당자 사원별 근태 현황 조회
+  const [findDate, setFindDate] = useState(new Date()); // 근태 담당자 사원별 근태 현황 조회 (년/월)
   const onClickMenu = (e) => {
     const change = getMenu(roleURL).map(value => (value.id === Number(e.target.id) ? {
       ...value,
@@ -133,7 +137,16 @@ function App() {
 
   const onCloseDetail = (target) => {
     setCloseDetail(target);
+    console.log(closeDetail);
   }
+  const onClickEavDetail = (target) => {
+    setOpenEavDetail(target);
+  };
+
+  const onClickFindDate = (newDate) => {
+    setFindDate(newDate);
+  };
+
   useEffect(() => {
     if (signIn?.data === 'ADMIN') {
       setSelect(getMenu(API.ADMIN));
@@ -196,7 +209,14 @@ function App() {
           onClickEamDetail={onClickEamDetail}
           findYear={findYear}
         />}
-      {roleURL !== API.ROOT && (
+      {openEavDetail.length > 0 &&
+        <ReportEavDetailPage
+          openEavDetail={openEavDetail}
+          onClickEavDetail={onClickEavDetail}
+          findDate={findDate}
+        />}
+
+      {roleURL !== API.ROOT && roleURL !== API.SCANNER && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>
           <Navigation
@@ -209,6 +229,7 @@ function App() {
       )}
       <BrowserRouter>
         <Switch>
+          <Route path={API.SCANNER} component={Scanner}/>
           <Route exact path={API.ROOT} component={SignIn}/>
           <Wrap p={position()}>
             <Route
@@ -229,6 +250,9 @@ function App() {
                   onClickEamDetail={onClickEamDetail}
                   findYear={findYear}
                   onClickFindYear={onClickFindYear}
+                  onClickEavDetail={onClickEavDetail}
+                  findDate={findDate}
+                  onClickFindDate={onClickFindDate}
                 />)}
             />
             <Route

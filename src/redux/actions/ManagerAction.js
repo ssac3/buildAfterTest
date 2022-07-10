@@ -119,3 +119,47 @@ export const SwpEamRes = (data) => {
     data
   };
 };
+
+export const SwpEavReq = (username, findDate) => {
+  return {
+    type: ManagerType.SWP_EAV_REQ,
+    username,
+    findDate
+  };
+};
+
+export const SwpEavRes = (data) => {
+  return {
+    type: ManagerType.SWP_EAV_RES,
+    data
+  };
+};
+
+export const SwpEovReq = (depId, findDate) => {
+  return {
+    type: ManagerType.SWP_EOV_REQ,
+    depId,
+    findDate
+  };
+};
+
+export const SwpEovRes = (data) => {
+  return {
+    type: ManagerType.SWP_EOV_RES,
+    data
+  };
+};
+
+export const SwpEmpReq = (depId) => {
+  return {
+    type: ManagerType.SWP_EMP_REQ,
+    depId,
+  };
+};
+
+export const SwpEmpRes = (empData) => {
+  return {
+    type: ManagerType.SWP_EMP_RES,
+    empData
+  };
+};

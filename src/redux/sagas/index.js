@@ -4,7 +4,8 @@ import alert from './alertSagas';
 import user from './UserSaga';
 import signIn from './SigninSaga';
 import admin from './adminSaga';
+import scanner from './ScannerSaga';
 
 export default function* rootSaga() {
-  yield all([call(manager), call(alert), call(user), call(signIn), call(admin)]);
+  yield all([call(manager), call(alert), call(user), call(signIn), call(admin), call(scanner)]);
 }

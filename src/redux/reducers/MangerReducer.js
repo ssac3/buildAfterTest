@@ -112,7 +112,6 @@ function MangerReducer(state = INIT_STATE, action) {
         username: action.username,
         year: action.year,
       };
-
     case ManagerType.SWP_EAM_RES:
       return {
         name: state.name,
@@ -120,6 +119,53 @@ function MangerReducer(state = INIT_STATE, action) {
         endTime:state.endTime,
         data: state.data,
         result:action.data
+      };
+    case ManagerType.SWP_EAV_REQ:
+      return {
+        name: state.name,
+        startTime: state.startTime,
+        endTime:state.endTime,
+        data:state.data,
+        username: action.username,
+        findDate: action.findDate,
+      };
+    case ManagerType.SWP_EAV_RES:
+      return {
+        name: state.name,
+        startTime: state.startTime,
+        endTime:state.endTime,
+        data: state.data,
+        result: action.data,
+      };
+    case ManagerType.SWP_EOV_REQ:
+      return {
+        name: state.name,
+        startTime: state.startTime,
+        endTime:state.endTime,
+        depId: action.depId,
+        findDate: action.findDate
+      };
+    case ManagerType.SWP_EOV_RES:
+      return {
+        name: state.name,
+        startTime: state.startTime,
+        endTime:state.endTime,
+        data: action.data
+      };
+    case ManagerType.SWP_EMP_REQ:
+      return {
+        name: state.name,
+        startTime: state.startTime,
+        endTime:state.endTime,
+        depId: action.depId
+      };
+
+    case ManagerType.SWP_EMP_RES:
+      return {
+        name: state.name,
+        startTime: state.startTime,
+        endTime:state.endTime,
+        empData: action.empData
       };
     default:
       return state;

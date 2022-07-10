@@ -6,7 +6,8 @@ export const API = {
   MANAGER: '/manager',
   USER: '/user',
   LOGIN: '/login',
-  LOGOUT: '/logout'
+  LOGOUT: '/logout',
+  SCANNER: '/scanner'
 };
 
 
@@ -22,15 +23,21 @@ export const ROUTES = {
   SWP_EIV_REQ: API.MANAGER.concat('/eivView'),
   SWP_EAD_REQ: API.MANAGER.concat('/eadView'),
   SWP_EAM_REQ: API.MANAGER.concat('/eamView'),
+  SWP_EAV_REQ: API.MANAGER.concat('/eavView'),
+  SWP_EOV_REQ: API.MANAGER.concat('/eovView'),
+  SWP_EMP_REQ: API.MANAGER.concat('/empView'),
   SWP_SAV_REQ: API.USER.concat('/myView'),
   SWP_DAV_REQ: API.USER.concat('/getAllAttendance'),
+  SWP_UAG_REQ: API.USER.concat('/getMonthStatistics'),
   SWP_EAC_REQ: API.LOGIN.concat(''),
+  SWP_EMPMK_REQ: API.ADMIN.concat('/mkUsername'),
   SWP_EMPIN_REQ: API.ADMIN.concat('/insertEmp'),
   SWP_EMPSEL_REQ: API.ADMIN.concat(''),
   SWP_EMPUP_REQ: API.ADMIN.concat('/updateEmp'),
   SWP_SAPR_REQ: API.USER.concat('/updatePw'),
   SWP_EAS_REQ: API.LOGOUT.concat(''),
   SWP_SAIR_REQ: API.USER.concat('/myImgUpdate'),
+  SWP_QCS_REQ: API.SCANNER.concat(''),
   SWP_VA_REQ: API.USER.concat('/regVacation'),
   SWP_AAR_REQ: API.USER.concat('/rearrangeAttendance'),
   SWP_VC_REQ: API.USER.concat('/cancelVacation')
@@ -119,6 +126,7 @@ export const MANAGER_APPROVAL_TYPE = [
   {id: 0, title: '요청'},
   {id: 1, title: '승인'},
   {id: 2, title: '반려'},
+  {id: 3, title: '취소'},
 ];
 
 export const GENDER_TYPE = [

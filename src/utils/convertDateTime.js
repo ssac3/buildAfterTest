@@ -33,3 +33,10 @@ export const cnvrtTime = (date) => {
 export const calcVacationTime = (s, e) => {
   return Math.abs(s.getHours() - e.getHours());
 };
+
+export const convertMintoHour = (target) => {
+  return formatter(Math.floor(target / 60).toString())
+    .concat('시간 ')
+    .concat(formatter((target % 60).toString()))
+    .concat('분');
+};

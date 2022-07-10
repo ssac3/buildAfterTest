@@ -6,8 +6,8 @@ const Wrapper = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  ${({theme}) => theme.flexSet('flex-start')};
-  width: 40%;
+  ${({theme}) => theme.flexSet('space-between')};
+  width: 450px;
   height: 75px;
   font-weight: normal;
   font-size:20px;

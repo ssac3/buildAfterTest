@@ -2,7 +2,7 @@ import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {UserType} from 'redux/constants';
-import {SwpAarRes, SwpDavRes, SwpSavReq, SwpSavRes, SwpVaRes, SwpVcRes} from 'redux/actions/UserAction';
+import {SwpAarRes, SwpDavRes, SwpSavReq, SwpSavRes, SwpVaRes, SwpVcRes, SwpUagRes} from 'redux/actions/UserAction';
 import {openAlert} from 'redux/actions/AlertAction';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -119,6 +119,21 @@ function vcReq(data) {
     });
   return result;
 }
+function uagReq(data) {
+  const result = axios
+    .post(ROUTES.SWP_UAG_REQ, data, getHeader())
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_UAG_REQ));
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_UAG_REQ).ERROR);
+      return err;
+    });
+
+  return result;
+}
+
 function* postSwpSavReq() {
   try {
     const result = yield call(savReq);
@@ -286,6 +301,18 @@ function* postSwpVcReq() {
     } else {
       yield put('fail', result.Msg);
     }
+
+function* postSwpUagReq() {
+  try {
+    const data = yield select((state) => state.UserReducer);
+    const result = yield call(uagReq, data);
+
+    if(result.resCode === 0) {
+      yield put(SwpUagRes(result.data));
+    } else {
+      yield put(openAlert('fail', '에러가 발생했습니다.'));
+    }
+    console.log(result);
   } catch (e) {
     console.log(e);
   }
@@ -298,6 +325,7 @@ function* watchAlert() {
   yield takeLatest(UserType.SWP_VA_REQ, postSwpVaReq);
   yield takeLatest(UserType.SWP_AAR_REQ, postSwpAarReq);
   yield takeLatest(UserType.SWP_VC_REQ, postSwpVcReq);
+  yield takeLatest(UserType.SWP_UAG_REQ, postSwpUagReq);
 }
 export default function* userSaga() {
   yield all([fork(watchAlert)]);

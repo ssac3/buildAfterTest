@@ -7,8 +7,13 @@ import Dropbox from 'components/Dropbox';
 import {VACATION_TYPE, MANAGER_APPROVAL_TYPE, LOCAL_STORAGE} from 'utils/constants';
 import {useDispatch, useSelector} from 'react-redux';
 import {SwpVarReq, SwpVavReq} from 'redux/actions/ManagerAction';
-import {calcVacationTime} from 'utils/convertDateTime';
+import {calcVacationTime, convertMintoHour, formatter} from 'utils/convertDateTime';
 import Pagination from 'components/Pagination';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
+import krLocale from 'date-fns/locale/ko';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import TextField from '@mui/material/TextField';
 
 const InputComponent = ({type}) => {
   const [open, setOpen] = useState(false);
@@ -45,14 +50,14 @@ const InputComponent = ({type}) => {
 const ListItemComponent = ({item, onClickDetail}) => {
   return(
     <ListItemContainer>
-      <ItemContainer>{item.username}</ItemContainer>
-      <ItemContainer>{item.name}</ItemContainer>
-      <ItemContainer>{item.date}</ItemContainer>
-      <ItemContainer>{VACATION_TYPE[item.type].title}</ItemContainer>
+      <ItemContainer>{item?.username}</ItemContainer>
+      <ItemContainer>{item?.name}</ItemContainer>
+      <ItemContainer>{item?.date}</ItemContainer>
+      <ItemContainer>{VACATION_TYPE[item?.type]?.title}</ItemContainer>
       <ItemContainer>{item.contents}</ItemContainer>
-      <ItemContainer>{MANAGER_APPROVAL_TYPE[item.approvalFlag].title}</ItemContainer>
+      <ItemContainer>{MANAGER_APPROVAL_TYPE[item?.approvalFlag]?.title}</ItemContainer>
       <ItemContainer>
-        <BtnContainer id={item.vId} onClick={onClickDetail}>상세보기</BtnContainer>
+        <BtnContainer id={item?.vId} onClick={onClickDetail}>상세보기</BtnContainer>
       </ItemContainer>
     </ListItemContainer>
   );
@@ -71,9 +76,9 @@ const UserInfoComponent = ({detail, detailInit}) => {
   // 값변경 함수
   const [change, setChange] = useState('');
   useEffect(() => {
+    console.log(detail);
     if(detail?.approvalFlag) {
-      setChange(MANAGER_APPROVAL_TYPE[detail.approvalFlag].title);
-      console.log('cahnge확인111', MANAGER_APPROVAL_TYPE[detail.approvalFlag].title);
+      setChange(MANAGER_APPROVAL_TYPE[detail?.approvalFlag]?.title);
     }
   }, [detail]);
   const onClickDrop = () => {
@@ -81,12 +86,10 @@ const UserInfoComponent = ({detail, detailInit}) => {
   };
   const onClickItem = (e) => {
     setChange(e.target.id);
-    console.log('cahnge확인222', e.target.id);
     onClickDrop();
   };
 
   const onClickStore = (e) => {
-    // SWP_VAR_REQ
     const approvalFlag = MANAGER_APPROVAL_TYPE.filter(v => v.title === change && v)[0].id;
     dispatch(SwpVarReq(Number(e.target.id), approvalFlag, detailInit));
   };
@@ -111,7 +114,9 @@ const UserInfoComponent = ({detail, detailInit}) => {
             <InnerInfoItem>사유</InnerInfoItem>
             <InnerInfoItem>남은 휴가시간</InnerInfoItem>
             <InnerInfoItem><InfoInputComponent text={detail.contents}/></InnerInfoItem>
-            <InnerInfoItem><InfoInputComponent text={detail.restTime}/></InnerInfoItem>
+            <InnerInfoItem>
+              <InfoInputComponent text={convertMintoHour(detail.restTime)}/>
+            </InnerInfoItem>
 
             <InnerInfoItem>상태</InnerInfoItem>
             <InnerInfoItem/>
@@ -119,13 +124,13 @@ const UserInfoComponent = ({detail, detailInit}) => {
               <Dropbox
                 open={drop}
                 onClickDropBox={onClickDrop}
-                menu={MANAGER_APPROVAL_TYPE}
+                menu={MANAGER_APPROVAL_TYPE.slice(0, 3)}
                 select={change}
                 onClickDropBoxItem={onClickItem}
               />
             </InnerInfoItem>
           </InnerInfoContainer>
-          <StoreBtn id={detail.vId} onClick={onClickStore}>저장</StoreBtn>
+          <StoreBtn id={detail.vId} disabled={detail.approvalFlag !== '0'} onClick={onClickStore}>저장</StoreBtn>
         </>
       )
         :
@@ -144,6 +149,8 @@ export const VacationMngment = () => {
   const [openStatusDropbox, setOpenStatusDropbox] = useState(false);
   const [detail, setDetail] = useState({});
   const [page, setPage] = useState(1);
+  const [findDate, setFindDate] = useState(new Date());
+  const [filterData, setFilterData] = useState([]); // 해당 일자에 전체 사원 중 휴가 사원 비율 구하기
   const limit = 7;
   const offset = (page - 1) * limit;
   const [selectItem, setSelectItem] = useState({
@@ -151,12 +158,19 @@ export const VacationMngment = () => {
     status:'선택하세요'
   });
 
+  const date = (findDate.getFullYear().toString())
+    .concat('-')
+    .concat(formatter((findDate.getMonth() + 1).toString()))
+    .concat('-')
+    .concat(formatter((findDate.getDate()).toString()));
+
   useEffect(() => {
     console.log('VAV');
     dispatch(SwpVavReq(LOCAL_STORAGE.get('depId')));
   }, []);
 
   useEffect(() => {
+    console.log(selector);
     if(selector.data?.length > 0 && selector.data[0]?.vId !== undefined) {
       setData(selector.data);
     } else {
@@ -164,16 +178,27 @@ export const VacationMngment = () => {
     }
   }, [selector]);
 
+  useEffect(() => {
+    const filter = data.filter((v) => v.date === date && v);
+    setFilterData(filter);
+    console.log(filterData); // eslint 에러 방지
+  }, [findDate]);
+
+
 
   const onClickDetail = (e) => {
     const detailData = data?.filter((v) => v.vId === Number(e.target.id))[0];
     let vacationTime;
+    const startTimeSlice = selector.startTime.split(':');
+    const depStartTime = new Date(0, 0, 0, startTimeSlice[0], startTimeSlice[1], startTimeSlice[2]);
+    const endTimeSlice = selector.endTime.split(':');
+    const depEndTime = new Date(0, 0, 0, endTimeSlice[0], endTimeSlice[1], endTimeSlice[2]);
     if(detailData.type === '0') {
-      vacationTime = calcVacationTime(new Date(selector.startTime), new Date(selector.endTime));
+      vacationTime = calcVacationTime(depStartTime, depEndTime);
     } else if(detailData.type === '1') {
-      vacationTime = calcVacationTime(new Date(selector.startTime), new Date(0, 0, 0, 12));
+      vacationTime = calcVacationTime(depStartTime, new Date(0, 0, 0, 12));
     } else {
-      vacationTime = calcVacationTime(new Date(0, 0, 0, 13), new Date(selector.endTime));
+      vacationTime = calcVacationTime(new Date(0, 0, 0, 13), depEndTime);
     }
     const detailInfo = {...detailData, vacationTime};
     setDetail(detailInfo);
@@ -199,6 +224,11 @@ export const VacationMngment = () => {
       onClickStatus();
     }
   };
+
+  const onChangeFindDate = (newDate) => {
+    setFindDate(newDate);
+  };
+
 
   return (
     <Wrapper>
@@ -232,7 +262,7 @@ export const VacationMngment = () => {
                 id={'status'}
                 open={openStatusDropbox}
                 onClickDropBox={onClickStatus}
-                menu={MANAGER_APPROVAL_TYPE}
+                menu={MANAGER_APPROVAL_TYPE.slice(0, 3)}
                 select={selectItem.status}
                 onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'status')}
               />
@@ -253,7 +283,25 @@ export const VacationMngment = () => {
           />
         </ListContainer>
         <SideContainer>
-          <InfoContainer h={35}/>
+          <InfoContainer h={35}>
+            <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={krLocale}>
+              <DatePicker
+                label="조회할 날짜"
+                value={findDate}
+                onChange={(newValue) => {
+                  onChangeFindDate(newValue);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    size={'small'}
+                    {...params}
+                    helperText={null}
+                    style={{backgroundColor:'white'}}
+                  />
+                )}
+              />
+            </LocalizationProvider>
+          </InfoContainer>
           <InfoContainer h={63}>
             <UserInfoComponent detail={detail} detailInit={detailInit}/>
           </InfoContainer>

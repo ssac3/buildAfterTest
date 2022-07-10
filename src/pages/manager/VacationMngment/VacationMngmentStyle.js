@@ -152,6 +152,9 @@ const StoreBtn = styled.button`
   &:hover{
     background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_54};
   }
+  &:disabled{
+    background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_CC};
+  }
 `;
 
 export const style = {

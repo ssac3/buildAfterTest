@@ -18,6 +18,25 @@ const TopComponent = styled.div`
   width: 100%;
   margin-bottom: 75px;
 `;
+const SchContainer = styled.div`
+  ${({theme}) => theme.flexSet('flex-end')};
+  width: 100%;
+  height: 40px;
+  border: 1px solid black;
+  border-radius: 5px;
+`;
+const SchBtnContainer = styled.div`
+  ${({theme}) => theme.flexSet()};
+  cursor: pointer;
+  width:30px;
+  height: 100%;
+`;
+const SchInput = styled.input`
+  ${({theme}) => theme.flexSet()};
+  width: 100%;
+  height: 100%;
+  font-size: 15px;
+`;
 const DivContainer = styled.div`
   margin-left: 20px;
   ${({theme}) => theme.flexSet('space-between')};
@@ -51,18 +70,20 @@ const RegBtn = styled.button`
   color: white;
   font-weight: bold;
 `;
-
+const HeaderDiv = styled.div`
+  background-color: red;
+`;
 const ListHeader = styled.ul`
   ${({theme}) => theme.flexSet('space-around')};
     width:100%;
     height: 20px;
     list-style: none;
     font-weight: bold;
-  margin-left: 20px;
+    margin:0;
 `;
 const ListItem = styled.li`
   float: left;
-  width: ${({w}) => w}px;
+  width: 130px;
 `;
 const ListItemContainer = styled.div`
   ${({theme}) => theme.flexSet('space-around')};
@@ -75,11 +96,10 @@ const ListItemContainer = styled.div`
 `;
 const ItemContainer = styled.div`
   ${({theme}) => theme.flexSet()};
+  display:block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  vertical-align: middle;
-  horiz-align: center;
   width: 130px;
 `;
 const BtnLayout = styled.button`
@@ -96,13 +116,17 @@ const BtnLayout = styled.button`
 export const style = {
   Container,
   PageNameContainer,
-  Wrapper,
   TopComponent,
+  Wrapper,
+  SchContainer,
+  SchBtnContainer,
+  SchInput,
   DivContainer,
   SelectBox,
   DelBtn,
   RegBtn,
   ListHeader,
+  HeaderDiv,
   ListItem,
   ListItemContainer,
   ItemContainer,

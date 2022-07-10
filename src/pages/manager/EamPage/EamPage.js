@@ -16,10 +16,10 @@ const MyChart = ({data}) => {
       <CartesianGrid strokeDasharray="4"/>
       <XAxis dataKey="month" />
       <YAxis />
-      <Tooltip/>
-      <Bar dataKey="okCount" name={'정상'} stackId={'a'} fill={theme.colorSet.ATTENDANCE_STATUS.OK} />
-      <Bar dataKey="lateCount" name={'지각'} stackId={'a'} fill={theme.colorSet.ATTENDANCE_STATUS.LATE} />
-      <Bar dataKey="absenceCount" name={'결근'} stackId={'a'} fill={theme.colorSet.ATTENDANCE_STATUS.ABSENCE} />
+      <Tooltip cursor={false}/>
+      <Bar dataKey="ok_count" name={'정상'} stackId={'a'} fill={theme.colorSet.ATTENDANCE_STATUS.OK} />
+      <Bar dataKey="late_count" name={'지각'} stackId={'a'} fill={theme.colorSet.ATTENDANCE_STATUS.LATE} />
+      <Bar dataKey="absence_count" name={'결근'} stackId={'a'} fill={theme.colorSet.ATTENDANCE_STATUS.ABSENCE} />
       <Legend />
     </BarChart>
   );
@@ -43,7 +43,6 @@ export const EamPage = ({openEamDetail, onClickEamDetail, findYear}) => {
       setInfos(reducer.result);
     }
   }, [reducer]);
-
   return (
     <EamWrapper onClick={onCloseModal}>
       <Container onClick={(e) => e.stopPropagation()}>

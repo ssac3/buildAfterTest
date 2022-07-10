@@ -16,6 +16,7 @@ import {
 import {DropboxEmp} from 'components/DropboxEmp/DropboxEmp';
 
 export const EmpDetail = ({emp, onClickDetailEmp}) => {
+  console.log(emp);
   // 드롭박스
   const [openGenderDropbox, setOpenGenderDropbox] = useState(false);
   const [openLocationDropbox, setOpenLocationDropbox] = useState(false);
@@ -79,8 +80,6 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
     depName: DEPARTMENT_NAME_TYPE[emp.depId - 1].title,
     manager: ATTENDENCE_MANAGER_TYPE[(emp.role > 1) - 1].title,
   });
-  console.log('이거확인', emp);
-  // console.log('고른드롭박스', LOCATION_TYPE[emp.location - 1].title);
   const onClickDropBoxItem = (e, target) => {
     setSelectItem({...selectItem, [target]: e.target.id});
     if(target === 'gender') {
@@ -105,17 +104,15 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
     {
       username: emp.username,
       name: emp.name,
-      email: emp.email,
-      qrPath: emp.qrPath,
-      img: emp.img
+      email: emp.username,
+      qrPath: emp.username,
+      img: emp.img,
     }
   );
   const onClickDetailCloseEmp = () => {
     onClickDetailEmp(0);
   };
   const Update = () => {
-    console.log(emp);
-    console.log(selectItem);
     const convertData = {
       gender : GENDER_TYPE.filter((v) => v.title === selectItem?.gender)[0].id,
       location: LOCATION_TYPE.filter((v) => v.title === selectItem?.location)[0].id,
@@ -124,9 +121,9 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
       depId: DEPARTMENT_NAME_TYPE.filter((v) => v.title === selectItem?.depName)[0].id,
       manager: ATTENDENCE_MANAGER_TYPE.filter((v) => v.title === selectItem?.manager)[0].title,
     };
-    // change + packedMsg
     const packedMsg = Object.assign(change, convertData);
     dispatch(SwpEmpupReq(packedMsg));
+    onClickDetailCloseEmp();
   };
   const onChange = (e) => {
     setChange({...change, [e.target.id]: e.target.value});
@@ -163,7 +160,22 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
               />
             </UserInfoLayout>
           </UserInfoWrap>
-          <UserProfileLayout/>
+          <UserProfileLayout htmlFor="img">
+            {emp.img && (
+              <img
+                src={emp.img}
+                style={{ width: '100%', height: '100%' }}
+                alt={'Img'}
+              />
+            )}
+            {!emp.img && <h6>.</h6>}
+            <UserProfileLayoutBtn
+              type={'file'}
+              id={'profileImg'}
+              accept={'image/*'}
+              enctype={'multipart/form-data'}
+            />
+          </UserProfileLayout>
         </InsertForm>
         <UserInfoLayout2>
           <CaptionLayout>이메일</CaptionLayout>
@@ -174,7 +186,6 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
             value={emp.email || ''}
           />
           <DropboxEmp
-            // id={'gender'}
             open={openGenderDropbox}
             onClickDropBox={onClickGenderDrop}
             menu={GENDER_TYPE}
@@ -184,7 +195,6 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
           <CaptionLayout>지사</CaptionLayout>
           <CaptionLayout>직급</CaptionLayout>
           <DropboxEmp
-            // id={'location'}
             open={openLocationDropbox}
             onClickDropBox={onClickLocationDrop}
             menu={LOCATION_TYPE}
@@ -194,7 +204,6 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
             }
           />
           <DropboxEmp
-            // id={'position'}
             open={openPositionDropbox}
             onClickDropBox={onClickPositionDrop}
             menu={POSITION_TYPE}
@@ -272,6 +281,7 @@ const {Wrap,
   UserInfoWrap,
   UserInfoLayout,
   UserProfileLayout,
+  UserProfileLayoutBtn,
   CaptionLayout,
   UserInfoLayout2,
   LabelLayout,

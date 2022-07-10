@@ -17,9 +17,18 @@ export const ManagerType = {
   SWP_EAD_RES: 'SWP_EAD_RES',
   SWP_EAM_REQ: 'SWP_EAM_REQ',
   SWP_EAM_RES: 'SWP_EAM_RES',
+  SWP_EAV_REQ: 'SWP_EAV_REQ',
+  SWP_EAV_RES: 'SWP_EAV_RES',
+  SWP_EOV_REQ: 'SWP_EOV_REQ',
+  SWP_EOV_RES: 'SWP_EOV_RES',
+  SWP_EMP_REQ: 'SWP_EMP_REQ',
+  SWP_EMP_RES: 'SWP_EMP_RES',
 };
 
 export const AdminType = {
+  // 사번생성
+  SWP_EMPMK_REQ: 'SWP_EMPMK_REQ',
+  SWP_EMPMK_RES: 'SWP_EMPMK_RES',
   // 사원등록
   SWP_EMPIN_REQ: 'SWP_EMPIN_REQ',
   SWP_EMPIN_RES: 'SWP_EMPIN_RES',
@@ -50,7 +59,12 @@ export const UserType = {
   SWP_AAR_REQ: 'SWP_AAR_REQ',
   SWP_AAR_RES: 'SWP_AAR_RES',
   SWP_VC_REQ: 'SWP_VC_REQ',
-  SWP_VC_RES: 'SWP_VC_RES'
+  SWP_VC_RES: 'SWP_VC_RES',
+  // SWP_VC_REQ: 'SWP_VC_REQ',
+  // SWP_VC_RES: 'SWP_VC_RES'
+  // 월별 근태 현황
+  SWP_UAG_REQ: 'SWP_UAG_REQ',
+  SWP_UAG_RES: 'SWP_UAG_RES'
 };
 
 export const SignInType = {
@@ -61,4 +75,9 @@ export const SignInType = {
 export const SignOutType = {
   SWP_EAS_REQ: 'SWP_EAS_REQ',
   SWP_EAS_RES: 'SWP_EAS_RES'
+};
+
+export const ScannerType = {
+  SWP_QCS_REQ: 'SWP_QCS_REQ',
+  SWP_QCS_RES: 'SWP_QCS_RES'
 };
