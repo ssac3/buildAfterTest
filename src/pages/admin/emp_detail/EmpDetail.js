@@ -16,6 +16,7 @@ import {
 import {DropboxEmp} from 'components/DropboxEmp/DropboxEmp';
 
 export const EmpDetail = ({emp, onClickDetailEmp}) => {
+  console.log(emp);
   // 드롭박스
   const [openGenderDropbox, setOpenGenderDropbox] = useState(false);
   const [openLocationDropbox, setOpenLocationDropbox] = useState(false);
@@ -105,6 +106,7 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
       name: emp.name,
       email: emp.username,
       qrPath: emp.username,
+      img: emp.img,
     }
   );
   const onClickDetailCloseEmp = () => {
@@ -121,9 +123,6 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
     };
     const packedMsg = Object.assign(change, convertData);
     dispatch(SwpEmpupReq(packedMsg));
-    console.log(emp.email);
-    console.log('이거화긴링', change.email);
-    console.log('updateupdate', packedMsg);
     onClickDetailCloseEmp();
   };
   const onChange = (e) => {

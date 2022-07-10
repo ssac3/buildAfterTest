@@ -79,11 +79,11 @@ const ListHeader = styled.ul`
     height: 20px;
     list-style: none;
     font-weight: bold;
-  margin-left: 20px;
+    margin:0;
 `;
 const ListItem = styled.li`
   float: left;
-  width: ${({w}) => w}px;
+  width: 130px;
 `;
 const ListItemContainer = styled.div`
   ${({theme}) => theme.flexSet('space-around')};
@@ -96,11 +96,10 @@ const ListItemContainer = styled.div`
 `;
 const ItemContainer = styled.div`
   ${({theme}) => theme.flexSet()};
+  display:block;
   overflow: hidden;
   text-overflow: ellipsis;
-  //white-space: nowrap;
-  vertical-align: middle;
-  horiz-align: center;
+  white-space: nowrap;
   width: 130px;
 `;
 const BtnLayout = styled.button`

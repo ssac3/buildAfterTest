@@ -4,6 +4,7 @@ const Container = styled.div`
   ${({theme}) => theme.flexSet('space-around')};
   display: flex;
   align-items: center;
+  visibility: ${({show}) => show};
 `;
 
 const Icon = styled.svg`

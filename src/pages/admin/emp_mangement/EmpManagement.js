@@ -13,10 +13,10 @@ import Checkbox from 'components/Checkbox';
 const ListItemComponent = ({emp, onClickDetailEmp}) => {
   return (
     <ListItemContainer>
-      <Checkbox />
+      <Checkbox show={'auto'}/>
       <ItemContainer>{emp.username}</ItemContainer>
       <ItemContainer>{emp.name}</ItemContainer>
-      <ItemContainer>{emp.username}</ItemContainer>
+      <ItemContainer>{emp.email}</ItemContainer>
       <ItemContainer>{GENDER_TYPE[emp.gender].title}</ItemContainer>
       <ItemContainer>{DEPARTMENT_NAME_TYPE[emp.depId - 1].title}</ItemContainer>
       <ItemContainer>{emp.position}</ItemContainer>
@@ -31,19 +31,8 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.AdminReducer);
   const [emps, setEmps] = useState([]);
-  // console.log(emps);
-  // 검색
-  // const [schVal, setSchVal] = useState('');
-  // const handleSchValChange = (e) => {
-  //   setSchVal(e.target.value);
-  // };
-  // const usernameSch = emps.filter((emps) => {
-  //   return emps.emp.username.includes(schVal);
-  // });
-  // 페이지네이션
   const [page, setPage] = useState(1);
   const offset = (page - 1) * 6;
-  // 드롭박스
   const [openDropbox, setOpenDropbox] = useState(false);
   const [openStatusDropbox, setOpenStatusDropbox] = useState(false);
   const [selectItem, setSelectItem] = useState({
@@ -108,15 +97,15 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
           <RegBtn value="regBtn" onClick={onClickInsertEmp}>추가</RegBtn>
         </TopComponent>
         <ListHeader>
-          <HeaderDiv />
-          <ListItem w={100}>사원 번호</ListItem>
-          <ListItem w={100}>사원명</ListItem>
-          <ListItem w={150}>이메일</ListItem>
-          <ListItem w={100}>성별</ListItem>
-          <ListItem w={100}>부서</ListItem>
-          <ListItem w={100}>직급</ListItem>
-          <ListItem w={100}>입사일</ListItem>
-          <ListItem w={100}>상세보기</ListItem>
+          <Checkbox show={'hidden'}/>
+          <ListItem>사원 번호</ListItem>
+          <ListItem>사원명</ListItem>
+          <ListItem>이메일</ListItem>
+          <ListItem>성별</ListItem>
+          <ListItem>부서</ListItem>
+          <ListItem>직급</ListItem>
+          <ListItem>입사일</ListItem>
+          <ListItem>상세보기</ListItem>
         </ListHeader>
         {emps?.slice(offset, offset + 6).map((v) => {
           return <ListItemComponent
@@ -160,7 +149,6 @@ const {
   DelBtn,
   RegBtn,
   ListHeader,
-  HeaderDiv,
   ListItem,
   ListItemContainer,
   ItemContainer,
