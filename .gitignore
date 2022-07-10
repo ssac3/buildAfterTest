@@ -26,5 +26,6 @@ yarn-error.log*
 .eslintrc.js
 .prettierrc.js
 .idea
+.package-lock.json
 client.iml
 jenkinsTest.iml
