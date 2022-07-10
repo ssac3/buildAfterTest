@@ -18,8 +18,8 @@ const CheckBox = styled.div`
   width: 22px;
   height: 22px;
   border: 1px solid black;
-  border: ${(props) => (props.checked ? 'none' : 'solid 0.1rem #dddddd')};
-  background: ${(props) => (props.checked ? 'skyblue' : 'white')};
+  border: ${({checked}) => (checked ? 'none' : 'solid 0.1rem #dddddd')};
+  background: ${({checked}) => (checked ? 'skyblue' : 'white')};
   border-radius: 5px;
   transition: all 150ms;
   ${Icon} {
