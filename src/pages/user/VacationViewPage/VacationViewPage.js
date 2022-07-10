@@ -7,14 +7,26 @@ import {CalendarPicker} from '@mui/x-date-pickers/CalendarPicker';
 import {cnvrtDate} from 'utils/convertDateTime';
 import {VACATION_TYPE} from 'utils/constants';
 import theme from 'styles/theme';
+import {useDispatch} from 'react-redux';
+import {SwpVcReq} from 'redux/actions/UserAction';
 
-export const VacationViewPage = ({vav, onClickVavDetail}) => {
+export const VacationViewPage = ({vav, onClickVavDetail, onCloseDetail}) => {
+  const dispatch = useDispatch();
   const date = new Date(vav[0].vDate);
+  const vId = vav[0]?.vId;
+  const vDate = vav[0]?.vDate;
   const vType = VACATION_TYPE.filter(
     (v) => v.id === Number(vav[0].vType) && v
   )[0].title;
   const onCloseModal = () => {
     onClickVavDetail([]);
+  };
+  const onCancelVac = () => {
+    if(window.confirm('정말로 휴가를 취소하겠습니까?')) {
+      dispatch(SwpVcReq(vId, vDate));
+      onClickVavDetail([]);
+      onCloseDetail(0);
+    }
   };
 
   return (
@@ -45,10 +57,16 @@ export const VacationViewPage = ({vav, onClickVavDetail}) => {
           <Title>휴가 사유</Title>
           <InputContainer w={100} value={vav[0].vContents} readOnly/>
         </DataWrapper2>
-        <BtnLayout>
-          <Btn bgColor={theme.colorSet.SECONDARY.GRAY_CC}>휴가 취소</Btn>
-          <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B} onClick={onCloseModal}>닫기</Btn>
-        </BtnLayout>
+
+        {
+          vav[0]?.vId !== null ?
+            <BtnLayout>
+              <Btn bgColor={theme.colorSet.SECONDARY.GRAY_CC} onClick={onCancelVac}>휴가 취소</Btn>
+            </BtnLayout> :
+            <BtnLayout>
+            </BtnLayout>
+        }
+
       </Container>
     </Wrapper>
   );
