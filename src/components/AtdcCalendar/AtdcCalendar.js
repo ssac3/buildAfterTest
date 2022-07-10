@@ -86,7 +86,11 @@ const CustomHeader = ({value, onChange}) => {
     </div>
   );
 };
-export const AtdcCalendar = ({onClickDavDetail, onClickVaeDetail, onClickVavDetail}) => {
+export const AtdcCalendar = ({
+  openVaeDetail,
+  onClickDavDetail,
+  onClickVaeDetail,
+  onClickVavDetail}) => {
   const selector = useSelector((state) => state.UserReducer);
   const dispatch = useDispatch();
   const [selectDate, setSelectDate] = useState(moment());
@@ -95,21 +99,25 @@ export const AtdcCalendar = ({onClickDavDetail, onClickVaeDetail, onClickVavDeta
   const today = moment();
   const initOpen = () => {
     onClickVaeDetail('');
-    onClickDavDetail([]);
   };
 
   useEffect(() => {
     initOpen();
     dispatch(SwpDavReq(getFindMonth(selectDate)));
-  }, [findDate]);
+  }, [findDate, openVaeDetail]);
 
   useEffect(() => {
     if (selector.data?.length > 0) {
       setGetData(selector.data);
     }
   }, [selector]);
-
-
+  // useEffect(() => {
+  //   console.log(onClickVaeDetail);
+  //   dispatch(SwpDavReq(getFindMonth(selectDate)));
+  // }, [onClickVaeDetail]);
+  useEffect(() => {
+    dispatch(SwpDavReq(getFindMonth(selectDate)));
+  }, [onClickDavDetail]);
   const getListData = (value, infos) => {
     let listData;
     if (infos.length > 0) {
@@ -156,11 +164,11 @@ export const AtdcCalendar = ({onClickDavDetail, onClickVaeDetail, onClickVavDeta
               status={item.aStatus && getStatus(item.aStatus)}
               text={cnvrtTime(item?.aStartTime)?.concat(' / ').concat(cnvrtTime(item?.aEndTime))}
             />
-            {item.vType !== null &&
-            <VacationItem
-              vType={item.vType}
-              vApprovalFlag={item.vApprovalFlag}
-            />}
+            {(item.vType !== null && item.vApprovalFlag !== '3') &&
+              <VacationItem
+                vType={item.vType}
+                vApprovalFlag={item.vApprovalFlag}
+              />}
           </li>
         ))}
       </ul>
@@ -172,8 +180,9 @@ export const AtdcCalendar = ({onClickDavDetail, onClickVaeDetail, onClickVavDeta
       const filterInfo = getData?.filter((v) => v.vDate === value.format('YYYY-MM-DD'));
       if (filterInfo.length > 0) {
         if(filterInfo[0].vApprovalFlag === '0') {
-          console.log(filterInfo[0]);
           onClickVavDetail(filterInfo);
+        } else if(filterInfo[0].vApprovalFlag === '3') {
+          onClickVaeDetail(value);
         } else {
           onClickDavDetail(filterInfo);
         }
@@ -212,6 +221,7 @@ AtdcCalendar.propTypes = {
   onClickDavDetail: PropTypes.func.isRequired,
   onClickVaeDetail: PropTypes.func.isRequired,
   onClickVavDetail: PropTypes.func.isRequired,
+  openVaeDetail: PropTypes.func.isRequired,
 };
 CustomHeader.propTypes = {
   value   : PropTypes.objectOf(
