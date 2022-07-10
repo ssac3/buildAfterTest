@@ -8,12 +8,11 @@ import {formatter} from 'utils/convertDateTime';
 import {Bar, BarChart, Pie, PieChart, Sector, Tooltip, XAxis} from 'recharts';
 import theme from 'styles/theme';
 
-const AttendaceBarChart = ({data, sum}) => {
+const AttendaceBarChart = ({data, total}) => {
   const tmp = [];
-  if(data !== undefined) {
-    tmp.push({name: '출근', aCount: (sum - data.vCount)});
+  if(data !== undefined || total !== undefined) {
+    tmp.push({name: '출근', aCount: (total - data.vCount)});
     tmp.push({name: '휴가', vCount: data.vCount});
-    console.log(tmp);
   }
   return (
     <BarChart
@@ -83,7 +82,6 @@ const renderActiveShape = (props) => {
 };
 
 const AttendancePiChart = ({current, total}) => {
-  console.log(current, total);
   const [chartInfo, setChartInfo] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
@@ -138,7 +136,6 @@ export const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    console.log(selector);
     if(selector?.startTime !== undefined) {
       const startTimeSlice = selector?.startTime.split(':');
       const endTimeSlice = selector?.endTime.split(':');
@@ -163,6 +160,9 @@ export const Dashboard = () => {
     setSum(position?.map((v) => v.count).reduce((prev, cur) => prev + cur));
   }, [position, count]);
 
+  useEffect(() => {
+    LOCAL_STORAGE.set('depTotal', sum);
+  }, [sum]);
   return (
     <Wrapper>
       <InnerContainer>
@@ -192,7 +192,7 @@ export const Dashboard = () => {
             <h4 style={{margin: 0}}>출근과 전일 휴가인 사원 수를 표시합니다.</h4>
           </CardTitle>
           <ChartLayout>
-            <AttendaceBarChart data={count} sum={sum}/>
+            <AttendaceBarChart data={count} total={sum}/>
             <AttendancePiChart current={count?.aCount} total={(sum - count.vCount)}/>
           </ChartLayout>
         </Card>
@@ -244,7 +244,7 @@ AttendaceBarChart.propTypes = {
   data: PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   ).isRequired,
-  sum: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
 };
 
 AttendancePiChart.propTypes = {

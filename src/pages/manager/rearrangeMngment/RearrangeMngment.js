@@ -62,7 +62,13 @@ export const RearrangeMngment = ({onClickATR, atvDetail}) => {
             <MdOutlineClose size={25} onClick={() => onClickATR(0)} style={{cursor: 'pointer'}}/>
           </CloseLayout>
           <UserInfoLayout>
-            <ProfileLayout/>
+            <ProfileLayout htmlFor="img">
+              <img
+                src={atvDetail.img}
+                style={{ width: '100%', height: '100%', borderRadius:'50%' }}
+                alt={'Img'}
+              />
+            </ProfileLayout>
             <UserDetailInfoLayout>
               <ItemLayout>
                 <h3>사원번호</h3>

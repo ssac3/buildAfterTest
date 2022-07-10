@@ -14,6 +14,53 @@ import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import krLocale from 'date-fns/locale/ko';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import TextField from '@mui/material/TextField';
+import {PieChart, Pie, Cell, Legend} from 'recharts';
+import theme from 'styles/theme';
+
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
+
+const VacInfoPiChart = ({data}) => {
+  const COLORS = [
+    theme.colorSet.ATTENDANCE_STATUS.OK,
+    theme.colorSet.SECONDARY.GRAY_CC,
+    theme.colorSet.PRIMARY.BLUE_1A,
+    theme.colorSet.ATTENDANCE_STATUS.VACATION,
+  ];
+  const convertData = [
+    {name: '출근', value: Number(LOCAL_STORAGE.get('depTotal')) - data},
+    {name: '휴가', value: data},
+  ];
+  return (
+    <PieChart width={250} height={190}>
+      <Pie
+        data={convertData}
+        cx="50%"
+        cy="50%"
+        labelLine={false}
+        label={renderCustomizedLabel}
+        outerRadius={80}
+        fill="#8884d8"
+        dataKey="value"
+      >
+        {convertData?.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index]}/>
+        ))}
+      </Pie>
+      <Legend layout={'vertical'} verticalAlign="bottom" align={'left'} height={40}/>
+    </PieChart>
+  );
+};
 
 const InputComponent = ({type}) => {
   const [open, setOpen] = useState(false);
@@ -21,8 +68,8 @@ const InputComponent = ({type}) => {
     setOpen(!open);
   };
 
-  const onPanelChange = (value, mode) => {
-    console.log(value.format('YYYY-MM-DD'), mode);
+  const onPanelChange = (value) => {
+    value.format('YYYY-MM-DD');
   };
 
   return(
@@ -76,7 +123,6 @@ const UserInfoComponent = ({detail, detailInit}) => {
   // 값변경 함수
   const [change, setChange] = useState('');
   useEffect(() => {
-    console.log(detail);
     if(detail?.approvalFlag) {
       setChange(MANAGER_APPROVAL_TYPE[detail?.approvalFlag]?.title);
     }
@@ -158,19 +204,11 @@ export const VacationMngment = () => {
     status:'선택하세요'
   });
 
-  const date = (findDate.getFullYear().toString())
-    .concat('-')
-    .concat(formatter((findDate.getMonth() + 1).toString()))
-    .concat('-')
-    .concat(formatter((findDate.getDate()).toString()));
-
   useEffect(() => {
-    console.log('VAV');
     dispatch(SwpVavReq(LOCAL_STORAGE.get('depId')));
   }, []);
 
   useEffect(() => {
-    console.log(selector);
     if(selector.data?.length > 0 && selector.data[0]?.vId !== undefined) {
       setData(selector.data);
     } else {
@@ -179,12 +217,14 @@ export const VacationMngment = () => {
   }, [selector]);
 
   useEffect(() => {
-    const filter = data.filter((v) => v.date === date && v);
+    const date = (findDate.getFullYear().toString())
+      .concat('-')
+      .concat(formatter((findDate.getMonth() + 1).toString()))
+      .concat('-')
+      .concat(formatter((findDate.getDate()).toString()));
+    const filter = data?.filter((v) => (v.date === date) && v);
     setFilterData(filter);
-    console.log(filterData); // eslint 에러 방지
-  }, [findDate]);
-
-
+  }, [data, findDate]);
 
   const onClickDetail = (e) => {
     const detailData = data?.filter((v) => v.vId === Number(e.target.id))[0];
@@ -301,6 +341,9 @@ export const VacationMngment = () => {
                 )}
               />
             </LocalizationProvider>
+            <ChartLayout>
+              <VacInfoPiChart data={filterData.length}/>
+            </ChartLayout>
           </InfoContainer>
           <InfoContainer h={63}>
             <UserInfoComponent detail={detail} detailInit={detailInit}/>
@@ -318,6 +361,7 @@ const {
 
   Container,
   SideContainer,
+  ChartLayout,
   InfoContainer,
   ListContainer,
 
@@ -353,4 +397,8 @@ UserInfoComponent.propTypes = {
 
 InfoInputComponent.propTypes = {
   text:PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+};
+
+VacInfoPiChart.propTypes = {
+  data: PropTypes.number.isRequired,
 };

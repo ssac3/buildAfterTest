@@ -15,6 +15,13 @@ const SideContainer = styled.div`
   width: 28%;
   height: 100%;
 `;
+
+const ChartLayout = styled.div`
+  ${({theme}) => theme.flexSet('space-around')};
+  width:100%;
+  height:auto;
+  margin: auto;
+`;
 const ListContainer = styled.div`
   position:relative;
   padding: 15px 0px;
@@ -154,6 +161,7 @@ const StoreBtn = styled.button`
   }
   &:disabled{
     background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_CC};
+    cursor: no-drop;
   }
 `;
 
@@ -163,6 +171,7 @@ export const style = {
 
   Container,
   SideContainer,
+  ChartLayout,
   InfoContainer,
   ListContainer,
 
