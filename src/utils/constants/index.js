@@ -28,6 +28,7 @@ export const ROUTES = {
   SWP_EMP_REQ: API.MANAGER.concat('/empView'),
   SWP_SAV_REQ: API.USER.concat('/myView'),
   SWP_DAV_REQ: API.USER.concat('/getAllAttendance'),
+  SWP_UAG_REQ: API.USER.concat('/getMonthStatistics'),
   SWP_EAC_REQ: API.LOGIN.concat(''),
   SWP_EMPMK_REQ: API.ADMIN.concat('/mkUsername'),
   SWP_EMPIN_REQ: API.ADMIN.concat('/insertEmp'),

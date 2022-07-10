@@ -58,6 +58,14 @@ function UserReducer(state = INIT_STATE, action) {
     case UserType.SWP_AAR_RES:
       return {
       };
+    case UserType.SWP_UAG_REQ:
+      return {
+        date: action.date
+      };
+    case UserType.SWP_UAG_RES:
+      return {
+        data: action.data,
+      };
     default:
       return state;
   }
