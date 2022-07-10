@@ -110,3 +110,16 @@ export const SwpAarRes = () => {
 // };
 
 
+export const SwpUagReq = (date) => {
+  return {
+    type: UserType.SWP_UAG_REQ,
+    date,
+  };
+};
+
+export const SwpUagRes = (data) => {
+  return {
+    type: UserType.SWP_UAG_RES,
+    data
+  };
+};
