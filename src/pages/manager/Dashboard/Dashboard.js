@@ -165,6 +165,32 @@ export const Dashboard = () => {
   }, [sum]);
   return (
     <Wrapper>
+      <ImageCard>
+        <ImageLayout url={'https://user-images.githubusercontent.com/40657327/178105517-d4d814ef-b54d-41f2-b6c4-373e45046368.jpeg'}/>
+
+        <DepInfoLayout>
+          <div id={'depName'}>
+            {selector?.name}
+            <div id={'text'}>직급별 인원 수를 표시합니다.</div>
+          </div>
+          <div id={'divider'}/>
+          <div id={'positionInfo'}>
+            {position?.map((v) => {
+              return (
+                <div key={v.position} id={'position'}>
+                  {v.position}
+                  <div id={'count'}>{v.count}</div>
+                </div>
+              );
+            })}
+          </div>
+          <div id={'divider'}/>
+          <div id={'sumInfo'}>
+            합
+            <div id={'sum'}>{sum}</div>
+          </div>
+        </DepInfoLayout>
+      </ImageCard>
       <InnerContainer>
         <Card w={49}>
           <CardTitle align={'flex-start'} dir={'column'}>
@@ -197,32 +223,6 @@ export const Dashboard = () => {
           </ChartLayout>
         </Card>
       </InnerContainer>
-      <ImageCard>
-        <ImageLayout url={'https://user-images.githubusercontent.com/40657327/178105517-d4d814ef-b54d-41f2-b6c4-373e45046368.jpeg'}/>
-
-        <DepInfoLayout>
-          <div id={'depName'}>
-            {selector?.name}
-            <div id={'text'}>직급별 인원 수를 표시합니다.</div>
-          </div>
-          <div id={'divider'}/>
-          <div id={'positionInfo'}>
-            {position?.map((v) => {
-              return (
-                <div key={v.position} id={'position'}>
-                  {v.position}
-                  <div id={'count'}>{v.count}</div>
-                </div>
-              );
-            })}
-          </div>
-          <div id={'divider'}/>
-          <div id={'sumInfo'}>
-            합
-            <div id={'sum'}>{sum}</div>
-          </div>
-        </DepInfoLayout>
-      </ImageCard>
     </Wrapper>
   );
 };
