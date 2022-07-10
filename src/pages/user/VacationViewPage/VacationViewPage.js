@@ -91,4 +91,5 @@ VacationViewPage.propTypes = {
   vav:PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))
   ).isRequired,
+  onCloseDetail:PropTypes.func.isRequired,
 };

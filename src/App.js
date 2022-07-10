@@ -51,7 +51,7 @@ function App() {
   const [openVaeDetail, setOpenVaeDetail] = useState(''); // 사원 휴가 신청
   const [openVavDetail, setOpenVavDetail] = useState([]); // 사원 휴가 승인 대기 시 조회
   const [findYear, setFindYear] = useState(new Date()); // 근태 담당자 사원별 근태 조회 년도 선택
-  const [closeDetail, setCloseDetail] = useState('')
+  const [closeDetail, setCloseDetail] = useState('');
   const [openEavDetail, setOpenEavDetail] = useState([]); // 근태 담당자 사원별 근태 현황 조회
   const [findDate, setFindDate] = useState(new Date()); // 근태 담당자 사원별 근태 현황 조회 (년/월)
   const onClickMenu = (e) => {
@@ -138,7 +138,7 @@ function App() {
   const onCloseDetail = (target) => {
     setCloseDetail(target);
     console.log(closeDetail);
-  }
+  };
   const onClickEavDetail = (target) => {
     setOpenEavDetail(target);
   };

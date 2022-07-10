@@ -295,12 +295,16 @@ function* postSwpVcReq() {
     });
     const result = yield call(vcReq, data);
     console.log(result);
-    if(result.resCode === 0) {
+    if (result.resCode === 0) {
       yield put(SwpVcRes(result.data));
       yield put(openAlert('success', result.resMsg));
     } else {
       yield put('fail', result.Msg);
     }
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 function* postSwpUagReq() {
   try {
@@ -327,6 +331,7 @@ function* watchAlert() {
   yield takeLatest(UserType.SWP_VC_REQ, postSwpVcReq);
   yield takeLatest(UserType.SWP_UAG_REQ, postSwpUagReq);
 }
+
 export default function* userSaga() {
   yield all([fork(watchAlert)]);
 }
