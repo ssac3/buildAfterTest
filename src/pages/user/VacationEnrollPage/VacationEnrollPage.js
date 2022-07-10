@@ -28,18 +28,13 @@ export const VacationEnrollPage = ({openVaeDetail, onClickVaeDetail}) => {
   };
 
   const onSelectDropBoxItem = (e) => {
-    console.log(e.target.id);
     setSelectVType(e.target.id);
     onCloseDropBox();
   };
 
-  const onReqVac = (e) => {
-    console.log(e.target.id);
-    console.log(aId);
-    console.log(contents);
-    console.log(vacationType);
-    console.log(clickDate);
+  const onReqVac = () => {
     dispatch(SwpVaReq(aId, clickDate, vacationType, contents));
+    onClickVaeDetail('');
   };
 
   const onChangeContents = (e) => {
@@ -94,10 +89,12 @@ export const VacationEnrollPage = ({openVaeDetail, onClickVaeDetail}) => {
           <Title>휴가 사유</Title>
           <InputContainer value={contents} onChange={onChangeContents}/>
         </DataWrapper2>
-        <BtnLayout>
-          <Btn bgColor={theme.colorSet.SECONDARY.GRAY_CC} onClick={onClosePage}>취소</Btn>
-          <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B} onClick={onReqVac} >확인 </Btn>
-        </BtnLayout>
+        {
+          <BtnLayout>
+            <Btn bgColor={theme.colorSet.SECONDARY.GRAY_CC} onClick={onClosePage}>취소</Btn>
+            <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B} onClick={onReqVac} >확인 </Btn>
+          </BtnLayout>
+        }
       </Container>
     </Wrapper>
   );

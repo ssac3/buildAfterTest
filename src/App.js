@@ -51,6 +51,7 @@ function App() {
   const [openVaeDetail, setOpenVaeDetail] = useState(''); // 사원 휴가 신청
   const [openVavDetail, setOpenVavDetail] = useState([]); // 사원 휴가 승인 대기 시 조회
   const [findYear, setFindYear] = useState(new Date()); // 근태 담당자 사원별 근태 조회 년도 선택
+  const [closeDetail, setCloseDetail] = useState('')
   const [openEavDetail, setOpenEavDetail] = useState([]); // 근태 담당자 사원별 근태 현황 조회
   const [findDate, setFindDate] = useState(new Date()); // 근태 담당자 사원별 근태 현황 조회 (년/월)
   const onClickMenu = (e) => {
@@ -134,6 +135,10 @@ function App() {
     setFindYear(newYear);
   };
 
+  const onCloseDetail = (target) => {
+    setCloseDetail(target);
+    console.log(closeDetail);
+  }
   const onClickEavDetail = (target) => {
     setOpenEavDetail(target);
   };
@@ -141,8 +146,6 @@ function App() {
   const onClickFindDate = (newDate) => {
     setFindDate(newDate);
   };
-
-
 
   useEffect(() => {
     if (signIn?.data === 'ADMIN') {
@@ -164,7 +167,6 @@ function App() {
   useEffect(() => {
     onGetTarget();
   }, [select]);
-
   return (
     <>
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
@@ -172,22 +174,34 @@ function App() {
       {setting && <Setting open={onClickSetting}/>}
       {selectedEmpl !== 0 && <EmpDetail emp={emplDetail} onClickDetailEmp={onClickDetailEmp}/>}
       {openEadDetail?.length > 0 &&
-        <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
+        <DetailEmplAtndc
+          openEadDetail={openEadDetail}
+          onClickEadDetail={onClickEadDetail}
+        />}
 
       {openDavDetail?.length > 0 &&
-        <DetailDavPage detailInfo={openDavDetail} onClickDavDetail={onClickDavDetail}/>}
+        <DetailDavPage
+          detailInfo={openDavDetail}
+          onClickDavDetail={onClickDavDetail}
+          onCloseDetail={onCloseDetail}
+        />}
       {openVaeDetail !== '' &&
         <VacationEnrollPage
           openVaeDetail={openVaeDetail}
           onClickVaeDetail={onClickVaeDetail}
+          onCloseDetail={onCloseDetail}
         />}
       {openVavDetail?.length > 0 &&
-        <VacationViewPage vav={openVavDetail} onClickVavDetail={onClickVavDetail}/>}
+        <VacationViewPage
+          vav={openVavDetail}
+          onClickVavDetail={onClickVavDetail}
+          onCloseDetail={onCloseDetail}
+        />}
 
       {setting && <Setting open={onClickSetting}/>}
       {openInsertModal && <EmpInsert onClickInsertEmp={onClickInsertEmp}/>}
       {selectedEmpl !== 0 && <EmpDetail emp={emplDetail} onClickDetailEmp={onClickDetailEmp}/>}
-      {openEadDetail?.length > 0 &&
+      {(openEadDetail?.length > 0 && openEadDetail[0]?.vApprovalFlag !== '3') &&
         <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
       {openEamDetail?.length > 0 &&
         <EamPage
@@ -249,6 +263,7 @@ function App() {
                   onClickDavDetail={onClickDavDetail}
                   onClickVaeDetail={onClickVaeDetail}
                   onClickVavDetail={onClickVavDetail}
+                  onCloseDetail={onCloseDetail}
                 />)}
             />
           </Wrap>

@@ -91,6 +91,18 @@ export const SwpAarRes = () => {
     type:UserType.SWP_AAR_RES
   };
 };
+export const SwpVcReq = (id, date) => {
+  return {
+    type: UserType.SWP_VC_REQ,
+    id,
+    date
+  };
+};
+export const SwpVcRes = () => {
+  return{
+    type: UserType.SWP_VC_RES
+  };
+};
 // export const SwpVaRes = () => {
 //   return {
 //     type: UserType.SWP_VA_RES

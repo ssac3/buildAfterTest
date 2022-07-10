@@ -130,7 +130,7 @@ const BtnLayout = styled.div`
   ${({theme}) => theme.flexSet('space-between', '', 'column')};
   width: 100%;
   padding:10px 0px;
-  height: 150px;
+  height: 200px;
 `;
 
 const Btn = styled.button`

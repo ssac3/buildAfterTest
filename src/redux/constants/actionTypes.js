@@ -58,6 +58,8 @@ export const UserType = {
   SWP_VA_RES: 'SWP_VA_RES',
   SWP_AAR_REQ: 'SWP_AAR_REQ',
   SWP_AAR_RES: 'SWP_AAR_RES',
+  SWP_VC_REQ: 'SWP_VC_REQ',
+  SWP_VC_RES: 'SWP_VC_RES',
   // SWP_VC_REQ: 'SWP_VC_REQ',
   // SWP_VC_RES: 'SWP_VC_RES'
   // 월별 근태 현황

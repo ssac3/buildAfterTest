@@ -1,5 +1,13 @@
 import styled from 'styled-components';
-
+const getColor = ({vApprovalFlag, theme}) => {
+  let color;
+  if (vApprovalFlag === 2) {
+    color = theme.colorSet.ATTENDANCE_STATUS.ABSENCE;
+  } else if (vApprovalFlag === 1) {
+    color = theme.colorSet.ATTENDANCE_STATUS.VACATION;
+  } else color = theme.colorSet.SECONDARY.GRAY_CC;
+  return color;
+};
 const Container = styled.div`
   display: flex;
   width: 100%;
@@ -13,9 +21,8 @@ const EveningItem = styled.div`
   background-color: ${
   ({
     vApprovalFlag, theme
-  }) => (vApprovalFlag === 1 ? theme.colorSet.ATTENDANCE_STATUS.VACATION : theme.colorSet.SECONDARY.GRAY_CC)};
+  }) => (getColor({vApprovalFlag, theme}))};
 `;
-
 const AfternoonItem = styled.div`
   visibility: ${({vType}) => (vType !== '1' ? 'visible' : 'hidden')};
   width: 50%;
@@ -23,7 +30,7 @@ const AfternoonItem = styled.div`
   background-color: ${
   ({
     vApprovalFlag, theme
-  }) => (vApprovalFlag === 1 ? theme.colorSet.ATTENDANCE_STATUS.VACATION : theme.colorSet.SECONDARY.GRAY_CC)};
+  }) => (getColor({vApprovalFlag, theme}))};
 `;
 
 export const style = {

@@ -9,73 +9,121 @@ import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import {TextField} from '@mui/material';
 import theme from 'styles/theme';
 import {useDispatch} from 'react-redux';
-import {SwpAarReq} from 'redux/actions/UserAction';
+import {SwpAarReq, SwpVcReq} from 'redux/actions/UserAction';
 
 const RearrangeEnrollComponent = ({start, end, detailInfo}) => {
   const dispatch = useDispatch();
-  console.log(start, end);
-  const [startTime, setStartTime] = useState(new Date(start) || null);
-  const [endTime, setEndTime] = useState(new Date(end) || null);
+  const [startTime, setStartTime] = useState(new Date(detailInfo[0]?.rStartTime) || null);
+  const [endTime, setEndTime] = useState(new Date(detailInfo[0]?.rEndTime) || null);
   const [reqSTime, setReqSTime] = useState();
   const [reqETime, setReqETime] = useState();
-  const [contents, setContents] = useState();
+  const [contents, setContents] = useState(detailInfo[0]?.rContents);
   const onReaReq = () => {
-    console.log(detailInfo[0]);
-    dispatch(SwpAarReq(detailInfo[0].aId, detailInfo[0].aDate.concat(' ') + reqSTime, detailInfo[0].aDate.concat(' ') + reqETime, contents));
+    dispatch(SwpAarReq(
+      detailInfo[0].aId,
+      detailInfo[0].aDate.concat(' ') + reqSTime,
+      detailInfo[0].aDate.concat(' ') + reqETime,
+      contents
+    ));
   };
+  console.log(start + end);
   const onChangeConText = (e) => {
     setContents(e.target.value);
   };
   useEffect(() => {
+    console.log(startTime);
     setReqSTime(startTime.toTimeString().substring(0, 8));
     setReqETime(endTime.toTimeString().substring(0, 8));
   }, [startTime, endTime]);
   return (
     <>
       <RearrangeTitle>
-        <div id={'title'}>조정 신청</div>
+        {
+          detailInfo[0]?.rId !== null ?
+            <div id={'title'}>조정 신청 내역 조회</div> :
+            <div id={'title'}>조정 신청</div>
+        }
+
         <div id={'subTitle'}>이상 근태에 대한 조정 사유를 적어 요청합니다.</div>
       </RearrangeTitle>
       <TimeLayout>
         <InputLayout>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <TimePicker
-              label="출근 시간"
-              value={startTime || null}
-              ampm={false}
-              onChange={(newValue) => {
-                setStartTime(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} color={'grey'}/>}
-            />
+            {
+              detailInfo[0]?.rStartTime !== null ?
+                <TimePicker
+                  label="출근 시간"
+                  // value={detailInfo[0]?.rStartTime.toTimeString().substring(0, 8) || null}
+                  value={startTime || null}
+                  ampm={false}
+                  readOnly
+                  onChange={(newValue) => {
+                    setStartTime(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} color={'grey'}/>}
+                /> :
+                <TimePicker
+                  label="출근 시간"
+                  value={startTime || null}
+                  ampm={false}
+                  onChange={(newValue) => {
+                    setStartTime(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} color={'grey'}/>}
+                />
+
+            }
           </LocalizationProvider>
         </InputLayout>
         <InputLayout>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <TimePicker
-              label={'퇴근시간'}
-              minTime={startTime}
-              value={endTime || null}
-              ampm={false}
-              onChange={(newValue) => {
-                setEndTime(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} color={'grey'}/>}
-            />
+            {
+              detailInfo[0]?.rEndTime !== null ?
+                <TimePicker
+                  label={'퇴근시간'}
+                  minTime={startTime}
+                  // value={detailInfo[0]?.rEndTime.toTimeString().substring(0, 8) || null}
+                  value={endTime || null}
+                  ampm={false}
+                  readOnly
+                  onChange={(newValue) => {
+                    setEndTime(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} color={'grey'}/>}
+                /> :
+                <TimePicker
+                  label={'퇴근시간'}
+                  minTime={startTime}
+                  // value={detailInfo[0]?.rEndTime.toTimeString().substring(0, 8) || null}
+                  value={endTime || null}
+                  ampm={false}
+                  onChange={(newValue) => {
+                    setEndTime(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} color={'grey'}/>}
+                />
+            }
+
+
           </LocalizationProvider>
         </InputLayout>
       </TimeLayout>
       <ContentLayout onChange={onChangeConText} value={contents} placeholder={'조정사유를 입력하세요'} multiline/>
-      <BtnLayout>
-        <Btn bgColor={theme.colorSet.SECONDARY.GRAY_CC}>취소</Btn>
-        <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B} onClick={onReaReq}>확인</Btn>
-      </BtnLayout>
+      {
+        detailInfo[0]?.rId === null ?
+          <BtnLayout>
+            <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B} onClick={onReaReq}>조정 요청</Btn>
+          </BtnLayout> :
+          <BtnLayout></BtnLayout>
+      }
+
     </>
   );
 };
 
 
 export const DetailDavPage = ({detailInfo, onClickDavDetail}) => {
+  const dispatch = useDispatch();
   const date = detailInfo[0]?.aDate !== null ? detailInfo[0].aDate : detailInfo[0].vDate;
   const status = {status: detailInfo[0]?.aStatus,
     vStatus: detailInfo[0]?.vApprovalFlag,
@@ -86,6 +134,14 @@ export const DetailDavPage = ({detailInfo, onClickDavDetail}) => {
       result = target;
     }
     return result;
+  };
+  const onCancelVac = () => {
+    if(window.confirm('정말로 휴가를 취소하겠습니까?')) {
+      dispatch(SwpVcReq(detailInfo[0]?.vId, detailInfo[0]?.vDate));
+      onClickDavDetail([]);
+    } else {
+      console.log('취소 안함');
+    }
   };
   return (
     <Wrapper onClick={() => onClickDavDetail([])}>
@@ -108,9 +164,7 @@ export const DetailDavPage = ({detailInfo, onClickDavDetail}) => {
               <div id={'title'}>출근 시간</div>
               <div id={'time'}>{cnvrtTime(detailInfo[0].aStartTime)}</div>
             </BoxLayout>
-
             <MdArrowForwardIos size={25}/>
-
             <BoxLayout>
               <div id={'title'}>퇴근 시간</div>
               <div id={'time'}>{cnvrtTime(detailInfo[0].aEndTime)}
@@ -120,18 +174,21 @@ export const DetailDavPage = ({detailInfo, onClickDavDetail}) => {
         </InfoLayout>
 
         <RearrangeLayout>
-          {status.status === '2' &&
+          {(status.status !== '0' && status.status !== null) &&
             <RearrangeEnrollComponent
               start={detailInfo[0]?.aStartTime ?? ''}
               end={detailInfo[0]?.aEndTime ?? ''}
               detailInfo={detailInfo}
             />}
         </RearrangeLayout>
+        {status.vStatus !== null &&
+          <BtnLayout>
+            <Btn bgColor={theme.colorSet.SECONDARY.GRAY_CC} onClick={onCancelVac}>휴가 취소</Btn>
+          </BtnLayout>}
       </Container>
     </Wrapper>
   );
 };
-
 const {
   Wrapper,
   Container,

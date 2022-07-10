@@ -39,7 +39,8 @@ export const ROUTES = {
   SWP_SAIR_REQ: API.USER.concat('/myImgUpdate'),
   SWP_QCS_REQ: API.SCANNER.concat(''),
   SWP_VA_REQ: API.USER.concat('/regVacation'),
-  SWP_AAR_REQ: API.USER.concat('/rearrangeAttendance')
+  SWP_AAR_REQ: API.USER.concat('/rearrangeAttendance'),
+  SWP_VC_REQ: API.USER.concat('/cancelVacation')
 };
 
 export const LOG = (target) => {

@@ -2,7 +2,7 @@ import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {UserType} from 'redux/constants';
-import {SwpAarRes, SwpDavRes, SwpSavReq, SwpSavRes, SwpVaRes, SwpUagRes} from 'redux/actions/UserAction';
+import {SwpAarRes, SwpDavRes, SwpSavReq, SwpSavRes, SwpVaRes, SwpVcRes, SwpUagRes} from 'redux/actions/UserAction';
 import {openAlert} from 'redux/actions/AlertAction';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -93,11 +93,10 @@ function vaReq(data) {
 }
 
 function aarReq(data) {
-  console.log(data);
   const result = axios
     .post(ROUTES.SWP_AAR_REQ, data, getHeader())
     .then((res) => {
-      console.log(LOG(ROUTES.SWP_AAR_REQ));
+      console.log(LOG(ROUTES.SWP_AAR_REQ).SUCCESS);
       return res.data;
     })
     .catch((err) => {
@@ -107,6 +106,19 @@ function aarReq(data) {
   return result;
 }
 
+function vcReq(data) {
+  const result = axios
+    .post(ROUTES.SWP_VC_REQ, data, getHeader())
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_VC_REQ).SUCCESS);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_VC_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
 function uagReq(data) {
   const result = axios
     .post(ROUTES.SWP_UAG_REQ, data, getHeader())
@@ -185,10 +197,13 @@ function* postSwpDavReq() {
     const data = yield select((state) => {
       return state.UserReducer;
     });
-    console.log(data);
+    const {history} = data;
     const result = yield call(davReq, data);
+    console.log(result);
     if(result.resCode === 0) {
       yield put(SwpDavRes(result.data));
+      yield put(openAlert('success', result.resMsg));
+      history.push('/user');
     } else {
       yield put('fail', result.resMsg);
     }
@@ -202,11 +217,10 @@ function* postSwpAarReq() {
     const data = yield select((state) => {
       return state.UserReducer;
     });
-    console.log(data);
     const result = yield call(aarReq, data);
-    console.log(result);
     if (result.resCode === 0) {
       yield put(SwpAarRes(result.data));
+      yield put('success', result.resMsg);
     } else {
       yield put('fail', result.resMsg);
     }
@@ -219,7 +233,6 @@ function* postSwpVaReq() {
     const data = yield select((state) => {
       return state.UserReducer;
     });
-    console.log(data);
     const result = yield call(vaReq, data);
     switch (result.resCode) {
       case 0:
@@ -275,6 +288,19 @@ function* postSwpVaReq() {
     console.log(e);
   }
 }
+function* postSwpVcReq() {
+  try {
+    const data = yield select((state) => {
+      return state.UserReducer;
+    });
+    const result = yield call(vcReq, data);
+    console.log(result);
+    if(result.resCode === 0) {
+      yield put(SwpVcRes(result.data));
+      yield put(openAlert('success', result.resMsg));
+    } else {
+      yield put('fail', result.Msg);
+    }
 
 function* postSwpUagReq() {
   try {
@@ -291,7 +317,6 @@ function* postSwpUagReq() {
     console.log(e);
   }
 }
-
 function* watchAlert() {
   yield takeLatest(UserType.SWP_SAV_REQ, postSwpSavReq);
   yield takeLatest(UserType.SWP_SAPR_REQ, postSwpSaprReq);
@@ -299,6 +324,7 @@ function* watchAlert() {
   yield takeLatest(UserType.SWP_SAIR_REQ, postSwpSairReq);
   yield takeLatest(UserType.SWP_VA_REQ, postSwpVaReq);
   yield takeLatest(UserType.SWP_AAR_REQ, postSwpAarReq);
+  yield takeLatest(UserType.SWP_VC_REQ, postSwpVcReq);
   yield takeLatest(UserType.SWP_UAG_REQ, postSwpUagReq);
 }
 export default function* userSaga() {
