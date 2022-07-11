@@ -28,3 +28,15 @@ export const SwpEasRes = () => {
     type: SignOutType.SWP_EAS_RES
   };
 };
+export const SwpDlrReq = () => {
+  return {
+    type: SignInType.SWP_DLR_REQ,
+
+  };
+};
+export const SwpDlrRes = (data) => {
+  return {
+    type: SignInType.SWP_DLR_RES,
+    data
+  };
+};

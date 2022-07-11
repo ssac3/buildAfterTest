@@ -40,7 +40,8 @@ export const ROUTES = {
   SWP_QCS_REQ: API.SCANNER.concat(''),
   SWP_VA_REQ: API.USER.concat('/regVacation'),
   SWP_AAR_REQ: API.USER.concat('/rearrangeAttendance'),
-  SWP_VC_REQ: API.USER.concat('/cancelVacation')
+  SWP_VC_REQ: API.USER.concat('/cancelVacation'),
+  SWP_DLR_REQ: API.LOGIN.concat('/getRole'),
 };
 
 export const LOG = (target) => {
