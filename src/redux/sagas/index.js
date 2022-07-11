@@ -5,7 +5,18 @@ import user from './UserSaga';
 import signIn from './SigninSaga';
 import admin from './adminSaga';
 import scanner from './ScannerSaga';
+import signOutSaga from './SignOutSaga';
 
 export default function* rootSaga() {
-  yield all([call(manager), call(alert), call(user), call(signIn), call(admin), call(scanner)]);
+  yield all(
+    [
+      call(manager),
+      call(alert),
+      call(user),
+      call(signIn),
+      call(admin),
+      call(scanner),
+      call(signOutSaga)
+    ]
+  );
 }

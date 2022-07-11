@@ -4,10 +4,14 @@ import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {UserType} from 'redux/constants';
 import {SwpAarRes, SwpDavRes, SwpSavReq, SwpSavRes, SwpVaRes, SwpUagRes, SwpDavReq} from 'redux/actions/UserAction';
 import {openAlert} from 'redux/actions/AlertAction';
+import {resSuccess} from 'components/Interceptors/ResInterceptor';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
+axios.interceptors.response.use(resSuccess);
 const getHeader = () => {
-  const headers = { Authorization: LOCAL_STORAGE.get('Authorization')};
+  const headers = { Authorization: LOCAL_STORAGE.get('Authorization'),
+    Refresh_token: LOCAL_STORAGE.get('Refresh_token')
+  };
   return {
     headers,
   };
@@ -16,6 +20,7 @@ const getHeader = () => {
 const getImgHeader = () => {
   const headers = {
     Authorization: LOCAL_STORAGE.get('Authorization'),
+    Refresh_token: LOCAL_STORAGE.get('Refresh_token'),
     'Content-Type': 'multipart/form-data',
   };
   return { headers };
@@ -140,7 +145,9 @@ function uagReq(data) {
 function* postSwpSavReq() {
   try {
     const result = yield call(savReq);
-    if (result.resCode === 0) {
+    if (result.resCode === 999) {
+      LOCAL_STORAGE.clear();
+    } else if (result.resCode === 0) {
       const {name, username, department, position, email, manager, location, qrPath, img} =
         result.data;
       yield put(

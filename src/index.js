@@ -9,14 +9,15 @@ import {Provider} from 'react-redux';
 import {Router} from 'react-router-dom';
 import history from 'utils/history';
 
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <GlobalStyles />
     <Router history={history}>
       <ThemeProvider theme={{ ...theme }}>
         <App />
       </ThemeProvider>
     </Router>
+    <GlobalStyles />
   </Provider>,
 );
