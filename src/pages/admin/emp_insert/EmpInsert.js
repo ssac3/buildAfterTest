@@ -162,7 +162,6 @@ export const EmpInsert = ({onClickInsertEmp}) => {
                 placeholder={'  버튼클릭'}
                 value={mkemp?.username}
                 type={'username'}
-                // disabled
                 readOnly
               />
             </UserInfoLayout>
@@ -207,7 +206,6 @@ export const EmpInsert = ({onClickInsertEmp}) => {
             placeholder={'  자동할당'}
             value={mkemp.email}
             type={'email'}
-            // disabled
             readOnly
           />
           <DropboxEmp
