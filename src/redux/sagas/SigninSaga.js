@@ -1,19 +1,12 @@
 import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
-import {SignInType, SignOutType} from 'redux/constants';
+import {SignInType} from 'redux/constants';
 import {openAlert} from 'redux/actions/AlertAction';
-import {SwpEacRes, SwpEasRes} from 'redux/actions/SignInAction';
+import {SwpEacRes} from 'redux/actions/SignInAction';
 
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
-const getHeader = () => {
-  const headers = { Authorization: LOCAL_STORAGE.get('Authorization')};
-  console.log(headers);
-  return {
-    headers,
-  };
-};
 
 function eacReq(data) {
   const result = axios
@@ -28,21 +21,6 @@ function eacReq(data) {
     });
   return result;
 }
-
-function easReq(data) {
-  const result = axios
-    .get(ROUTES.SWP_EAS_REQ, getHeader(), data)
-    .then((res) => {
-      console.log(LOG(ROUTES.SWP_EAS_REQ).SUCCESS);
-      return res.data;
-    })
-    .catch((err) => {
-      console.log(LOG(ROUTES.SWP_EAS_REQ).ERROR);
-      return err;
-    });
-  return result;
-}
-
 function* postSwpEacReq() {
   try {
     const selector = yield select((state) => {
@@ -51,6 +29,7 @@ function* postSwpEacReq() {
     const {history} = selector;
     const packedData = {username:selector.username, password:selector.password};
     const result = yield call(eacReq, packedData);
+    console.log(result);
     if (result.data.resCode === 0) {
       LOCAL_STORAGE.set('Authorization', result.headers.authorization);
       LOCAL_STORAGE.set('Refresh_token', result.headers.refresh_token);
@@ -77,26 +56,8 @@ function* postSwpEacReq() {
   }
 }
 
-function* postSwpEasReq() {
-  try {
-    const selector = yield select((state) => {
-      return state.SignInReducer;
-    });
-    const {history} = selector;
-    const result = yield call(easReq);
-    if (result.resCode === 0) {
-      LOCAL_STORAGE.clear();
-      history.push('/');
-      yield put(SwpEasRes());
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
-
 function* watchAlert() {
   yield takeLatest(SignInType.SWP_EAC_REQ, postSwpEacReq);
-  yield takeLatest(SignOutType.SWP_EAS_REQ, postSwpEasReq);
 }
 
 

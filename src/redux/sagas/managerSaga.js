@@ -17,10 +17,14 @@ import {
   SwpEmpRes,
 } from 'redux/actions/ManagerAction';
 import {openAlert} from 'redux/actions/AlertAction';
+import {resSuccess} from 'components/Interceptors/ResInterceptor';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
+axios.interceptors.response.use(resSuccess);
 const getHeader = () => {
-  const headers = {Authorization: LOCAL_STORAGE.get('Authorization')};
+  const headers = { Authorization: LOCAL_STORAGE.get('Authorization'),
+    Refresh_token: LOCAL_STORAGE.get('Refresh_token')
+  };
   return {
     headers,
   };

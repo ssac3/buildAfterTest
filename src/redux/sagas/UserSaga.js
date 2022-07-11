@@ -4,8 +4,10 @@ import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {UserType} from 'redux/constants';
 import {SwpAarRes, SwpDavRes, SwpSavReq, SwpSavRes, SwpVaRes, SwpVcRes, SwpUagRes} from 'redux/actions/UserAction';
 import {openAlert} from 'redux/actions/AlertAction';
+import {resSuccess} from 'components/Interceptors/ResInterceptor';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
+axios.interceptors.response.use(resSuccess);
 const getHeader = () => {
   const headers = { Authorization: LOCAL_STORAGE.get('Authorization'),
     Refresh_token: LOCAL_STORAGE.get('Refresh_token')
@@ -18,6 +20,7 @@ const getHeader = () => {
 const getImgHeader = () => {
   const headers = {
     Authorization: LOCAL_STORAGE.get('Authorization'),
+    Refresh_token: LOCAL_STORAGE.get('Refresh_token'),
     'Content-Type': 'multipart/form-data',
   };
   return { headers };
