@@ -11,7 +11,7 @@ import theme from 'styles/theme';
 import {useDispatch} from 'react-redux';
 import {SwpAarReq, SwpVcReq} from 'redux/actions/UserAction';
 
-const RearrangeEnrollComponent = ({start, end, detailInfo}) => {
+const RearrangeEnrollComponent = ({start, end, detailInfo, onClickDavDetail}) => {
   const dispatch = useDispatch();
   const [startTime, setStartTime] = useState(new Date(detailInfo[0]?.rStartTime) || null);
   const [endTime, setEndTime] = useState(new Date(detailInfo[0]?.rEndTime) || null);
@@ -25,6 +25,7 @@ const RearrangeEnrollComponent = ({start, end, detailInfo}) => {
       detailInfo[0].aDate.concat(' ') + reqETime,
       contents
     ));
+    onClickDavDetail([]);
   };
   console.log(start + end);
   const onChangeConText = (e) => {
@@ -122,7 +123,7 @@ const RearrangeEnrollComponent = ({start, end, detailInfo}) => {
 };
 
 
-export const DetailDavPage = ({detailInfo, onClickDavDetail}) => {
+export const DetailDavPage = ({detailInfo, onClickDavDetail, onCloseDetail}) => {
   const dispatch = useDispatch();
   const date = detailInfo[0]?.aDate !== null ? detailInfo[0].aDate : detailInfo[0].vDate;
   const status = {status: detailInfo[0]?.aStatus,
@@ -139,6 +140,7 @@ export const DetailDavPage = ({detailInfo, onClickDavDetail}) => {
     if(window.confirm('정말로 휴가를 취소하겠습니까?')) {
       dispatch(SwpVcReq(detailInfo[0]?.vId, detailInfo[0]?.vDate));
       onClickDavDetail([]);
+      onCloseDetail(0);
     } else {
       console.log('취소 안함');
     }
@@ -179,6 +181,7 @@ export const DetailDavPage = ({detailInfo, onClickDavDetail}) => {
               start={detailInfo[0]?.aStartTime ?? ''}
               end={detailInfo[0]?.aEndTime ?? ''}
               detailInfo={detailInfo}
+              onClickDavDetail={onClickDavDetail}
             />}
         </RearrangeLayout>
         {status.vStatus !== null &&
@@ -212,6 +215,7 @@ DetailDavPage.propTypes = {
     PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   )).isRequired,
   onClickDavDetail:PropTypes.func.isRequired,
+  onCloseDetail: PropTypes.func.isRequired,
 };
 
 RearrangeEnrollComponent.propTypes = {
@@ -220,4 +224,5 @@ RearrangeEnrollComponent.propTypes = {
   detailInfo:PropTypes.arrayOf(PropTypes.objectOf(
     PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   )).isRequired,
+  onClickDavDetail:PropTypes.func.isRequired,
 };

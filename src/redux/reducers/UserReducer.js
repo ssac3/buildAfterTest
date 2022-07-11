@@ -37,6 +37,7 @@ function UserReducer(state = INIT_STATE, action) {
       };
     case UserType.SWP_DAV_RES:
       return {
+        month: state.month,
         data: action.data
       };
     case UserType.SWP_VA_REQ:
@@ -61,7 +62,12 @@ function UserReducer(state = INIT_STATE, action) {
     case UserType.SWP_VC_REQ:
       return {
         id: action.id,
-        date: action.date
+        date: action.date,
+        month: state.month,
+      };
+    case UserType.SWP_VC_RES:
+      return {
+        month: state.date.substring(0, 7),
       };
     case UserType.SWP_UAG_REQ:
       return {

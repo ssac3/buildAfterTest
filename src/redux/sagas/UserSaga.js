@@ -2,7 +2,7 @@ import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {UserType} from 'redux/constants';
-import {SwpAarRes, SwpDavRes, SwpSavReq, SwpSavRes, SwpVaRes, SwpVcRes, SwpUagRes} from 'redux/actions/UserAction';
+import {SwpAarRes, SwpDavRes, SwpSavReq, SwpSavRes, SwpVaRes, SwpUagRes, SwpDavReq} from 'redux/actions/UserAction';
 import {openAlert} from 'redux/actions/AlertAction';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -65,6 +65,7 @@ function sairReq(data) {
 }
 
 function davReq(data) {
+  console.log(data);
   const result = axios
     .post(ROUTES.SWP_DAV_REQ, data, getHeader())
     .then((res) => {
@@ -79,6 +80,7 @@ function davReq(data) {
 }
 
 function vaReq(data) {
+  console.log(data);
   const result = axios
     .post(ROUTES.SWP_VA_REQ, data, getHeader())
     .then((res) => {
@@ -107,6 +109,7 @@ function aarReq(data) {
 }
 
 function vcReq(data) {
+  console.log(data);
   const result = axios
     .post(ROUTES.SWP_VC_REQ, data, getHeader())
     .then((res) => {
@@ -197,13 +200,10 @@ function* postSwpDavReq() {
     const data = yield select((state) => {
       return state.UserReducer;
     });
-    const {history} = data;
     const result = yield call(davReq, data);
-    console.log(result);
     if(result.resCode === 0) {
       yield put(SwpDavRes(result.data));
       yield put(openAlert('success', result.resMsg));
-      history.push('/user');
     } else {
       yield put('fail', result.resMsg);
     }
@@ -217,12 +217,24 @@ function* postSwpAarReq() {
     const data = yield select((state) => {
       return state.UserReducer;
     });
+    console.log(data);
+    const packed = {month: data.startTime.slice(0, 7)};
+    console.log(packed);
     const result = yield call(aarReq, data);
+    console.log(result);
     if (result.resCode === 0) {
+      const result2 = yield call(SwpDavReq, packed);
+      console.log(result2);
+      if(result2 === 0) {
+        yield put(SwpDavRes(result2.data));
+        yield put(openAlert('success', result.resMsg));
+      } else {
+        yield put(openAlert('fail', result.resMsg));
+      }
       yield put(SwpAarRes(result.data));
-      yield put('success', result.resMsg);
+      yield put(openAlert('success', result.resMsg));
     } else {
-      yield put('fail', result.resMsg);
+      yield put(openAlert('fail', result.resMsg));
     }
   } catch (e) {
     console.log(e);
@@ -233,56 +245,22 @@ function* postSwpVaReq() {
     const data = yield select((state) => {
       return state.UserReducer;
     });
+    console.log(data);
+    const packed = {month: data.date.slice(0, 7)};
+    console.log(packed);
     const result = yield call(vaReq, data);
-    switch (result.resCode) {
-      case 0:
-        yield put(SwpVaRes(result.data));
-        yield put(openAlert('success', result.resMsg));
-        break;
-      case 1:
-        yield put(SwpVaRes(result.data));
-        yield put(openAlert('fail', result.resMsg));
-        break;
-      case 2:
-        yield put(SwpVaRes(result.data));
-        yield put(openAlert('fail', result.resMsg));
-        break;
-      case 3:
-        yield put(SwpVaRes(result.data));
-        yield put(openAlert('fail', result.resMsg));
-        break;
-      case 4:
-        yield put(SwpVaRes(result.data));
-        yield put(openAlert('fail', result.resMsg));
-        break;
-      case 5:
-        yield put(SwpVaRes(result.data));
-        yield put(openAlert('fail', result.resMsg));
-        break;
-      case 6:
-        yield put(SwpVaRes(result.data));
-        yield put(openAlert('fail', result.resMsg));
-        break;
-      case 7:
-        yield put(SwpVaRes(result.data));
-        yield put(openAlert('fail', result.resMsg));
-        break;
-      case 8:
-        yield put(SwpVaRes(result.data));
-        yield put(openAlert('fail', result.resMsg));
-        break;
-      case 9:
-        yield put(SwpVaRes(result.data));
-        yield put(openAlert('fail', result.resMsg));
-        break;
-      case 10:
-        yield put(SwpVaRes(result.data));
-        yield put(openAlert('fail', result.resMsg));
-        break;
-      default:
-        yield put('fail', result.resMsg);
-        yield put(openAlert('fail', result.resMsg));
-        break;
+    if (result.resCode === 0) {
+      const result2 = yield call(davReq, packed);
+      if (result2.resCode === 0) {
+        yield put(SwpDavRes(result2.data));
+        yield put(openAlert('success', result2.resMsg));
+      } else {
+        yield put(openAlert('fail', result2.resMsg));
+      }
+      yield put(SwpVaRes(result.data));
+      yield put('success', result.resMsg);
+    } else {
+      yield put(openAlert('fail', result.resMsg));
     }
   }catch (e) {
     console.log(e);
@@ -293,13 +271,18 @@ function* postSwpVcReq() {
     const data = yield select((state) => {
       return state.UserReducer;
     });
-    const result = yield call(vcReq, data);
-    console.log(result);
+    const packedMsg = {id: data.id, date: data.date};
+    const result = yield call(vcReq, packedMsg);
     if (result.resCode === 0) {
-      yield put(SwpVcRes(result.data));
+      const packedMsg2 = {id: data.id, month: data.date.slice(0, 7)};
+      const result2 = yield call(davReq, packedMsg2);
+      if (result2.resCode === 0) {
+        yield put(SwpDavRes(result2.data));
+        yield put(openAlert('success', result2.resMsg));
+      }
       yield put(openAlert('success', result.resMsg));
     } else {
-      yield put('fail', result.Msg);
+      yield put(openAlert('fail', result.resMsg));
     }
   } catch (e) {
     console.log(e);
