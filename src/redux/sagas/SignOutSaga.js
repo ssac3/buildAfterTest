@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
-import {SignOutType} from 'redux/constants';
+import {SignOutType} from 'redux/constants/actionTypes';
 import {SwpEasRes} from 'redux/actions/SignInAction';
 import {resSuccess} from 'components/Interceptors/ResInterceptor';
 

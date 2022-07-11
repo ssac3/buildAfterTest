@@ -1,12 +1,20 @@
 import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
-import {SignInType} from 'redux/constants';
+import {SignInType, SignOutType} from 'redux/constants';
 import {openAlert} from 'redux/actions/AlertAction';
 import {SwpDlrRes, SwpEacRes, SwpEasRes} from 'redux/actions/SignInAction';
 
-
 axios.defaults.baseURL = ROUTES.BASE_URL;
+
+const getHeader = () => {
+  const headers = { Authorization: LOCAL_STORAGE.get('Authorization'),
+    Refresh_token: LOCAL_STORAGE.get('Refresh_token')
+  };
+  return {
+    headers,
+  };
+};
 
 function eacReq(data) {
   const result = axios

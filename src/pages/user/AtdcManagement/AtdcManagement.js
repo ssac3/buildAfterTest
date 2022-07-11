@@ -13,7 +13,6 @@ export const AtdcManagement = ({
   onClickVaeDetail,
   onClickVavDetail,
   onCloseDetail,
-  closeDetail
 }) => {
   const renderUI = React.useMemo(() => {
     if (selectedId === 0) {

@@ -26,12 +26,18 @@ export const resSuccess = async (res) => {
     LOCAL_STORAGE.set('Authorization', res.headers.authorization);
     switch (dataMethod) {
       case 'post':
-        console.log(getHeader());
-        return await axios.post(original, res.config.data ? res.config.data : null, getHeader());
+        try {
+          return await axios.post(original, res.config.data ? res.config.data : null, getHeader());
+        } catch (e) {
+          return e;
+        }
       case 'get':
       default:
-        console.log(getHeader());
-        return await axios.get(original, getHeader());
+        try {
+          return await axios.get(original, getHeader());
+        } catch (e) {
+          return e;
+        }
     }
   }
   return res;
