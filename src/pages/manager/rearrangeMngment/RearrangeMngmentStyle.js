@@ -61,7 +61,7 @@ const ProfileLayout = styled.div`
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background-color: gray;
+  border: 1px solid black;
 `;
 
 const UserDetailInfoLayout = styled.div`
