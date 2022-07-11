@@ -32,6 +32,13 @@ const CardTitle = styled.div`
     width: 100%;
 `;
 
+const ChartLayout = styled.div`
+  ${({theme}) => theme.flexSet('space-around')};
+  width:100%;
+  height:auto;
+  margin: auto;
+`;
+
 const CircleLayout = styled.div`
   ${({theme}) => theme.flexSet('space-around')};
   width: 100%;
@@ -60,9 +67,8 @@ const ImageCard = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 5px;
+  background: white;
   box-shadow: 5px 5px 10px #00000020;
-  background-size: cover;
-  
 `;
 const ImageLayout = styled.div`
   width: 100%;
@@ -134,6 +140,7 @@ export const style = {
   Card,
   CardTitle,
   CircleLayout,
+  ChartLayout,
   Circle,
   InnerContainer,
   ImageCard,

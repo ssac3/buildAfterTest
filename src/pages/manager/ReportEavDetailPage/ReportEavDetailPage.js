@@ -279,7 +279,6 @@ export const ReportEavDetailPage = ({openEavDetail, onClickEavDetail, findDate})
                   fill={COLORS[2]}
                   radius={10}
                   barSize={25}
-                  minPointSize={10}
                 />
                 <Tooltip cursor={false} formatter={(value) => [convertTime(value)]}/>
               </BarChart>

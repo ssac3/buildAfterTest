@@ -23,7 +23,7 @@ const DropContainer = styled.ul`
   list-style:none;
 `;
 
-const ItemName = styled.div`
+const ItemName = styled.input`
   width: 80%;
   height: fit-content;
   font-weight: normal;

@@ -3,7 +3,7 @@ import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {SignInType} from 'redux/constants';
 import {openAlert} from 'redux/actions/AlertAction';
-import {SwpEacRes} from 'redux/actions/SignInAction';
+import {SwpDlrRes, SwpEacRes, SwpEasRes} from 'redux/actions/SignInAction';
 
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -21,6 +21,34 @@ function eacReq(data) {
     });
   return result;
 }
+
+function easReq(data) {
+  const result = axios
+    .get(ROUTES.SWP_EAS_REQ, getHeader(), data)
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_EAS_REQ).SUCCESS);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_EAS_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
+function dlrReq() {
+  const result = axios
+    .get(ROUTES.SWP_DLR_REQ, getHeader())
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_DLR_REQ).SUCCESS);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_DLR_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
+
 function* postSwpEacReq() {
   try {
     const selector = yield select((state) => {
@@ -56,11 +84,43 @@ function* postSwpEacReq() {
   }
 }
 
-function* watchAlert() {
-  yield takeLatest(SignInType.SWP_EAC_REQ, postSwpEacReq);
+function* postSwpEasReq() {
+  try {
+    const selector = yield select((state) => {
+      return state.SignInReducer;
+    });
+    const {history} = selector;
+    const result = yield call(easReq);
+    console.log(result.resCode);
+    if (result.resCode === 0) {
+      LOCAL_STORAGE.clear();
+      history.push('/');
+      yield put(SwpEasRes());
+    }
+  } catch (e) {
+    console.log(e);
+  }
 }
 
-
+function* postSwpDlrReq() {
+  try {
+    const result = yield call(dlrReq);
+    console.log(result);
+    if(result.resCode === 0) {
+      yield put(SwpDlrRes(result));
+      yield put(openAlert('success', result.resMsg));
+    } else {
+      yield put(openAlert('fail', result.resMsg));
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+function* watchAlert() {
+  yield takeLatest(SignInType.SWP_EAC_REQ, postSwpEacReq);
+  yield takeLatest(SignOutType.SWP_EAS_REQ, postSwpEasReq);
+  yield takeLatest(SignInType.SWP_DLR_REQ, postSwpDlrReq);
+}
 export default function* signInSaga() {
   yield all([fork(watchAlert)]);
 }

@@ -309,7 +309,6 @@ function* postSwpEivReq() {
     const data = yield select((state) => state.MangerReducer);
     const packedMsg = {id: data.id};
     const result = yield call(eivReq, packedMsg);
-
     if(result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
       yield put(SwpEivRes(result.data));

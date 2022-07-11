@@ -23,7 +23,10 @@ export const GlobalStyles = createGlobalStyle`
     #root{
       height: 100%;
     }
-  
+    
+    p{
+      margin:0;
+    }
     
     input, button {
         background-color: transparent;

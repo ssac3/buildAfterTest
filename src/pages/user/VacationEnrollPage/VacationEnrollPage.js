@@ -10,7 +10,7 @@ import {VACATION_TYPE} from 'utils/constants';
 import {useDispatch} from 'react-redux';
 import {SwpVaReq} from 'redux/actions/UserAction';
 
-export const VacationEnrollPage = ({openVaeDetail, onClickVaeDetail}) => {
+export const VacationEnrollPage = ({openVaeDetail, onClickVaeDetail, onCloseDetail}) => {
   const dispatch = useDispatch();
   const clickDate = openVaeDetail !== '' && openVaeDetail.format('YYYY-MM-DD');
   const [enrollDate] = useState(new Date(clickDate));
@@ -35,6 +35,7 @@ export const VacationEnrollPage = ({openVaeDetail, onClickVaeDetail}) => {
   const onReqVac = () => {
     dispatch(SwpVaReq(aId, clickDate, vacationType, contents));
     onClickVaeDetail('');
+    onCloseDetail(0);
   };
 
   const onChangeContents = (e) => {
@@ -118,4 +119,5 @@ VacationEnrollPage.propTypes = {
     PropTypes.oneOfType([PropTypes.any])
   ).isRequired,
   onClickVaeDetail:PropTypes.func.isRequired,
+  onCloseDetail:PropTypes.func.isRequired,
 };

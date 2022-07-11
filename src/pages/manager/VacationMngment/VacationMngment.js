@@ -14,22 +14,69 @@ import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import krLocale from 'date-fns/locale/ko';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import TextField from '@mui/material/TextField';
+import {PieChart, Pie, Cell, Legend} from 'recharts';
+import theme from 'styles/theme';
 
-const InputComponent = ({type}) => {
+const RADIAN = Math.PI / 180;
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  );
+};
+
+const VacInfoPiChart = ({data}) => {
+  const COLORS = [
+    theme.colorSet.ATTENDANCE_STATUS.OK,
+    theme.colorSet.SECONDARY.GRAY_CC,
+    theme.colorSet.PRIMARY.BLUE_1A,
+    theme.colorSet.ATTENDANCE_STATUS.VACATION,
+  ];
+  const convertData = [
+    {name: '출근', value: Number(LOCAL_STORAGE.get('depTotal')) - data},
+    {name: '휴가', value: data},
+  ];
+  return (
+    <PieChart width={250} height={190}>
+      <Pie
+        data={convertData}
+        cx="50%"
+        cy="50%"
+        labelLine={false}
+        label={renderCustomizedLabel}
+        outerRadius={80}
+        fill="#8884d8"
+        dataKey="value"
+      >
+        {convertData?.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index]}/>
+        ))}
+      </Pie>
+      <Legend layout={'vertical'} verticalAlign="bottom" align={'left'} height={40}/>
+    </PieChart>
+  );
+};
+
+const InputComponent = ({id, type, item, onChange}) => {
   const [open, setOpen] = useState(false);
   const onClickCalendar = () => {
     setOpen(!open);
   };
 
-  const onPanelChange = (value, mode) => {
-    console.log(value.format('YYYY-MM-DD'), mode);
+  const onPanelChange = (value) => {
+    value.format('YYYY-MM-DD');
   };
 
   return(
     <SearchContainer>
       {type === 'text' &&
         <MdSearch size={25} color={'white'}/> }
-      <SearchInput/>
+      <SearchInput id={id} onChange={onChange} value={item.id}/>
       {type === 'date' &&
         <MdCalendarToday
           size={25}
@@ -76,7 +123,6 @@ const UserInfoComponent = ({detail, detailInit}) => {
   // 값변경 함수
   const [change, setChange] = useState('');
   useEffect(() => {
-    console.log(detail);
     if(detail?.approvalFlag) {
       setChange(MANAGER_APPROVAL_TYPE[detail?.approvalFlag]?.title);
     }
@@ -145,6 +191,7 @@ export const VacationMngment = () => {
   const dispatch = useDispatch();
   const selector = useSelector((state) => state.MangerReducer);
   const [data, setData] = useState([]);
+  const [copyData, setCopyData] = useState([]);
   const [openDropbox, setOpenDropbox] = useState(false);
   const [openStatusDropbox, setOpenStatusDropbox] = useState(false);
   const [detail, setDetail] = useState({});
@@ -153,38 +200,34 @@ export const VacationMngment = () => {
   const [filterData, setFilterData] = useState([]); // 해당 일자에 전체 사원 중 휴가 사원 비율 구하기
   const limit = 7;
   const offset = (page - 1) * limit;
-  const [selectItem, setSelectItem] = useState({
-    vacation:'선택하세요',
-    status:'선택하세요'
+  const [filterItem, setFilterItem] = useState({
+    username :'',
+    name: '',
+    vacation:'',
+    status:'',
   });
-
-  const date = (findDate.getFullYear().toString())
-    .concat('-')
-    .concat(formatter((findDate.getMonth() + 1).toString()))
-    .concat('-')
-    .concat(formatter((findDate.getDate()).toString()));
-
   useEffect(() => {
-    console.log('VAV');
     dispatch(SwpVavReq(LOCAL_STORAGE.get('depId')));
   }, []);
 
   useEffect(() => {
-    console.log(selector);
     if(selector.data?.length > 0 && selector.data[0]?.vId !== undefined) {
       setData(selector.data);
+      setCopyData(selector.data);
     } else {
       setData([]);
     }
   }, [selector]);
 
   useEffect(() => {
-    const filter = data.filter((v) => v.date === date && v);
+    const date = (findDate.getFullYear().toString())
+      .concat('-')
+      .concat(formatter((findDate.getMonth() + 1).toString()))
+      .concat('-')
+      .concat(formatter((findDate.getDate()).toString()));
+    const filter = data?.filter((v) => (v.date === date) && v);
     setFilterData(filter);
-    console.log(filterData); // eslint 에러 방지
-  }, [findDate]);
-
-
+  }, [data, findDate]);
 
   const onClickDetail = (e) => {
     const detailData = data?.filter((v) => v.vId === Number(e.target.id))[0];
@@ -217,7 +260,7 @@ export const VacationMngment = () => {
   };
 
   const onClickDropBoxItem = (e, target) => {
-    setSelectItem({...selectItem, [target]: e.target.id});
+    setFilterItem({...filterItem, [target]: e.target.id});
     if(target === 'vacation') {
       onClickType();
     }else{
@@ -228,7 +271,41 @@ export const VacationMngment = () => {
   const onChangeFindDate = (newDate) => {
     setFindDate(newDate);
   };
+  const onChangeFilter = (e) => {
+    console.log(e.target.value);
+    setFilterItem({...filterItem, [e.target.id]: e.target.value});
+  };
 
+  useEffect(() => {
+    let result = [];
+    if(filterItem.username === '' &&
+      filterItem.name === '' &&
+      filterItem.vacation === '' &&
+      filterItem.status === '') {
+      result = data;
+    }
+    const filterInfo = (Object.keys(filterItem)).filter((key) => filterItem[key] !== '');
+    if(filterInfo.length > 0) {
+      let temp = data;
+      filterInfo.forEach((item) => {
+        if(item === 'username') {
+          temp = temp.filter((v) => v.username === Number(filterItem[item]));
+        }
+        if(item === 'name') {
+          temp = temp.filter((v) => v.name === filterItem[item]);
+        }
+        if(item === 'vacation') {
+          temp = temp.filter((v) => VACATION_TYPE[v.type]?.title === filterItem[item]);
+        }
+        if(item === 'status') {
+          temp = temp.filter((v) => MANAGER_APPROVAL_TYPE[v.approvalFlag]?.title ===
+            filterItem[item]);
+        }
+        result = temp;
+      });
+    }
+    setCopyData(result);
+  }, [filterItem]);
 
   return (
     <Wrapper>
@@ -243,40 +320,42 @@ export const VacationMngment = () => {
             <InnerLayout>신청 사유</InnerLayout>
             <InnerLayout>상태</InnerLayout>
             <InnerLayout>세부 사항</InnerLayout>
-            <InnerLayout><InputComponent type={'text'}/></InnerLayout>
-            <InnerLayout><InputComponent type={'text'}/></InnerLayout>
-            <InnerLayout><InputComponent type={'date'}/></InnerLayout>
+            <InnerLayout><InputComponent type={'text'} id={'username'} item={filterItem} onChange={onChangeFilter}/></InnerLayout>
+            <InnerLayout><InputComponent type={'text'} id={'name'} item={filterItem} onChange={onChangeFilter}/></InnerLayout>
+            <InnerLayout>-</InnerLayout>
             <InnerLayout>
               <Dropbox
                 id={'vacation'}
                 open={openDropbox}
                 onClickDropBox={onClickType}
                 menu={VACATION_TYPE}
-                select={selectItem.vacation}
+                select={filterItem.vacation}
+                onChangeFilter={onChangeFilter}
                 onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'vacation')}
               />
             </InnerLayout>
-            <InnerLayout><InputComponent type={'text'}/></InnerLayout>
+            <InnerLayout>-</InnerLayout>
             <InnerLayout>
               <Dropbox
                 id={'status'}
                 open={openStatusDropbox}
                 onClickDropBox={onClickStatus}
-                menu={MANAGER_APPROVAL_TYPE.slice(0, 3)}
-                select={selectItem.status}
+                menu={MANAGER_APPROVAL_TYPE}
+                select={filterItem.status}
+                onChangeFilter={onChangeFilter}
                 onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'status')}
               />
             </InnerLayout>
             <InnerLayout>-</InnerLayout>
           </HeaderContainer>
 
-          {data?.slice(offset, offset + limit).map((item) => (
+          {copyData?.slice(offset, offset + limit).map((item) => (
             <ListItemComponent key={item.vId} item={item} onClickDetail={onClickDetail}/>
           ))}
 
 
           <Pagination
-            total={data?.length}
+            total={copyData?.length}
             limit={8}
             page={page}
             setPage={setPage}
@@ -301,6 +380,9 @@ export const VacationMngment = () => {
                 )}
               />
             </LocalizationProvider>
+            <ChartLayout>
+              <VacInfoPiChart data={filterData.length}/>
+            </ChartLayout>
           </InfoContainer>
           <InfoContainer h={63}>
             <UserInfoComponent detail={detail} detailInit={detailInit}/>
@@ -318,6 +400,7 @@ const {
 
   Container,
   SideContainer,
+  ChartLayout,
   InfoContainer,
   ListContainer,
 
@@ -339,6 +422,9 @@ const {
 
 InputComponent.propTypes = {
   type:PropTypes.string.isRequired,
+  id:PropTypes.string.isRequired,
+  item:PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])).isRequired,
+  onChange:PropTypes.func.isRequired,
 };
 
 ListItemComponent.propTypes = {
@@ -353,4 +439,8 @@ UserInfoComponent.propTypes = {
 
 InfoInputComponent.propTypes = {
   text:PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+};
+
+VacInfoPiChart.propTypes = {
+  data: PropTypes.number.isRequired,
 };

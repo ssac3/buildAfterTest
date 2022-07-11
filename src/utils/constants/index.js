@@ -34,13 +34,15 @@ export const ROUTES = {
   SWP_EMPIN_REQ: API.ADMIN.concat('/insertEmp'),
   SWP_EMPSEL_REQ: API.ADMIN.concat(''),
   SWP_EMPUP_REQ: API.ADMIN.concat('/updateEmp'),
+  SWP_EMPDEL_REQ: API.ADMIN.concat('/deleteEmp'),
   SWP_SAPR_REQ: API.USER.concat('/updatePw'),
   SWP_EAS_REQ: API.LOGOUT.concat(''),
   SWP_SAIR_REQ: API.USER.concat('/myImgUpdate'),
   SWP_QCS_REQ: API.SCANNER.concat(''),
   SWP_VA_REQ: API.USER.concat('/regVacation'),
   SWP_AAR_REQ: API.USER.concat('/rearrangeAttendance'),
-  SWP_VC_REQ: API.USER.concat('/cancelVacation')
+  SWP_VC_REQ: API.USER.concat('/cancelVacation'),
+  SWP_DLR_REQ: API.LOGIN.concat('/getRole'),
 };
 
 export const LOG = (target) => {

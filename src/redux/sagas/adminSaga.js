@@ -89,7 +89,6 @@ function empselReq() {
     .get(ROUTES.SWP_EMPSEL_REQ, getHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_EMPSEL_REQ).SUCCESS);
-      console.log('res일 떄 : ', res.data);
       return res.data;
     })
     .catch((err) => {
@@ -114,7 +113,6 @@ function empupReq(change) {
   const result = axios
     .post(ROUTES.SWP_EMPUP_REQ, change.change, getHeader())
     .then((res) => {
-      console.log('username확인', change.change.username);
       console.log(LOG(ROUTES.SWP_EMPUP_REQ).SUCCESS);
       return res.data;
     })
@@ -139,12 +137,45 @@ function* postSwpEmpupReq() {
   }
 }
 
+// 사원 삭제
+function empdelReq(leave) {
+  const result = axios
+    .post(ROUTES.SWP_EMPDEL_REQ, leave.leave, getHeader())
+    .then((res) => {
+      console.log(LOG(ROUTES.SWP_EMPDEL_REQ).SUCCESS);
+      return res.data;
+    })
+    .catch((err) => {
+      console.log(LOG(ROUTES.SWP_EMPDEL_REQ).ERROR);
+      return err;
+    });
+  return result;
+}
+function* postSwpEmpdelReq() {
+  try {
+    const data = yield select((state) => { return state.AdminReducer; });
+    const packedMsg = {leave: data.leave};
+    console.log(packedMsg);
+    const result = yield call(empdelReq, packedMsg);
+    console.log(result);
+    if(result.resCode === 0) {
+      yield put(openAlert('success', result.resMsg));
+      yield put(SwpEmpselReq());
+    } else {
+      yield put(openAlert('fail', result.resMsg));
+    }
+  } catch (e) {
+    console.log(e);
+  }
+}
+
 
 function* watchAdmin() {
   yield takeLatest(AdminType.SWP_EMPMK_REQ, getSwpEmpmkReq);
   yield takeLatest(AdminType.SWP_EMPIN_REQ, postSwpEmpinReq);
   yield takeLatest(AdminType.SWP_EMPSEL_REQ, getSwpEmpselReq);
   yield takeLatest(AdminType.SWP_EMPUP_REQ, postSwpEmpupReq);
+  yield takeLatest(AdminType.SWP_EMPDEL_REQ, postSwpEmpdelReq);
 }
 
 export default function* adminSaga() {

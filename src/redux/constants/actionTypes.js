@@ -37,7 +37,10 @@ export const AdminType = {
   SWP_EMPSEL_RES: 'SWP_EMPSEL_RES',
   // 사원수정
   SWP_EMPUP_REQ: 'SWP_EMPUP_REQ',
-  SWP_EMPUP_RES: 'SWP_EMPUP_RES'
+  SWP_EMPUP_RES: 'SWP_EMPUP_RES',
+  // 사원 삭제
+  SWP_EMPDEL_REQ: 'SWP_EMPDEL_REQ',
+  SWP_EMPDEL_RES: 'SWP_EMPDEL_RES'
 };
 
 export const AlertType = {
@@ -60,8 +63,6 @@ export const UserType = {
   SWP_AAR_RES: 'SWP_AAR_RES',
   SWP_VC_REQ: 'SWP_VC_REQ',
   SWP_VC_RES: 'SWP_VC_RES',
-  // SWP_VC_REQ: 'SWP_VC_REQ',
-  // SWP_VC_RES: 'SWP_VC_RES'
   // 월별 근태 현황
   SWP_UAG_REQ: 'SWP_UAG_REQ',
   SWP_UAG_RES: 'SWP_UAG_RES'
@@ -69,7 +70,9 @@ export const UserType = {
 
 export const SignInType = {
   SWP_EAC_REQ: 'SWP_EAC_REQ',
-  SWP_EAC_RES: 'SWP_EAC_RES'
+  SWP_EAC_RES: 'SWP_EAC_RES',
+  SWP_DLR_REQ: 'SWP_DLR_REQ',
+  SWP_DLR_RES: 'SWP_DLR_RES'
 };
 
 export const SignOutType = {
@@ -81,3 +84,4 @@ export const ScannerType = {
   SWP_QCS_REQ: 'SWP_QCS_REQ',
   SWP_QCS_RES: 'SWP_QCS_RES'
 };
+

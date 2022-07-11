@@ -21,6 +21,15 @@ function SignInReducer(state = INIT_STATE, action) {
       };
     case SignOutType.SWP_EAS_RES:
       return {};
+    case SignInType.SWP_DLR_REQ:
+      return {
+        data: action.data
+      };
+    case SignInType.SWP_DLR_RES:
+      console.log(action);
+      return {
+        data: action
+      };
     default:
       return state;
   }
