@@ -21,7 +21,7 @@ import VacationEnrollPage from 'pages/user/VacationEnrollPage';
 import VacationViewPage from 'pages/user/VacationViewPage';
 import Scanner from 'components/Scanner';
 import ReportEavDetailPage from 'pages/manager/ReportEavDetailPage';
-
+// import PublicRoute from './utils/PublicRoute';
 function getMenu(role) {
   switch (role) {
     case API.ADMIN:
@@ -230,7 +230,7 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route path={API.SCANNER} component={Scanner}/>
-          <Route exact path={API.ROOT} component={SignIn}/>
+          <Route exact path={API.ROOT} component={SignIn} />
           <Wrap p={position()}>
             <Route
               path={API.ADMIN}
