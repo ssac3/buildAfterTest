@@ -5,11 +5,10 @@ export const SwpEmpmkReq = () => {
     type: AdminType.SWP_EMPMK_REQ,
   };
 };
-export const SwpEmpmkRes = (mkUsername, qrPath) => {
+export const SwpEmpmkRes = (mkUsername) => {
   return {
     type: AdminType.SWP_EMPMK_RES,
     mkUsername,
-    qrPath
   };
 };
 
@@ -50,5 +49,12 @@ export const SwpEmpupRes = (change) => {
   return {
     type: AdminType.SWP_EMPUP_RES,
     change
+  };
+};
+// 사원 삭제
+export const SwpEmpdelReq = (leave) => {
+  return {
+    type: AdminType.SWP_EMPDEL_REQ,
+    leave
   };
 };

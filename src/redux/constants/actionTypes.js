@@ -37,7 +37,10 @@ export const AdminType = {
   SWP_EMPSEL_RES: 'SWP_EMPSEL_RES',
   // 사원수정
   SWP_EMPUP_REQ: 'SWP_EMPUP_REQ',
-  SWP_EMPUP_RES: 'SWP_EMPUP_RES'
+  SWP_EMPUP_RES: 'SWP_EMPUP_RES',
+  // 사원 삭제
+  SWP_EMPDEL_REQ: 'SWP_EMPDEL_REQ',
+  SWP_EMPDEL_RES: 'SWP_EMPDEL_RES'
 };
 
 export const AlertType = {
