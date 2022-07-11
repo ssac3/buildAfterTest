@@ -11,7 +11,10 @@ export const AtdcManagement = ({
   selectedId,
   onClickDavDetail,
   onClickVaeDetail,
-  onClickVavDetail}) => {
+  onClickVavDetail,
+  onCloseDetail,
+  closeDetail
+}) => {
   const renderUI = React.useMemo(() => {
     if (selectedId === 0) {
       return (
@@ -21,6 +24,7 @@ export const AtdcManagement = ({
             onClickDavDetail={onClickDavDetail}
             onClickVaeDetail={onClickVaeDetail}
             onClickVavDetail={onClickVavDetail}
+            onCloseDetail={onCloseDetail}
           />
         </CalendarLayout>
       );
@@ -53,4 +57,5 @@ AtdcManagement.propTypes = {
   onClickDavDetail: PropTypes.func.isRequired,
   onClickVaeDetail: PropTypes.func.isRequired,
   onClickVavDetail: PropTypes.func.isRequired,
+  onCloseDetail: PropTypes.func.isRequired,
 };
