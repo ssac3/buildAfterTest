@@ -13,7 +13,8 @@ export const API = {
 
 export const ROUTES = {
   CLIENT_URL: 'http://3.39.220.142:80/',
-  BASE_URL: 'http://3.39.220.142:8081',
+  BASE_URL: 'http://localhost:8081',
+  // BASE_URL: 'http://3.39.220.142:8081',
   SWP_ATV_REQ: API.MANAGER.concat('/deptView'),
   SWP_ATR_REQ: API.MANAGER.concat('/deptUpdate'),
   SWP_VAV_REQ: API.MANAGER.concat('/vacView'),
