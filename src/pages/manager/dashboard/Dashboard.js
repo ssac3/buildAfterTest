@@ -218,8 +218,9 @@ export const Dashboard = () => {
             <h4 style={{margin: 0}}>출근과 전일 휴가인 사원 수를 표시합니다.</h4>
           </CardTitle>
           <ChartLayout>
-            <AttendaceBarChart data={count} total={sum}/>
-            <AttendancePiChart current={count?.aCount} total={(sum - count.vCount)}/>
+            {sum && <AttendaceBarChart data={count} total={sum}/>}
+            {count?.aCount &&
+              <AttendancePiChart current={count?.aCount} total={(sum - count.vCount)}/>}
           </ChartLayout>
         </Card>
       </InnerContainer>
