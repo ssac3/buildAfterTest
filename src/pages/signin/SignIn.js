@@ -31,13 +31,13 @@ export const SignIn = () => {
         </LogoLayout>
         <InputLayout id={'username'} value={info.id} onChange={getDataHandler} autoFocus placeholder={'사원번호'} onKeyPress={onKeyPress} />
         <InputLayout id={'password'} value={info.pw} onChange={getDataHandler} placeholder={'비밀번호'} type={'password'} onKeyPress={onKeyPress} />
-
         <SignInButton onClick={Login}>로그인</SignInButton>
       </CardContainer>
     </Container>
   );
 };
 
-SignIn.propTypes = {};
+SignIn.propTypes = {
+};
 
 const {Container, CardContainer, LogoLayout, InputLayout, SignInButton} = style;

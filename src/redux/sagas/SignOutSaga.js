@@ -1,8 +1,7 @@
 import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
-import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
+import {all, call, fork, select, takeLatest} from 'redux-saga/effects';
 import {SignOutType} from 'redux/constants/actionTypes';
-import {SwpEasRes} from 'redux/actions/SignInAction';
 import {resSuccess} from 'components/Interceptors/ResInterceptor';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -32,15 +31,12 @@ function easReq(data) {
 
 function* postSwpEasReq() {
   try {
-    const selector = yield select((state) => {
-      return state.SignInReducer;
-    });
-    const {history} = selector;
+    const data = yield select((state) => state.SignInReducer);
+    const {history} = data;
     const result = yield call(easReq);
     if (result.resCode === 0) {
       LOCAL_STORAGE.clear();
       history.push('/');
-      yield put(SwpEasRes());
     }
   } catch (e) {
     console.log(e);

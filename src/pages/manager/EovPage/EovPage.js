@@ -102,6 +102,7 @@ export const EovPage = () => {
     setFindDate(newDate);
   };
   useEffect(() => {
+    console.log('EOV 통신 시작');
     dispatch(SwpEovReq(LOCAL_STORAGE.get('depId'), date));
   }, [findDate]);
 
