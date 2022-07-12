@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {style} from './SignInStyle';
 import Logo from 'assets/logo.png';
 import {SwpEacReq} from 'redux/actions/SignInAction';
 import {useDispatch} from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import {LOCAL_STORAGE} from 'utils/constants';
 // import PropTypes from 'prop-types';
 
 export const SignIn = () => {
@@ -22,6 +23,11 @@ export const SignIn = () => {
       dispatch(SwpEacReq(info.username, info.password, history));
     }
   };
+
+  useEffect(() => {
+    console.log('안녕');
+    LOCAL_STORAGE.clear();
+  }, []);
 
   return (
     <Container>

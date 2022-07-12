@@ -6,18 +6,18 @@ import {ThemeProvider} from 'styled-components';
 import theme from './styles/theme';
 import store from 'redux/stores';
 import {Provider} from 'react-redux';
-import {Router} from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 import history from 'utils/history';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <Router history={history}>
+    <BrowserRouter history={history}>
       <ThemeProvider theme={{ ...theme }}>
         <App />
       </ThemeProvider>
-    </Router>
+    </BrowserRouter>
     <GlobalStyles />
   </Provider>,
 );
