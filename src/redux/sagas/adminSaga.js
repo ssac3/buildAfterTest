@@ -30,7 +30,6 @@ const getImgHeader = () => {
 // 사번생성
 function empmkReq() {
   const result = axios
-    // .get(ROUTES.SWP_EMPMK_REQ, '', getHeader())
     .get(ROUTES.SWP_EMPMK_REQ, getHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_EMPMK_REQ).SUCCESS);
