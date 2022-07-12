@@ -12,7 +12,7 @@ export const SwpEacReq = (username, password, history) => {
 export const SwpEacRes = (data) => {
   return {
     type: SignInType.SWP_EAC_RES,
-    data
+    data,
   };
 };
 

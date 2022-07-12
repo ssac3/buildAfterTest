@@ -54,7 +54,6 @@ export const RearrangeMngment = ({onClickATR, atvDetail}) => {
       ...atvDetail,
       approvalFlag:
         MANAGER_APPROVAL_TYPE.filter((v) => v.title === change)[0].id};
-    console.log(data);
     dispatch(SwpRarReq(data, onClickATR));
   };
   return (
@@ -111,9 +110,10 @@ export const RearrangeMngment = ({onClickATR, atvDetail}) => {
             <ItemLabel>상태</ItemLabel>
             <DropboxLayout>
               <Dropbox
+                readOnly
                 open={openDrop}
                 onClickDropBox={onClickDropbox}
-                menu={MANAGER_APPROVAL_TYPE}
+                menu={MANAGER_APPROVAL_TYPE.slice(1, 3)}
                 select={change}
                 onClickDropBoxItem={onClickDropBoxItem}
               />

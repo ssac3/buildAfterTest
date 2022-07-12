@@ -177,8 +177,8 @@ export const AtdcCalendar2 = ({selectEmpl, onClickDetail, onClickEadDetail}) => 
     };
     return (
       <ul className="events">
-        {listData.map((item) => (
-          <li key={item.date}>
+        {listData.map((item, index) => (
+          <li key={index}>
             <Badge
               status={item.status && getStatus(item.status)}
               text={cnvrtTime(item.startTime)?.concat(' / ').concat(cnvrtTime(item.endTime))}

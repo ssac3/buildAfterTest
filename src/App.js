@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import {BrowserRouter, Switch, Route} from 'react-router-dom';
-import Dashboard from 'pages/manager/ManagerRenderPage';
 import EmpManagement from 'pages/admin/emp_mangement';
 import AtdcManagement from 'pages/user/AtdcManagement';
 import SignIn from 'pages/signin';
@@ -21,13 +20,15 @@ import VacationEnrollPage from 'pages/user/VacationEnrollPage';
 import VacationViewPage from 'pages/user/VacationViewPage';
 import Scanner from 'components/Scanner';
 import ReportEavDetailPage from 'pages/manager/ReportEavDetailPage';
-// import PublicRoute from './utils/PublicRoute';
+import MangerRenderPage from 'pages/manager/ManagerRenderPage';
+
 function getMenu(role) {
   switch (role) {
     case API.ADMIN:
       return ADMIN_MENU;
     case API.MANAGER:
       return MANAGER_MENU;
+    case API.USER:
     default:
       return USER_MENU;
   }
@@ -51,7 +52,6 @@ function App() {
   const [openVaeDetail, setOpenVaeDetail] = useState(''); // 사원 휴가 신청
   const [openVavDetail, setOpenVavDetail] = useState([]); // 사원 휴가 승인 대기 시 조회
   const [findYear, setFindYear] = useState(new Date()); // 근태 담당자 사원별 근태 조회 년도 선택
-  const [closeDetail, setCloseDetail] = useState('');
   const [openEavDetail, setOpenEavDetail] = useState([]); // 근태 담당자 사원별 근태 현황 조회
   const [findDate, setFindDate] = useState(new Date()); // 근태 담당자 사원별 근태 현황 조회 (년/월)
   const onClickMenu = (e) => {
@@ -135,10 +135,6 @@ function App() {
     setFindYear(newYear);
   };
 
-  const onCloseDetail = (target) => {
-    setCloseDetail(target);
-    console.log(closeDetail);
-  };
   const onClickEavDetail = (target) => {
     setOpenEavDetail(target);
   };
@@ -148,21 +144,20 @@ function App() {
   };
 
   useEffect(() => {
+    console.log('여기?');
     if (signIn?.data === 'ADMIN') {
       setSelect(getMenu(API.ADMIN));
+      setRoleURL(window.location.pathname);
     } else if (signIn?.data === 'USER') {
       setSelect(getMenu(API.USER));
-    } else {
-      setSelect(getMenu(API.MANAGER));
-    }
-    return (() => {
       setRoleURL(window.location.pathname);
-    });
+    } else if (signIn?.data === 'MANAGER') {
+      setSelect(getMenu(API.MANAGER));
+      setRoleURL(API.MANAGER);
+    } else {
+      setRoleURL(API.ROOT);
+    }
   }, [signIn]);
-
-  useEffect(() => {
-    setSelect(getMenu(roleURL));
-  }, []);
 
   useEffect(() => {
     onGetTarget();
@@ -183,19 +178,16 @@ function App() {
         <DetailDavPage
           detailInfo={openDavDetail}
           onClickDavDetail={onClickDavDetail}
-          onCloseDetail={onCloseDetail}
         />}
       {openVaeDetail !== '' &&
         <VacationEnrollPage
           openVaeDetail={openVaeDetail}
           onClickVaeDetail={onClickVaeDetail}
-          onCloseDetail={onCloseDetail}
         />}
       {openVavDetail?.length > 0 &&
         <VacationViewPage
           vav={openVavDetail}
           onClickVavDetail={onClickVavDetail}
-          onCloseDetail={onCloseDetail}
         />}
 
       {setting && <Setting open={onClickSetting}/>}
@@ -215,22 +207,21 @@ function App() {
           onClickEavDetail={onClickEavDetail}
           findDate={findDate}
         />}
-
-      {roleURL !== API.ROOT && roleURL !== API.SCANNER && (
-        <>
-          <Header role={roleURL} setting={onClickSetting}/>
-          <Navigation
-            role={roleURL}
-            menu={select}
-            onClickMenu={onClickMenu}
-            onClickSubMenu={onClickSubMenu}
-          />
-        </>
-      )}
       <BrowserRouter>
+        {(roleURL !== API.ROOT && roleURL !== API.SCANNER) && (
+          <>
+            <Header role={roleURL} setting={onClickSetting}/>
+            <Navigation
+              role={roleURL}
+              menu={select}
+              onClickMenu={onClickMenu}
+              onClickSubMenu={onClickSubMenu}
+            />
+          </>
+        )}
         <Switch>
           <Route path={API.SCANNER} component={Scanner}/>
-          <Route exact path={API.ROOT} component={SignIn} />
+          <Route exact path={API.ROOT} component={SignIn}/>
           <Wrap p={position()}>
             <Route
               path={API.ADMIN}
@@ -243,7 +234,7 @@ function App() {
             <Route
               path={API.MANAGER}
               render={() => (
-                <Dashboard
+                <MangerRenderPage
                   selectedId={selectedItem}
                   onClickATR={onClickATR}
                   onClickEadDetail={onClickEadDetail}
@@ -263,7 +254,6 @@ function App() {
                   onClickDavDetail={onClickDavDetail}
                   onClickVaeDetail={onClickVaeDetail}
                   onClickVavDetail={onClickVavDetail}
-                  onCloseDetail={onCloseDetail}
                 />)}
             />
           </Wrap>

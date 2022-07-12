@@ -10,16 +10,12 @@ function AlertReducer(state = INIT_STATE, action) {
         open: true,
         status: action.status,
         msg: action.msg,
-        history: action.history,
       };
     case AlertType.CLOSE_ALERT:
-      console.log(state);
       return {
         type: action.type,
         open: false,
-        history: state.history,
       };
-
     default:
       return state;
   }

@@ -52,7 +52,7 @@ const ListItemComponent = ({item, onClickATR}) => {
         <Label type={MANAGER_APPROVAL_TYPE[Number(item.approvalFlag)].title}/>
       </ItemContainer>
       <ItemContainer>
-        <IconLayout>
+        <IconLayout onClick={onClickATR}>
           <MdModeEditOutline size={20} onClick={onClickATR}/>
         </IconLayout>
       </ItemContainer>
@@ -70,7 +70,6 @@ export const AttendenceMngment = ({onClickATR}) => {
   const selector = useSelector((state) => state.MangerReducer);
 
   useEffect(() => {
-    console.log('RAV');
     dispatch(SwpRavReq(LOCAL_STORAGE.get('depId')));
   }, []);
 

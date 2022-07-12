@@ -10,7 +10,7 @@ import theme from 'styles/theme';
 import {useDispatch} from 'react-redux';
 import {SwpVcReq} from 'redux/actions/UserAction';
 
-export const VacationViewPage = ({vav, onClickVavDetail, onCloseDetail}) => {
+export const VacationViewPage = ({vav, onClickVavDetail}) => {
   const dispatch = useDispatch();
   const date = new Date(vav[0].vDate);
   const vId = vav[0]?.vId;
@@ -25,7 +25,6 @@ export const VacationViewPage = ({vav, onClickVavDetail, onCloseDetail}) => {
     if(window.confirm('정말로 휴가를 취소하겠습니까?')) {
       dispatch(SwpVcReq(vId, vDate));
       onClickVavDetail([]);
-      onCloseDetail(0);
     }
   };
 
@@ -91,5 +90,4 @@ VacationViewPage.propTypes = {
   vav:PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))
   ).isRequired,
-  onCloseDetail:PropTypes.func.isRequired,
 };

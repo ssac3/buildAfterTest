@@ -91,7 +91,6 @@ export const AtdcCalendar = ({
   onClickDavDetail,
   onClickVaeDetail,
   onClickVavDetail,
-  onCloseDetail
 }) => {
   const selector = useSelector((state) => state.UserReducer);
   const dispatch = useDispatch();
@@ -180,17 +179,13 @@ export const AtdcCalendar = ({
       if (filterInfo.length > 0) {
         if(filterInfo[0].vApprovalFlag === '0') {
           onClickVavDetail(filterInfo);
-          onCloseDetail(1);
         } else if(filterInfo[0].vApprovalFlag === '3') {
           onClickVaeDetail(value);
-          onCloseDetail(1);
         } else {
           onClickDavDetail(filterInfo);
-          onCloseDetail(1);
         }
       } else {
         onClickVaeDetail(value);
-        onCloseDetail(1);
       }
     } else { // 과거 선택
       const filterInfo = getData?.filter((v) => v.aDate === value.format('YYYY-MM-DD'));
@@ -225,7 +220,6 @@ AtdcCalendar.propTypes = {
   onClickVaeDetail: PropTypes.func.isRequired,
   onClickVavDetail: PropTypes.func.isRequired,
   openVaeDetail: PropTypes.func.isRequired,
-  onCloseDetail: PropTypes.func.isRequired,
 };
 CustomHeader.propTypes = {
   value   : PropTypes.objectOf(
