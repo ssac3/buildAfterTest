@@ -16,8 +16,6 @@ import {
 import {DropboxEmp} from 'components/DropboxEmp/DropboxEmp';
 
 export const EmpDetail = ({emp, onClickDetailEmp}) => {
-  console.log(emp);
-  // 드롭박스
   const [openGenderDropbox, setOpenGenderDropbox] = useState(false);
   const [openLocationDropbox, setOpenLocationDropbox] = useState(false);
   const [openPositionDropbox, setOpenPositionDropbox] = useState(false);

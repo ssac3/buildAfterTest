@@ -19,12 +19,9 @@ const ListItemComponent = ({emp, onClickDetailEmp, leave, setLeave}) => {
     }
     setChecked(!checked);
   };
-  // 체크한 걸 담아놓는 변수
-
-  // 체크한 걸 setCheckedList에 담음.
-
   useEffect(() => {
   }, [checked]);
+  // 날짜 정렬함수 만들기
   return (
     <ListItemContainer>
       <Checkbox
@@ -68,7 +65,6 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
     }
   }, [selector]);
   useEffect(() => {
-    console.log(leave);
   }, [leave]);
   const onchangeKeyword = (e) => {
     setKeyword(e.target.value);
@@ -76,6 +72,9 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
   const filterResult = (k) => {
     return emps?.filter((v) => v.username === Number(k));
   };
+  // const sortDate = (a, b) => {
+  //   return new Date(b.expiration_date.valueOf()) - (new Date(a.expiration_date).valueOf());
+  // };
   useEffect(() => {
     if(keyword === '') {
       setEmpsCopy(emps);
