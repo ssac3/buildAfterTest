@@ -65,7 +65,6 @@ function* postSwpEacReq() {
     const {history} = selector;
     const packedData = {username:selector.username, password:selector.password};
     const result = yield call(eacReq, packedData);
-    console.log(result);
     if (result.data.resCode === 0) {
       LOCAL_STORAGE.set('Authorization', result.headers.authorization);
       LOCAL_STORAGE.set('Refresh_token', result.headers.refresh_token);

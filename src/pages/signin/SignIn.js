@@ -6,8 +6,6 @@ import {useDispatch} from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 // import PropTypes from 'prop-types';
 
-
-
 export const SignIn = () => {
   const dispatch = useDispatch();
   const history = useHistory();

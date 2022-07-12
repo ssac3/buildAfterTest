@@ -16,8 +16,9 @@ function SignInReducer(state = INIT_STATE, action) {
         history: state.history
       };
     case SignOutType.SWP_EAS_REQ:
+      console.log(state);
       return {
-        history: state.history
+        history: action.history
       };
     case SignOutType.SWP_EAS_RES:
       return {};
@@ -26,7 +27,6 @@ function SignInReducer(state = INIT_STATE, action) {
         data: action.data
       };
     case SignInType.SWP_DLR_RES:
-      console.log(action);
       return {
         data: action
       };
