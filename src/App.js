@@ -161,8 +161,9 @@ function App() {
   }, [signIn]);
 
   useEffect(() => {
+    console.log(roleURL);
     setSelect(getMenu(roleURL));
-  }, []);
+  }, [roleURL]);
 
   useEffect(() => {
     onGetTarget();

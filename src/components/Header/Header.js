@@ -4,20 +4,19 @@ import {API} from 'utils/constants';
 import {style} from './HeaderStyle';
 import logo from 'assets/logo.png';
 import {MdLogout, MdSettings} from 'react-icons/md';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {SwpEasReq} from 'redux/actions/SignInAction';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export const Header = ({role, setting}) => {
-  const history = useHistory();
   const dispatch = useDispatch();
+  const selector = useSelector((state) => state.SignInReducer);
   // const [onLogoutModal, setOnLogoutModal] = useState(false);
   const onClickSetting = () => {
     setting();
   };
   const Logout = () => {
     // setOnLogoutModal(true);
-    dispatch(SwpEasReq(history));
+    dispatch(SwpEasReq(selector.history));
   };
   return(
     <Container>
