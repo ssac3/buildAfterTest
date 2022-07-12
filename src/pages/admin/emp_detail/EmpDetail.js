@@ -6,7 +6,7 @@ import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
 import {SwpEmpupReq} from 'redux/actions/AdminAction';
 import {
-  ATTENDENCE_MANAGER_TYPE,
+  // ATTENDENCE_MANAGER_TYPE,
   DEPARTMENT_NAME_TYPE,
   GENDER_TYPE,
   LOCATION_TYPE,
@@ -76,7 +76,7 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
     position: POSITION_TYPE[emp.depId - 1].title,
     role: ROLE_TYPE[emp.role].title,
     depName: DEPARTMENT_NAME_TYPE[emp.depId - 1].title,
-    manager: ATTENDENCE_MANAGER_TYPE[(emp.role > 1) - 1].title,
+    // manager: ATTENDENCE_MANAGER_TYPE[(emp.role > 1) - 1].title,
   });
   const onClickDropBoxItem = (e, target) => {
     setSelectItem({...selectItem, [target]: e.target.id});
@@ -102,6 +102,7 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
     {
       username: emp.username,
       name: emp.name,
+      manager: emp.manager,
       email: emp.username,
       qrPath: emp.username,
       img: emp.img,
@@ -117,7 +118,7 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
       position: POSITION_TYPE.filter((v) => v.title === selectItem?.position)[0].title,
       role: ROLE_TYPE.filter((v) => v.title === selectItem?.role)[0].id,
       depId: DEPARTMENT_NAME_TYPE.filter((v) => v.title === selectItem?.depName)[0].id,
-      manager: ATTENDENCE_MANAGER_TYPE.filter((v) => v.title === selectItem?.manager)[0].title,
+      // manager: ATTENDENCE_MANAGER_TYPE.filter((v) => v.title === selectItem?.manager)[0].title,
     };
     const packedMsg = Object.assign(change, convertData);
     dispatch(SwpEmpupReq(packedMsg));
@@ -240,15 +241,10 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
               (e) => onClickDropBoxItem(e, 'depName')
             }
           />
-          <DropboxEmp
-            id={'manager'}
-            open={openManagerDropbox}
-            onClickDropBox={onClickManagerDrop}
-            menu={ATTENDENCE_MANAGER_TYPE}
-            select={selectItem.manager}
-            onClickDropBoxItem={
-              (e) => onClickDropBoxItem(e, 'manager')
-            }
+          <LabelLayout
+            readOnly
+            style={{backgroundColor: '#EFEFEF'}}
+            value={emp.manager || ''}
           />
         </UserInfoLayout2>
         <ResultBtnLayout>
