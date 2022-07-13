@@ -1,12 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {style} from './SignInStyle';
 import Logo from 'assets/logo.png';
 import {SwpEacReq} from 'redux/actions/SignInAction';
 import {useDispatch} from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import {LOCAL_STORAGE} from 'utils/constants';
 // import PropTypes from 'prop-types';
-
-
 
 export const SignIn = () => {
   const dispatch = useDispatch();
@@ -25,6 +24,11 @@ export const SignIn = () => {
     }
   };
 
+  useEffect(() => {
+    console.log('안녕');
+    LOCAL_STORAGE.clear();
+  }, []);
+
   return (
     <Container>
       <CardContainer>
@@ -33,13 +37,13 @@ export const SignIn = () => {
         </LogoLayout>
         <InputLayout id={'username'} value={info.id} onChange={getDataHandler} autoFocus placeholder={'사원번호'} onKeyPress={onKeyPress} />
         <InputLayout id={'password'} value={info.pw} onChange={getDataHandler} placeholder={'비밀번호'} type={'password'} onKeyPress={onKeyPress} />
-
         <SignInButton onClick={Login}>로그인</SignInButton>
       </CardContainer>
     </Container>
   );
 };
 
-SignIn.propTypes = {};
+SignIn.propTypes = {
+};
 
 const {Container, CardContainer, LogoLayout, InputLayout, SignInButton} = style;

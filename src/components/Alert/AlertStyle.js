@@ -8,6 +8,7 @@ const Container = styled.div`
   width: 550px;
   height: 56px;
   border-radius: 5px 0px 0px 5px;
+  z-index:10;
   box-shadow: 5px 5px 10px #00000020;
   padding: 5px 10px;
   color: ${({status, theme}) => (status === 'success' ? theme.colorSet.ALERT.SUCCESS_FONT : theme.colorSet.ALERT.FAIL_FONT)};

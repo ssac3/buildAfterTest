@@ -16,7 +16,7 @@
 // };
 // const getRoleText = (e) => {
 //   let result;
-//   switch(e.data) {
+//   switch(e.data) {=
 //     case '0':
 //       result = 'ADMIN';
 //       break;

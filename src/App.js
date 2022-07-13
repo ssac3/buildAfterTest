@@ -1,13 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
-import Dashboard from 'pages/manager/ManagerRenderPage';
+import {Switch, Route} from 'react-router-dom';
 import EmpManagement from 'pages/admin/emp_mangement';
 import AtdcManagement from 'pages/user/AtdcManagement';
 import SignIn from 'pages/signin';
 import Header from 'components/Header';
 import Navigation from './components/Navigation';
-import {ADMIN_MENU, MANAGER_MENU, USER_MENU, API} from 'utils/constants';
+import {ADMIN_MENU, MANAGER_MENU, USER_MENU, API, LOCAL_STORAGE} from 'utils/constants';
 import Setting from 'pages/manager/setting';
 import {useSelector} from 'react-redux';
 import Alert from 'components/Alert';
@@ -21,21 +20,25 @@ import VacationEnrollPage from 'pages/user/VacationEnrollPage';
 import VacationViewPage from 'pages/user/VacationViewPage';
 import Scanner from 'components/Scanner';
 import ReportEavDetailPage from 'pages/manager/ReportEavDetailPage';
-// import PublicRoute from './utils/PublicRoute';
+import MangerRenderPage from 'pages/manager/ManagerRenderPage';
+import {PrivateRoute} from 'utils/routes';
+
 function getMenu(role) {
   switch (role) {
     case API.ADMIN:
       return ADMIN_MENU;
     case API.MANAGER:
       return MANAGER_MENU;
+    case API.USER:
     default:
       return USER_MENU;
   }
 }
 
 function App() {
+  const currentURL = window.location.pathname;
+  const ROLE = LOCAL_STORAGE.get('ROLE');
   const alert = useSelector((state) => state.AlertReducer);
-  const signIn = useSelector((state) => state.SignInReducer);
   const rearrange = useSelector((state) => state.MangerReducer);
   const emplist = useSelector((state) => state.AdminReducer);
   const [roleURL, setRoleURL] = useState(window.location.pathname);
@@ -51,7 +54,6 @@ function App() {
   const [openVaeDetail, setOpenVaeDetail] = useState(''); // 사원 휴가 신청
   const [openVavDetail, setOpenVavDetail] = useState([]); // 사원 휴가 승인 대기 시 조회
   const [findYear, setFindYear] = useState(new Date()); // 근태 담당자 사원별 근태 조회 년도 선택
-  const [closeDetail, setCloseDetail] = useState('');
   const [openEavDetail, setOpenEavDetail] = useState([]); // 근태 담당자 사원별 근태 현황 조회
   const [findDate, setFindDate] = useState(new Date()); // 근태 담당자 사원별 근태 현황 조회 (년/월)
   const onClickMenu = (e) => {
@@ -135,10 +137,6 @@ function App() {
     setFindYear(newYear);
   };
 
-  const onCloseDetail = (target) => {
-    setCloseDetail(target);
-    console.log(closeDetail);
-  };
   const onClickEavDetail = (target) => {
     setOpenEavDetail(target);
   };
@@ -148,25 +146,25 @@ function App() {
   };
 
   useEffect(() => {
-    if (signIn?.data === 'ADMIN') {
+    if (ROLE === '0' && currentURL === API.ADMIN) {
       setSelect(getMenu(API.ADMIN));
-    } else if (signIn?.data === 'USER') {
+      setRoleURL(API.ADMIN);
+    } else if (ROLE === '2' && currentURL === API.USER) {
       setSelect(getMenu(API.USER));
-    } else {
+      setRoleURL(API.USER);
+    } else if (ROLE === '1' && currentURL === API.MANAGER) {
       setSelect(getMenu(API.MANAGER));
+      setRoleURL(API.MANAGER);
     }
-    return (() => {
-      setRoleURL(window.location.pathname);
-    });
-  }, [signIn]);
-
-  useEffect(() => {
-    setSelect(getMenu(roleURL));
-  }, []);
+  }, [ROLE, currentURL]);
 
   useEffect(() => {
     onGetTarget();
   }, [select]);
+
+  useEffect(() => {
+    console.log(roleURL);
+  }, [roleURL]);
   return (
     <>
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
@@ -178,45 +176,41 @@ function App() {
           openEadDetail={openEadDetail}
           onClickEadDetail={onClickEadDetail}
         />}
-
       {openDavDetail?.length > 0 &&
         <DetailDavPage
           detailInfo={openDavDetail}
           onClickDavDetail={onClickDavDetail}
-          onCloseDetail={onCloseDetail}
         />}
       {openVaeDetail !== '' &&
         <VacationEnrollPage
           openVaeDetail={openVaeDetail}
           onClickVaeDetail={onClickVaeDetail}
-          onCloseDetail={onCloseDetail}
         />}
       {openVavDetail?.length > 0 &&
         <VacationViewPage
           vav={openVavDetail}
           onClickVavDetail={onClickVavDetail}
-          onCloseDetail={onCloseDetail}
         />}
 
       {setting && <Setting open={onClickSetting}/>}
       {openInsertModal && <EmpInsert onClickInsertEmp={onClickInsertEmp}/>}
       {selectedEmpl !== 0 && <EmpDetail emp={emplDetail} onClickDetailEmp={onClickDetailEmp}/>}
       {(openEadDetail?.length > 0 && openEadDetail[0]?.vApprovalFlag !== '3') &&
-        <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
+      <DetailEmplAtndc openEadDetail={openEadDetail} onClickEadDetail={onClickEadDetail}/>}
       {openEamDetail?.length > 0 &&
-        <EamPage
-          openEamDetail={openEamDetail}
-          onClickEamDetail={onClickEamDetail}
-          findYear={findYear}
-        />}
+      <EamPage
+        openEamDetail={openEamDetail}
+        onClickEamDetail={onClickEamDetail}
+        findYear={findYear}
+      />}
       {openEavDetail.length > 0 &&
-        <ReportEavDetailPage
-          openEavDetail={openEavDetail}
-          onClickEavDetail={onClickEavDetail}
-          findDate={findDate}
-        />}
+      <ReportEavDetailPage
+        openEavDetail={openEavDetail}
+        onClickEavDetail={onClickEavDetail}
+        findDate={findDate}
+      />}
 
-      {roleURL !== API.ROOT && roleURL !== API.SCANNER && (
+      {(roleURL !== API.ROOT && roleURL !== API.SCANNER) && (
         <>
           <Header role={roleURL} setting={onClickSetting}/>
           <Navigation
@@ -227,48 +221,54 @@ function App() {
           />
         </>
       )}
-      <BrowserRouter>
-        <Switch>
-          <Route path={API.SCANNER} component={Scanner}/>
-          <Route exact path={API.ROOT} component={SignIn} />
-          <Wrap p={position()}>
-            <Route
-              path={API.ADMIN}
-              render={() => (
-                <EmpManagement
-                  onClickInsertEmp={onClickInsertEmp}
-                  onClickDetailEmp={onClickDetailEmp}
-                />)}
+      <Switch>
+        <Route path={API.SCANNER} component={Scanner}/>
+        <PrivateRoute exact path={API.ROOT} restricted>
+          <SignIn/>
+        </PrivateRoute>
+        <Wrap p={position()}>
+          <PrivateRoute
+            exact
+            path={API.ADMIN}
+            restricted
+          >
+            <EmpManagement
+              onClickInsertEmp={onClickInsertEmp}
+              onClickDetailEmp={onClickDetailEmp}
             />
-            <Route
-              path={API.MANAGER}
-              render={() => (
-                <Dashboard
-                  selectedId={selectedItem}
-                  onClickATR={onClickATR}
-                  onClickEadDetail={onClickEadDetail}
-                  onClickEamDetail={onClickEamDetail}
-                  findYear={findYear}
-                  onClickFindYear={onClickFindYear}
-                  onClickEavDetail={onClickEavDetail}
-                  findDate={findDate}
-                  onClickFindDate={onClickFindDate}
-                />)}
+          </PrivateRoute>
+          <PrivateRoute
+            exact
+            path={API.MANAGER}
+            restricted
+          >
+            <MangerRenderPage
+              role={roleURL}
+              selectedId={selectedItem}
+              onClickATR={onClickATR}
+              onClickEadDetail={onClickEadDetail}
+              onClickEamDetail={onClickEamDetail}
+              findYear={findYear}
+              onClickFindYear={onClickFindYear}
+              onClickEavDetail={onClickEavDetail}
+              findDate={findDate}
+              onClickFindDate={onClickFindDate}
             />
-            <Route
-              path={API.USER}
-              render={() => (
-                <AtdcManagement
-                  selectedId={selectedItem}
-                  onClickDavDetail={onClickDavDetail}
-                  onClickVaeDetail={onClickVaeDetail}
-                  onClickVavDetail={onClickVavDetail}
-                  onCloseDetail={onCloseDetail}
-                />)}
+          </PrivateRoute>
+          <PrivateRoute
+            exact
+            path={API.USER}
+            restricted
+          >
+            <AtdcManagement
+              selectedId={selectedItem}
+              onClickDavDetail={onClickDavDetail}
+              onClickVaeDetail={onClickVaeDetail}
+              onClickVavDetail={onClickVavDetail}
             />
-          </Wrap>
-        </Switch>
-      </BrowserRouter>
+          </PrivateRoute>
+        </Wrap>
+      </Switch>
     </>
   );
 }

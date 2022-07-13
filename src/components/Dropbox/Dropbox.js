@@ -9,11 +9,12 @@ export const Dropbox = ({
   onClickDropBox,
   menu,
   select,
+  readOnly,
   onChangeFilter,
   onClickDropBoxItem}) => {
   return (
     <Container onClick={onClickDropBox}>
-      <ItemName id={id} value={select} onChange={onChangeFilter}/>
+      <ItemName id={id} readOnly={readOnly} value={select} onChange={onChangeFilter}/>
       <MdKeyboardArrowDown size={24} color={'white'} onClick={onClickDropBox} style={{cursor:'pointer'}}/>
 
       {open ? (
@@ -34,11 +35,12 @@ export const Dropbox = ({
 const { Container, ItemName, DropContainer, DropdownItem } = style;
 
 Dropbox.propTypes = {
-  id:PropTypes.string.isRequired,
+  id:PropTypes.string,
   open: PropTypes.bool.isRequired,
   onClickDropBox:PropTypes.func.isRequired,
   menu: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.any)).isRequired,
   select:PropTypes.string.isRequired,
-  onChangeFilter:PropTypes.func.isRequired,
-  onClickDropBoxItem:PropTypes.func.isRequired
+  onChangeFilter:PropTypes.func,
+  onClickDropBoxItem:PropTypes.func.isRequired,
+  readOnly: PropTypes.bool.isRequired,
 };

@@ -30,7 +30,6 @@ const getImgHeader = () => {
 // 사번생성
 function empmkReq() {
   const result = axios
-    // .get(ROUTES.SWP_EMPMK_REQ, '', getHeader())
     .get(ROUTES.SWP_EMPMK_REQ, getHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_EMPMK_REQ).SUCCESS);
@@ -71,7 +70,6 @@ function empinReq(data) {
 function* postSwpEmpinReq() {
   try {
     const data = yield select((state) => { return state.AdminReducer; });
-    // console.log(' adminSaga111', data.emp.get('image'));
     const result = yield call(empinReq, data.emp);
     if(result.resCode === 0) {
       yield put(openAlert('success', result.resMsg));
@@ -110,6 +108,7 @@ function* getSwpEmpselReq() {
 
 // 사원수정
 function empupReq(change) {
+  console.log('change값 확인', change);
   const result = axios
     .post(ROUTES.SWP_EMPUP_REQ, change.change, getHeader())
     .then((res) => {
@@ -140,7 +139,7 @@ function* postSwpEmpupReq() {
 // 사원 삭제
 function empdelReq(leave) {
   const result = axios
-    .post(ROUTES.SWP_EMPDEL_REQ, leave.leave, getHeader())
+    .post(ROUTES.SWP_EMPDEL_REQ, leave, getHeader())
     .then((res) => {
       console.log(LOG(ROUTES.SWP_EMPDEL_REQ).SUCCESS);
       return res.data;
@@ -155,10 +154,9 @@ function* postSwpEmpdelReq() {
   try {
     const data = yield select((state) => { return state.AdminReducer; });
     const packedMsg = {leave: data.leave};
-    console.log(packedMsg);
     const result = yield call(empdelReq, packedMsg);
-    console.log(result);
     if(result.resCode === 0) {
+      yield put(SwpEmpselReq());
       yield put(openAlert('success', result.resMsg));
       yield put(SwpEmpselReq());
     } else {

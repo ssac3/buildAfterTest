@@ -123,7 +123,7 @@ const RearrangeEnrollComponent = ({start, end, detailInfo, onClickDavDetail}) =>
 };
 
 
-export const DetailDavPage = ({detailInfo, onClickDavDetail, onCloseDetail}) => {
+export const DetailDavPage = ({detailInfo, onClickDavDetail}) => {
   const dispatch = useDispatch();
   const date = detailInfo[0]?.aDate !== null ? detailInfo[0].aDate : detailInfo[0].vDate;
   const status = {status: detailInfo[0]?.aStatus,
@@ -140,7 +140,6 @@ export const DetailDavPage = ({detailInfo, onClickDavDetail, onCloseDetail}) => 
     if(window.confirm('정말로 휴가를 취소하겠습니까?')) {
       dispatch(SwpVcReq(detailInfo[0]?.vId, detailInfo[0]?.vDate));
       onClickDavDetail([]);
-      onCloseDetail(0);
     } else {
       console.log('취소 안함');
     }
@@ -215,7 +214,6 @@ DetailDavPage.propTypes = {
     PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   )).isRequired,
   onClickDavDetail:PropTypes.func.isRequired,
-  onCloseDetail: PropTypes.func.isRequired,
 };
 
 RearrangeEnrollComponent.propTypes = {

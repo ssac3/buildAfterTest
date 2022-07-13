@@ -26,6 +26,7 @@ export const MangerRenderPage = ({
   }, []);
 
   const renderUI = React.useMemo(() => {
+    console.log('selectedId', selectedId);
     if(selectedId === 0) {
       return <Dashboard/>;
     }

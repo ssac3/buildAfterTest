@@ -19,11 +19,6 @@ export const SwpEmpinReq = (emp) => {
     emp
   };
 };
-export const SwpEmpinRes = () => {
-  return {
-    type: AdminType.SWP_EMPIN_RES,
-  };
-};
 
 // 사원목록, 사원정보 req, res
 export const SwpEmpselReq = () => {
@@ -42,12 +37,6 @@ export const SwpEmpselRes = (emps) => {
 export const SwpEmpupReq = (change) => {
   return {
     type: AdminType.SWP_EMPUP_REQ,
-    change
-  };
-};
-export const SwpEmpupRes = (change) => {
-  return {
-    type: AdminType.SWP_EMPUP_RES,
     change
   };
 };

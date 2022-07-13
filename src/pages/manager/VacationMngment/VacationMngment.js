@@ -168,10 +168,12 @@ const UserInfoComponent = ({detail, detailInit}) => {
             <InnerInfoItem/>
             <InnerInfoItem>
               <Dropbox
+                id={'vacation'}
                 open={drop}
                 onClickDropBox={onClickDrop}
                 menu={MANAGER_APPROVAL_TYPE.slice(0, 3)}
                 select={change}
+                readOnly
                 onClickDropBoxItem={onClickItem}
               />
             </InnerInfoItem>
@@ -330,6 +332,7 @@ export const VacationMngment = () => {
                 onClickDropBox={onClickType}
                 menu={VACATION_TYPE}
                 select={filterItem.vacation}
+                readOnly={false}
                 onChangeFilter={onChangeFilter}
                 onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'vacation')}
               />
@@ -342,6 +345,7 @@ export const VacationMngment = () => {
                 onClickDropBox={onClickStatus}
                 menu={MANAGER_APPROVAL_TYPE}
                 select={filterItem.status}
+                readOnly={false}
                 onChangeFilter={onChangeFilter}
                 onClickDropBoxItem={(e) => onClickDropBoxItem(e, 'status')}
               />

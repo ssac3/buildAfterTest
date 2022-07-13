@@ -43,11 +43,9 @@ function AdminReducer(state = INIT_STATE, action) {
     case AdminType.SWP_EMPDEL_REQ:
       return{
         leave:action.leave,
-        change: action.change,
       };
     case AdminType.SWP_EMPDEL_RES:
       return {
-        change: action.change,
       };
     default:
       return state;
