@@ -230,7 +230,6 @@ function* postSwpAarReq() {
       const result2 = yield call(davReq, packed);
       if(result2.resCode === 0) {
         yield put(SwpDavRes(result2.data));
-        yield put(openAlert('success', result2.resMsg));
       }
       yield put(openAlert('success', result.resMsg));
     } else {
@@ -251,7 +250,6 @@ function* postSwpVaReq() {
       const result2 = yield call(davReq, packed);
       if (result2.resCode === 0) {
         yield put(SwpDavRes(result2.data));
-        yield put(openAlert('success', result2.resMsg));
       }
       yield put(openAlert('success', result.resMsg));
     } else {
@@ -273,7 +271,6 @@ function* postSwpVcReq() {
       const result2 = yield call(davReq, packedMsg2);
       if (result2.resCode === 0) {
         yield put(SwpDavRes(result2.data));
-        yield put(openAlert('success', result2.resMsg));
       }
       yield put(openAlert('success', result.resMsg));
     } else {
@@ -288,7 +285,7 @@ function* postSwpUagReq() {
   try {
     const data = yield select((state) => state.UserReducer);
     const result = yield call(uagReq, data);
-
+    console.log(result);
     if(result.resCode === 0) {
       yield put(SwpUagRes(result.data));
     } else {
