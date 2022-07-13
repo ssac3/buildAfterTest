@@ -2,7 +2,7 @@ import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {SignInType} from 'redux/constants';
-import {openAlert} from 'redux/actions/AlertAction';
+import {openAlert, openToast} from 'redux/actions/AlertAction';
 import {SwpDlrRes, SwpEacRes} from 'redux/actions/SignInAction';
 
 axios.defaults.baseURL = ROUTES.BASE_URL;
@@ -57,7 +57,8 @@ function* postSwpEacReq() {
       LOCAL_STORAGE.set('Authorization', result.headers.authorization);
       LOCAL_STORAGE.set('Refresh_token', result.headers.refresh_token);
       LOCAL_STORAGE.set('ROLE', result.data.data.role);
-
+      const user = result.data.data.name;
+      console.log(user);
       if(result.data.data.role === '0') {
         console.log('[ROLE] ADMIN');
         yield put(SwpEacRes('ADMIN'));
@@ -72,6 +73,7 @@ function* postSwpEacReq() {
         yield put(SwpEacRes('USER'));
         history.push('/user');
       }
+      yield put(openToast(user));
     } else {
       yield put(openAlert('fail', result.data.resMsg));
     }

@@ -16,3 +16,18 @@ export const closeAlert = () => {
     open: false,
   };
 };
+
+export const openToast = (name) => {
+  return {
+    type: AlertType.OPEN_TOAST,
+    open: true,
+    name
+  };
+};
+
+export const closeToast = () => {
+  return {
+    type: AlertType.CLOSE_TOAST,
+    open: false,
+  };
+};
