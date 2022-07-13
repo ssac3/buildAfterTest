@@ -11,29 +11,36 @@ const Container = styled.div`
 
 const IconLayout = styled.div`
   ${({theme}) => theme.flexSet('space-around')};
-  width: 120px;
+  width: 220px;
   height: 100%;
   color:${({theme}) => theme.colorSet.SECONDARY.GRAY_79}
+`;
+
+const InnerLayout = styled.div`
+  ${({theme}) => theme.flexSet()};
+  width: calc(100% / 3);
+  height: 100%;
+  cursor: pointer;
+  #tooltip {
+    font-weight: bold;
+    display: none;
+    position: absolute;
+    max-width: 200px;
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 12px;
+    color: white;
+    background: ${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
+  }
+  &:hover #tooltip{
+    display: block;
+  }
   
-`;
-
-const SettingLayout = styled.div`
-  ${({theme}) => theme.flexSet()};
-  width: 50%;
-  height: 100%;
-  cursor: pointer;
-`;
-
-const SignOutLayout = styled.div`
-  ${({theme}) => theme.flexSet()};
-  width: 50%;
-  height: 100%;
-  cursor: pointer;
 `;
 
 export const style = {
   Container,
   IconLayout,
-  SettingLayout,
-  SignOutLayout
+  InnerLayout,
 };
