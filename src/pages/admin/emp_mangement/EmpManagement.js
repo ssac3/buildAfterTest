@@ -85,6 +85,14 @@ export const EmpManagement = ({onClickInsertEmp, onClickDetailEmp}) => {
   const onClickDeleteEmp = () => {
     dispatch(SwpEmpdelReq(leave));
   };
+  const preventGoBack = () => {
+    window.history.pushState(null, '', window.location.href);
+  };
+  useEffect(() => {
+    window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', preventGoBack);
+    return () => { window.removeEventListener('popstate', preventGoBack); };
+  }, []);
   return(
     <>
       <Container>

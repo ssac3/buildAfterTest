@@ -162,6 +162,16 @@ function App() {
   useEffect(() => {
     onGetTarget();
   }, [select]);
+
+  const preventGoBack = () => {
+    window.history.pushState(null, '', window.location.href);
+  };
+  useEffect(() => {
+    window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', preventGoBack);
+    return () => { window.removeEventListener('popstate', preventGoBack); };
+  }, []);
+
   return (
     <>
       {alert.show && <Toast name={alert.name}/>}
