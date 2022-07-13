@@ -74,7 +74,7 @@ export const SwpVaReq = (aId, date, vacationType, contents) => {
 };
 export const SwpVaRes = () => {
   return {
-    type: UserType.SWP_VA_RES
+    type: UserType.SWP_VA_RES,
   };
 };
 export const SwpAarReq = (aId, startTime, endTime, contents) => {
