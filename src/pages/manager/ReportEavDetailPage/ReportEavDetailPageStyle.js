@@ -49,7 +49,7 @@ const TitleContainer = styled.div`
   
   #title{
     ${({theme}) => theme.flexSet('space-between', 'flex-end')};
-    width: 73%;
+    width: 83%;
     font-weight: bold;
     #subTitle{
       font-size:15px;

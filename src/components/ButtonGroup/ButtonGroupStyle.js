@@ -7,6 +7,7 @@ const Container = styled.ul`
   border: 1px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_79} ;
   list-style: none;
   background-color: white;
+  margin:0;
 `;
 
 const Item = styled.li`

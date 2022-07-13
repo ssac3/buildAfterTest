@@ -13,11 +13,12 @@ const fadein = () => {
 
 const Container = styled.div`
   ${({theme}) => theme.flexSet()};
-  animation: ${fadein()} 2s;
+  animation: ${fadein()} 1.2s;
+  padding:10px;
   position: absolute;
   bottom: 50px;
   left: calc(50% - 150px);
-  width: 300px;
+  width: 400px;
   height: 50px;
   font-weight:bold;
   color:white;

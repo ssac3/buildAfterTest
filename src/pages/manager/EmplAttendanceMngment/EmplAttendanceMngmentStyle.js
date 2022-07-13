@@ -12,9 +12,13 @@ const TitleContainer = styled.div`
 `;
 
 const InnerContainer = styled.div`
-  ${({theme}) => theme.flexSet('space-between')};
-  min-width: 250px;
-  width: 250px;
+  ${({theme}) => theme.flexSet('space-between', 'center', 'row')};
+  width: 280px;
+  
+  #btngroup{
+    ${({theme}) => theme.flexSet()};
+    height: 100%;
+  }
 `;
 
 const Container = styled.div`

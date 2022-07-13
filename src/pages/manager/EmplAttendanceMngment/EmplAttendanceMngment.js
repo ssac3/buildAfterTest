@@ -81,8 +81,10 @@ export const EmplAttendanceMngment = ({
       {selectEmpl === 0 && (
         <TitleContainer>
           <InnerContainer>
-            <h2>사원별 근태 관리</h2>
-            <ButtonGroup selectType={selectType} onClickType={onClickType}/>
+            <h2>사원별 근태 현황</h2>
+            <div id={'btngroup'}>
+              <ButtonGroup selectType={selectType} onClickType={onClickType}/>
+            </div>
           </InnerContainer>
           <YearSelectorLayout>
             {(selectType === '월별') && (
