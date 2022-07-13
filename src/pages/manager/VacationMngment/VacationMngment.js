@@ -140,6 +140,9 @@ const UserInfoComponent = ({detail, detailInit}) => {
     dispatch(SwpVarReq(Number(e.target.id), approvalFlag, detailInit));
   };
 
+  useEffect(() => {
+    console.log(change);
+  }, [change]);
 
   return(
     <UserInfoContainer info={detail?.name}>
@@ -171,14 +174,14 @@ const UserInfoComponent = ({detail, detailInit}) => {
                 id={'vacation'}
                 open={drop}
                 onClickDropBox={onClickDrop}
-                menu={MANAGER_APPROVAL_TYPE.slice(0, 3)}
+                menu={MANAGER_APPROVAL_TYPE.slice(1, 3)}
                 select={change}
                 readOnly
                 onClickDropBoxItem={onClickItem}
               />
             </InnerInfoItem>
           </InnerInfoContainer>
-          <StoreBtn id={detail.vId} disabled={detail.approvalFlag !== '0'} onClick={onClickStore}>저장</StoreBtn>
+          <StoreBtn id={detail.vId} disabled={detail.approvalFlag !== '0' || change === '요청'} onClick={onClickStore}>저장</StoreBtn>
         </>
       )
         :
