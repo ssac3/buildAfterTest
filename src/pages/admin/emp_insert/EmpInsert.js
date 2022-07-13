@@ -198,7 +198,6 @@ export const EmpInsert = ({onClickInsertEmp}) => {
         </InsertForm>
         <UserInfoLayout2>
           <CaptionLayout >이메일
-            <BtnLayout>생성</BtnLayout>
           </CaptionLayout>
           <CaptionLayout>성별</CaptionLayout>
           <LabelLayout
@@ -240,7 +239,6 @@ export const EmpInsert = ({onClickInsertEmp}) => {
           />
           <CaptionLayout>담당역할</CaptionLayout>
           <CaptionLayout>QR코드
-            <BtnLayout>생성</BtnLayout>
           </CaptionLayout>
           <DropboxEmp
             id={'role'}

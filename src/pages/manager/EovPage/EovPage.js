@@ -136,6 +136,7 @@ export const EovPage = () => {
             views={['year', 'month']}
             label="조회할 날짜"
             value={findDate}
+            disableFuture
             onChange={(newValue) => {
               onClickFindDate(newValue);
             }}
