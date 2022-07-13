@@ -212,7 +212,7 @@ function App() {
 
       {(roleURL !== API.ROOT && roleURL !== API.SCANNER) && (
         <>
-          <Header role={roleURL} setting={onClickSetting}/>
+          <Header setting={onClickSetting}/>
           <Navigation
             role={roleURL}
             menu={select}

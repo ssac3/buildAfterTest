@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   padding: 30px 15px 30px 15px;
-  
+  width:100%;
 `;
 
 const MyViewTop = styled.div`
