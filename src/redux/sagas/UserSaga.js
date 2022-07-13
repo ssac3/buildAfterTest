@@ -210,7 +210,6 @@ function* postSwpDavReq() {
     const result = yield call(davReq, data);
     if(result.resCode === 0) {
       yield put(SwpDavRes(result.data));
-      yield put(openAlert('success', result.resMsg));
     } else {
       yield put('fail', result.resMsg);
     }

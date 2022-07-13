@@ -16,6 +16,17 @@ function AlertReducer(state = INIT_STATE, action) {
         type: action.type,
         open: false,
       };
+    case AlertType.OPEN_TOAST:
+      return {
+        type: action.type,
+        show: true,
+        name: action.name,
+      };
+    case AlertType.CLOSE_TOAST:
+      return {
+        type: action.type,
+        show: false
+      };
     default:
       return state;
   }

@@ -45,7 +45,9 @@ export const AdminType = {
 
 export const AlertType = {
   OPEN_ALERT: 'OPEN_ALERT',
-  CLOSE_ALERT: 'CLOSE_ALERT'
+  CLOSE_ALERT: 'CLOSE_ALERT',
+  OPEN_TOAST: 'OPEN_TOAST',
+  CLOSE_TOAST: 'CLOSE_TOAST'
 };
 
 export const UserType = {
