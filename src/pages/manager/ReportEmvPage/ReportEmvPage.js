@@ -50,7 +50,7 @@ export const ReportEmvPage = ({onClickEavDetail, findDate, onClickFindDate}) => 
   return (
     <Wrapper>
       <TitleContainer>
-        보고서 / 사원별 근태 관리
+        <h2>사원별 근태 현황</h2>
 
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={krLocale}>
           <DatePicker
