@@ -100,6 +100,8 @@ function* getSwpEmpselReq() {
     const result = yield call(empselReq);
     if (result.resCode === 0) {
       yield put(SwpEmpselRes(result.data));
+    } else {
+      yield put(openAlert('fail', result.resMsg));
     }
   } catch (e) {
     console.log(e);
@@ -158,7 +160,6 @@ function* postSwpEmpdelReq() {
     if(result.resCode === 0) {
       yield put(SwpEmpselReq());
       yield put(openAlert('success', result.resMsg));
-      yield put(SwpEmpselReq());
     } else {
       yield put(openAlert('fail', result.resMsg));
     }
