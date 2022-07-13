@@ -13,6 +13,7 @@ const TitleContainer = styled.div`
 
 const InnerContainer = styled.div`
   ${({theme}) => theme.flexSet('space-between')};
+  min-width: 250px;
   width: 250px;
 `;
 
