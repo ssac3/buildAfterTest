@@ -2,7 +2,7 @@ import axios from 'axios';
 import {LOCAL_STORAGE, ROUTES, LOG} from 'utils/constants';
 import {all, call, fork, put, select, takeLatest} from 'redux-saga/effects';
 import {UserType} from 'redux/constants';
-import {SwpAarRes, SwpDavRes, SwpSavReq, SwpSavRes, SwpUagRes, SwpDavReq} from 'redux/actions/UserAction';
+import {SwpDavRes, SwpSavReq, SwpSavRes, SwpUagRes} from 'redux/actions/UserAction';
 import {openAlert} from 'redux/actions/AlertAction';
 import {resSuccess} from 'components/Interceptors/ResInterceptor';
 
@@ -224,21 +224,14 @@ function* postSwpAarReq() {
     const data = yield select((state) => {
       return state.UserReducer;
     });
-    console.log(data);
     const packed = {month: data.startTime.slice(0, 7)};
-    console.log(packed);
     const result = yield call(aarReq, data);
-    console.log(result);
     if (result.resCode === 0) {
-      const result2 = yield call(SwpDavReq, packed);
-      console.log(result2);
-      if(result2 === 0) {
+      const result2 = yield call(davReq, packed);
+      if(result2.resCode === 0) {
         yield put(SwpDavRes(result2.data));
-        yield put(openAlert('success', result.resMsg));
-      } else {
-        yield put(openAlert('fail', result.resMsg));
+        yield put(openAlert('success', result2.resMsg));
       }
-      yield put(SwpAarRes(result.data));
       yield put(openAlert('success', result.resMsg));
     } else {
       yield put(openAlert('fail', result.resMsg));
@@ -264,7 +257,7 @@ function* postSwpVaReq() {
     } else {
       yield put(openAlert('fail', result.resMsg));
     }
-  }catch (e) {
+  } catch (e) {
     console.log(e);
   }
 }
@@ -301,7 +294,6 @@ function* postSwpUagReq() {
     } else {
       yield put(openAlert('fail', '에러가 발생했습니다.'));
     }
-    console.log(result);
   } catch (e) {
     console.log(e);
   }

@@ -152,7 +152,6 @@ export const AtdcCalendar = ({
     };
 
     const cnvrtTime = (time) => {
-      console.log(time);
       if (time === null) {
         return '       ';
       }
