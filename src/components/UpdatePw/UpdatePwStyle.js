@@ -7,7 +7,7 @@ const Container = styled.div`
   margin: 97.5px 412px 97.5px 412px;
   border-radius:7px;
   background: white;
-  width: 693px;
+  min-width: 693px;
   height: 604px;
 `;
 
