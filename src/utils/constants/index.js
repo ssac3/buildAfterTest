@@ -72,8 +72,8 @@ export const MANAGER_MENU = [
   {id: 0, title: '대시보드', sub: [], check: true},
   {
     id   : 1,
-    title: '근태 신청 관리',
-    sub  : [{id: 2, title: '• 휴가 관리', check: true}, {id: 3, title: '• 근태 조정', check: false}],
+    title: '근태 관리',
+    sub  : [{id: 2, title: '• 휴가 신청 관리', check: true}, {id: 3, title: '• 근태 조정 요청 관리', check: false}],
     check: false
   },
   {id: 4, title: '사원별 근태 관리', sub: [], check: false},

@@ -161,10 +161,6 @@ function App() {
   useEffect(() => {
     onGetTarget();
   }, [select]);
-
-  useEffect(() => {
-    console.log(roleURL);
-  }, [roleURL]);
   return (
     <>
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}

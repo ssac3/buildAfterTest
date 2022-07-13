@@ -311,7 +311,7 @@ export const VacationMngment = () => {
 
   return (
     <Wrapper>
-      <TitleContainer/>
+      <TitleContainer><h2>휴가 신청 관리</h2></TitleContainer>
       <Container>
         <ListContainer>
           <HeaderContainer>

@@ -129,7 +129,7 @@ export const EovPage = () => {
   return (
     <Wrapper>
       <TitleContainer>
-        보고서 / 연장 근무 관리
+        <h2>연장 근무 현황</h2>
 
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={krLocale}>
           <DatePicker
