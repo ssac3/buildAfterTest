@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import AtdcCalendar from 'components/AtdcCalendar';
 import locale from 'antd/es/calendar/locale/ko_KR';
@@ -13,6 +13,15 @@ export const AtdcManagement = ({
   onClickVaeDetail,
   onClickVavDetail,
 }) => {
+  const preventGoBack = () => {
+    window.history.pushState(null, '', window.location.href);
+  };
+  useEffect(() => {
+    window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', preventGoBack);
+    return () => { window.removeEventListener('popstate', preventGoBack); };
+  }, []);
+
   const renderUI = React.useMemo(() => {
     if (selectedId === 0) {
       return (

@@ -219,8 +219,11 @@ export const VacationMngment = () => {
     if(selector.data?.length > 0 && selector.data[0]?.vId !== undefined) {
       setData(selector.data);
       setCopyData(selector.data);
+      setFilterItem({...filterItem});
     } else {
       setData([]);
+      setCopyData([]);
+      setFilterItem({...filterItem});
     }
   }, [selector]);
 

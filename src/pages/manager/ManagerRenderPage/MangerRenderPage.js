@@ -25,6 +25,15 @@ export const MangerRenderPage = ({
     dispatch(SwpAtvReq(LOCAL_STORAGE.get('depId')));
   }, []);
 
+  const preventGoBack = () => {
+    window.history.pushState(null, '', window.location.href);
+  };
+  useEffect(() => {
+    window.history.pushState(null, '', window.location.href);
+    window.addEventListener('popstate', preventGoBack);
+    return () => { window.removeEventListener('popstate', preventGoBack); };
+  }, []);
+
   const renderUI = React.useMemo(() => {
     if(selectedId === 0) {
       return <Dashboard/>;

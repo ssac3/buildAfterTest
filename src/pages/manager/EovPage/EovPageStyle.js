@@ -39,7 +39,7 @@ const Card = styled.div`
 `;
 const CardTitle = styled.div`
     ${({theme, align, dir}) => theme.flexSet('space-around', align, dir)};
-    width: 355px;
+    width: 430px;
 `;
 
 const DepInfo = styled.div`

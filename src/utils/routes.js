@@ -15,6 +15,7 @@ export const PublicRoute = ({restricted, children, ...rest}) => {
 };
 
 export function PrivateRoute({children, ...rest}) {
+  window.history.forward();
   const filterURL = checkValidURL().filter((v) => v === window.location.pathname)[0];
   if (getCurrentUser() === false || filterURL === undefined) {
     return (
