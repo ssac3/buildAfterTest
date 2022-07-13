@@ -10,6 +10,7 @@ import {TextField} from '@mui/material';
 import theme from 'styles/theme';
 import {useDispatch} from 'react-redux';
 import {SwpAarReq, SwpVcReq} from 'redux/actions/UserAction';
+import moment from 'moment';
 
 const RearrangeEnrollComponent = ({start, end, detailInfo, onClickDavDetail}) => {
   const dispatch = useDispatch();
@@ -183,7 +184,7 @@ export const DetailDavPage = ({detailInfo, onClickDavDetail}) => {
               onClickDavDetail={onClickDavDetail}
             />}
         </RearrangeLayout>
-        {status.vStatus !== null &&
+        {(status.vStatus !== null && moment().format('YYYY-MM-DD') < date) &&
           <BtnLayout>
             <Btn bgColor={theme.colorSet.SECONDARY.GRAY_CC} onClick={onCancelVac}>휴가 취소</Btn>
           </BtnLayout>}

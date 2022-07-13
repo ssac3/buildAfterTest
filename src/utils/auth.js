@@ -29,7 +29,7 @@ export const checkValidURL = () => {
   if(role === '0') {
     result = [API.ADMIN];
   } else if(role === '1') {
-    result = [API.USER, API.MANAGER];
+    result = [API.MANAGER, API.USER];
   } else if(role === '2') {
     result = [API.USER];
   } else {

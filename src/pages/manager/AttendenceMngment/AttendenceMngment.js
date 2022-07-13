@@ -84,8 +84,7 @@ export const AttendenceMngment = ({onClickATR}) => {
 
   return (
     <Wrapper>
-      <TitleContainer/>
-
+      <TitleContainer><h2>근태 조정 요청 관리</h2></TitleContainer>
       <Container>
         <ListContainer>
           <HeaderContainer>

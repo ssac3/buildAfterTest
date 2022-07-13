@@ -40,8 +40,12 @@ const InfoContainer = styled.div`
 
 
 const TitleContainer = styled.div`
-  width: 100%;
+  ${({theme}) => theme.flexSet('space-between')};
+  width: 450px;
   height: 75px;
+  font-weight: normal;
+  font-size:20px;
+  color:${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
 `;
 
 const HeaderContainer = styled.div`

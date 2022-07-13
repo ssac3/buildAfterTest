@@ -12,9 +12,8 @@ export const API = {
 
 
 export const ROUTES = {
-  CLIENT_URL: 'http://3.39.220.142:80/',
-  BASE_URL: 'http://localhost:8081',
-  // BASE_URL: 'http://3.39.220.142:8081',
+  CLIENT_URL: 'http://localhost:3000/',
+  BASE_URL: 'http://localhost:8081/',
   SWP_ATV_REQ: API.MANAGER.concat('/deptView'),
   SWP_ATR_REQ: API.MANAGER.concat('/deptUpdate'),
   SWP_VAV_REQ: API.MANAGER.concat('/vacView'),
@@ -73,8 +72,8 @@ export const MANAGER_MENU = [
   {id: 0, title: '대시보드', sub: [], check: true},
   {
     id   : 1,
-    title: '근태 신청 관리',
-    sub  : [{id: 2, title: '• 휴가 관리', check: true}, {id: 3, title: '• 근태 조정', check: false}],
+    title: '근태 관리',
+    sub  : [{id: 2, title: '• 휴가 신청 관리', check: true}, {id: 3, title: '• 근태 조정 요청 관리', check: false}],
     check: false
   },
   {id: 4, title: '사원별 근태 관리', sub: [], check: false},
@@ -107,7 +106,11 @@ export const ROLE_TYPE = [
   {id: 1, title: '매니저'},
   {id: 2, title: '일반사원'},
 ];
-
+export const ATTENDENCE_MANAGER_TYPE = [
+  {id: 0, title: '박채연'},
+  {id: 1, title: '하성록'}
+];
+// 부서 depId, depName
 export const DEPARTMENT_NAME_TYPE = [
   {id: 1, title: '개발1팀'},
   {id: 2, title: '영업1팀'},

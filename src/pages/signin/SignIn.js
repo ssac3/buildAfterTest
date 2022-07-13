@@ -25,7 +25,6 @@ export const SignIn = () => {
   };
 
   useEffect(() => {
-    console.log('안녕');
     LOCAL_STORAGE.clear();
   }, []);
 

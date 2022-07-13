@@ -152,6 +152,9 @@ export const AtdcCalendar = ({
     };
 
     const cnvrtTime = (time) => {
+      if (time === null) {
+        return '       ';
+      }
       return time?.substring(0, 5);
     };
     return (
@@ -160,7 +163,7 @@ export const AtdcCalendar = ({
           <li key={item?.aDate}>
             <Badge
               status={item.aStatus && getStatus(item.aStatus)}
-              text={cnvrtTime(item?.aStartTime)?.concat(' / ').concat(cnvrtTime(item?.aEndTime))}
+              text={(item.aStartTime !== '' || item.aEndTime !== '') ? cnvrtTime(item?.aStartTime)?.concat(' / ').concat(cnvrtTime(item?.aEndTime)) : ''}
             />
             {(item.vType !== null && item.vApprovalFlag !== '3') &&
               <VacationItem

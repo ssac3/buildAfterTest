@@ -22,6 +22,7 @@ import Scanner from 'components/Scanner';
 import ReportEavDetailPage from 'pages/manager/ReportEavDetailPage';
 import MangerRenderPage from 'pages/manager/ManagerRenderPage';
 import {PrivateRoute} from 'utils/routes';
+import Toast from 'components/Toast';
 
 function getMenu(role) {
   switch (role) {
@@ -161,12 +162,9 @@ function App() {
   useEffect(() => {
     onGetTarget();
   }, [select]);
-
-  useEffect(() => {
-    console.log(roleURL);
-  }, [roleURL]);
   return (
     <>
+      {alert.show && <Toast name={alert.name}/>}
       {openATR !== 0 && <RearrangeMngment onClickATR={onClickATR} atvDetail={atvDetail}/>}
       {alert.open && <Alert status={alert.status} msg={alert.msg}/>}
       {setting && <Setting open={onClickSetting}/>}
@@ -212,7 +210,7 @@ function App() {
 
       {(roleURL !== API.ROOT && roleURL !== API.SCANNER) && (
         <>
-          <Header role={roleURL} setting={onClickSetting}/>
+          <Header setting={onClickSetting}/>
           <Navigation
             role={roleURL}
             menu={select}
