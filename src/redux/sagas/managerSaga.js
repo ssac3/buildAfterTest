@@ -359,8 +359,6 @@ function* postSwpEavReq() {
     const data = yield select((state) => state.MangerReducer);
     const packedMsg = {username:data.username, findDate: data.findDate};
     const result = yield call(eavReq, packedMsg);
-    console.log(result);
-
     if(result.resCode === 0) {
       yield put(SwpEavRes(result.data));
     } else {
@@ -392,7 +390,6 @@ function* postSwpEmpReq() {
     const data = yield select((state) => state.MangerReducer);
     const packedMsg = {depId: data.depId};
     const result = yield call(empReq, packedMsg);
-    console.log(result);
     if(result.resCode === 0) {
       yield put(SwpEmpRes(result.data));
     } else {

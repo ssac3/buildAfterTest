@@ -93,8 +93,8 @@ const AttendancePiChart = ({current, total}) => {
   useEffect(() => {
     if(current !== undefined && !Number.isNaN(total)) {
       const convertData = [
-        {name: '출근 완료', value: 100 * (current / total)},
-        {name: '미출근', value: 100 * ((total - current) / total)},
+        {name: '출근 완료', value: Number((100 * (current / total)).toFixed(2))},
+        {name: '미출근', value: Number((100 * ((total - current) / total)).toFixed(2))},
       ];
       setChartInfo(convertData);
     }
