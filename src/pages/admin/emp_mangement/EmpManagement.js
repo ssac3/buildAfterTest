@@ -39,7 +39,7 @@ const ListItemComponent = ({emp, onClickDetailEmp, leave, setLeave}) => {
       <ItemContainer>{emp.position}</ItemContainer>
       <ItemContainer>{cnvrtDate(new Date(emp.createdAt))}</ItemContainer>
       <ItemContainer>
-        <BtnLayout onClick={() => onClickDetailEmp(emp.username)}>보기</BtnLayout>
+        <BtnLayout onClick={() => onClickDetailEmp(emp?.username)}>보기</BtnLayout>
       </ItemContainer>
     </ListItemContainer>
   );

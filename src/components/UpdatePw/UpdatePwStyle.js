@@ -4,11 +4,12 @@ import styled from 'styled-components';
 const Container = styled.div`
   ${({theme}) => theme.flexSet('none', 'center', 'column')};
   border: 0.5px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_CC};
-  margin: 97.5px 412px 97.5px 412px;
+  //margin: 97.5px 412px 97.5px 412px;
   border-radius:7px;
   background: white;
   min-width: 693px;
   height: 604px;
+  width: 693px;
 `;
 
 const Title = styled.div`

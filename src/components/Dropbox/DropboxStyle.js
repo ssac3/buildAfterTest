@@ -9,7 +9,7 @@ const Container = styled.div`
   //border: 1px solid ${({theme}) => theme.colorSet.PRIMARY.BLUE_1A};
   color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
   border-radius:5px;
-  background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_E1};
+  background-color: white;
 `;
 
 const DropContainer = styled.ul`
@@ -19,7 +19,7 @@ const DropContainer = styled.ul`
   left:0;
   width: 100%;
   color:${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
-  background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_E1};
+  background-color: white;
   list-style:none;
 `;
 
@@ -31,7 +31,7 @@ const ItemName = styled.input`
 const DropdownItem = styled.li`
   cursor:pointer;
   padding:8px;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid gray;
   &:last-child {
     border-bottom: none;
   }

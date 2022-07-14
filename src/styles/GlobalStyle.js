@@ -15,7 +15,7 @@ export const GlobalStyles = createGlobalStyle`
         /* min-height:800px; */
         font-family: 'Noto Sans KR', sans-serif;
         font-size: 14px;
-        background-color: #F5F5F5;
+        background-color: #CFCFCF;
         color: #000;
         height:100vh;
     }
