@@ -118,9 +118,7 @@ const InfoInputComponent = ({text}) => {
 
 const UserInfoComponent = ({detail, detailInit}) => {
   const dispatch = useDispatch();
-  // 드롭박스 활성화
   const [drop, setDrop] = useState(false);
-  // 값변경 함수
   const [change, setChange] = useState('');
   useEffect(() => {
     if(detail?.approvalFlag) {
@@ -139,10 +137,6 @@ const UserInfoComponent = ({detail, detailInit}) => {
     const approvalFlag = MANAGER_APPROVAL_TYPE.filter(v => v.title === change && v)[0].id;
     dispatch(SwpVarReq(Number(e.target.id), approvalFlag, detailInit));
   };
-
-  useEffect(() => {
-    console.log(change);
-  }, [change]);
 
   return(
     <UserInfoContainer info={detail?.name}>
@@ -178,6 +172,7 @@ const UserInfoComponent = ({detail, detailInit}) => {
                 select={change}
                 readOnly
                 onClickDropBoxItem={onClickItem}
+                style={{backgroundColor:'blue'}}
               />
             </InnerInfoItem>
           </InnerInfoContainer>
@@ -190,7 +185,6 @@ const UserInfoComponent = ({detail, detailInit}) => {
     </UserInfoContainer>
   );
 };
-// UserInfoComponent end
 
 export const VacationMngment = () => {
   const dispatch = useDispatch();
@@ -202,7 +196,7 @@ export const VacationMngment = () => {
   const [detail, setDetail] = useState({});
   const [page, setPage] = useState(1);
   const [findDate, setFindDate] = useState(new Date());
-  const [filterData, setFilterData] = useState([]); // 해당 일자에 전체 사원 중 휴가 사원 비율 구하기
+  const [filterData, setFilterData] = useState([]);
   const limit = 7;
   const offset = (page - 1) * limit;
   const [filterItem, setFilterItem] = useState({

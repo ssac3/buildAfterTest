@@ -98,6 +98,7 @@ function empselReq() {
 function* getSwpEmpselReq() {
   try {
     const result = yield call(empselReq);
+    console.log(result);
     if (result.resCode === 0) {
       yield put(SwpEmpselRes(result.data));
     } else {

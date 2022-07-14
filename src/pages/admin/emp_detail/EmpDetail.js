@@ -16,6 +16,10 @@ import {
 import {DropboxEmp} from 'components/DropboxEmp/DropboxEmp';
 
 export const EmpDetail = ({emp, onClickDetailEmp}) => {
+  useEffect(() => {
+    console.log(emp);
+  }, []);
+
   const [openGenderDropbox, setOpenGenderDropbox] = useState(false);
   const [openLocationDropbox, setOpenLocationDropbox] = useState(false);
   const [openPositionDropbox, setOpenPositionDropbox] = useState(false);
@@ -71,11 +75,11 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
     setOpenDepNameDropbox(false);
   };
   const [selectItem, setSelectItem] = useState({
-    gender: GENDER_TYPE[emp.gender].title,
-    location: LOCATION_TYPE[emp.depId - 1]?.title,
-    position: POSITION_TYPE[emp.depId - 1]?.title,
-    role: ROLE_TYPE[emp.role].title,
-    depName: DEPARTMENT_NAME_TYPE[emp.depId - 1].title,
+    gender: GENDER_TYPE[emp.gender]?.title,
+    location: LOCATION_TYPE.filter((v) => v.title === emp.location)[0]?.title,
+    position: POSITION_TYPE.filter((v) => v.title === emp.position)[0]?.title,
+    role: ROLE_TYPE[emp.role]?.title,
+    depName: DEPARTMENT_NAME_TYPE[emp.depId - 1]?.title,
     // manager: ATTENDENCE_MANAGER_TYPE[(emp.role > 1) - 1].title,
   });
   const onClickDropBoxItem = (e, target) => {
@@ -102,10 +106,6 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
     {
       username: emp.username,
       name: emp.name,
-      manager: emp.manager,
-      email: emp.username,
-      qrPath: emp.username,
-      img: emp.img,
     }
   );
   const onClickDetailCloseEmp = () => {
@@ -147,7 +147,7 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
               <LabelLayout
                 readOnly
                 style={{backgroundColor: '#EFEFEF'}}
-                value={change?.username}
+                value={emp.username}
               />
             </UserInfoLayout>
             <UserInfoLayout>

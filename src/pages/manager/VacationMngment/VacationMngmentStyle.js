@@ -149,7 +149,7 @@ const InfoInputContainer = styled.div`
   width: 100%;
   border-radius: 5px;
   padding:10px;
-  background-color: white;
+  background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_CC};
 `;
 
 const StoreBtn = styled.button`

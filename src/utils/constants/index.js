@@ -98,8 +98,8 @@ export const POSITION_TYPE = [
 ];
 export const LOCATION_TYPE = [
   {id: 1, title: '강촌'},
-  {id: 2, title: '부산'},
-  {id: 3, title: '서울'}
+  {id: 2, title: '을지로'},
+  {id: 3, title: '부산'}
 ];
 export const ROLE_TYPE = [
   {id: 0, title: '관리자'},
