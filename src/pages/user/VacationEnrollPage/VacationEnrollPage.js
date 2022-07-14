@@ -97,8 +97,7 @@ export const VacationEnrollPage = ({openVaeDetail, onClickVaeDetail}) => {
         </DataWrapper2>
         {
           <BtnLayout>
-            <Btn bgColor={theme.colorSet.SECONDARY.GRAY_CC} onClick={onClosePage}>취소</Btn>
-            <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B} onClick={onReqVac} >확인 </Btn>
+            <Btn bgColor={theme.colorSet.SECONDARY.GRAY_5B} onClick={onReqVac} >휴가 신청 </Btn>
           </BtnLayout>
         }
       </Container>

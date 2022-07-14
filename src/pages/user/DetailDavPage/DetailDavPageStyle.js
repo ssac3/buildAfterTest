@@ -124,6 +124,7 @@ const ContentLayout = styled.textarea`
   border-radius: 4px;
   font-size:15px;
   border: 1px solid ${({ theme }) => theme.colorSet.SECONDARY.GRAY_E1};
+  margin-top: 10px;
 `;
 
 const BtnLayout = styled.div`
