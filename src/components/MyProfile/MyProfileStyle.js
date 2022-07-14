@@ -8,7 +8,7 @@ const Container = styled.div`
 const MyViewTop = styled.div`
   border: 0.5px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_CC};
   border-radius:7px;
-  min-width: 1116px;
+  min-width: 1250px;
   width: 100%;
   background: white;
   height: 357px;

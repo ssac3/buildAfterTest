@@ -45,18 +45,18 @@ export const MyProfile = () => {
           <MyViewTop>
             <img id={'DouZoneImg'} alt="Douzone" src={Douzone} />
             <InquiryTitle>
-              <Contents w={80} fs={15} fc={'#797979'}>성명</Contents>
-              <Contents w={80} fs={15} fc={'#797979'}>사원 번호</Contents>
-              <Contents w={90} fs={15} fc={'#797979'}>부서</Contents>
-              <Contents w={80} fs={15} fc={'#797979'}>직급</Contents>
+              <Contents w={100} fs={15} fc={'#797979'}>성명</Contents>
+              <Contents w={100} fs={15} fc={'#797979'}>사원 번호</Contents>
+              <Contents w={100} fs={15} fc={'#797979'}>부서</Contents>
+              <Contents w={100} fs={15} fc={'#797979'}>직급</Contents>
               <Contents w={200} fs={15} fc={'#797979'}>이메일</Contents>
               <Contents w={120} fs={15} fc={'#797979'}>본사/자사</Contents>
             </InquiryTitle>
             <InquiryContent>
-              <Contents w={80} fs={20} fw={'bold'}>{detail.name}</Contents>
-              <Contents w={80} fs={20} fw={'bold'}>{detail.username}</Contents>
-              <Contents w={90} fs={20} fw={'bold'}>{detail.department}</Contents>
-              <Contents w={80} fs={20} fw={'bold'}>{detail.position}</Contents>
+              <Contents w={100} fs={20} fw={'bold'}>{detail.name}</Contents>
+              <Contents w={100} fs={20} fw={'bold'}>{detail.username}</Contents>
+              <Contents w={100} fs={20} fw={'bold'}>{detail.department}</Contents>
+              <Contents w={100} fs={20} fw={'bold'}>{detail.position}</Contents>
               <Contents w={200} fs={20} fw={'bold'}>{detail.email}</Contents>
               <Contents w={120} fs={20} fw={'bold'}>{detail.location}</Contents>
             </InquiryContent>
