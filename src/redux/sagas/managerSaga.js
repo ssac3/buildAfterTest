@@ -237,6 +237,7 @@ function* postSwpVavReq() {
     const data = yield select((state) => state.MangerReducer);
     const packedMsg = {id: data.id};
     const result = yield call(vavReq, packedMsg);
+    console.log(result);
     if(result.resCode === 0) {
       yield put(SwpVavRes(result.data));
     }else{

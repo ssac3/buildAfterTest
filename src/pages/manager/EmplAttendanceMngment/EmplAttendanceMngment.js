@@ -92,6 +92,7 @@ export const EmplAttendanceMngment = ({
                 <DatePicker
                   views={['year']}
                   label="조회할 년도"
+                  disableFuture
                   value={findYear}
                   onChange={(newValue) => {
                     onClickFindYear(newValue);

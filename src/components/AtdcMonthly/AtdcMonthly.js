@@ -291,7 +291,7 @@ export const AtdcMonthly = () => {
       setMonthlyWorkDetail(selector.data.timeMap);
     }
 
-    if(selector?.data?.startList?.length > 0) {
+    if(selector?.data?.startList) {
       setMonthlyWorkTime(selector.data.startList);
     }
 
@@ -306,8 +306,6 @@ export const AtdcMonthly = () => {
   return(
     <Wrapper>
       <TitleContainer>
-        보고서 / 연장 근무 관리
-
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={krLocale}>
           <DatePicker
             views={['year', 'month']}

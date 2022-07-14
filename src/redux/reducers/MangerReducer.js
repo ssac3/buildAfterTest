@@ -165,6 +165,7 @@ function MangerReducer(state = INIT_STATE, action) {
         name: state.name,
         startTime: state.startTime,
         endTime:state.endTime,
+        data: state.data,
         empData: action.empData
       };
     default:

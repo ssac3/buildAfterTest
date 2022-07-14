@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import 'antd/dist/antd.css';
 import 'components/AtdcCalendar/index.css';
@@ -9,32 +8,7 @@ import moment from 'moment';
 import FloatBtn from 'components/FloatBtn';
 import {useDispatch, useSelector} from 'react-redux';
 import {SwpEadReq} from 'redux/actions/ManagerAction';
-
-const Container = styled.div`
-  display: flex;
-  width: 100%;
-  height: 20px;
-`;
-
-const EveningItem = styled.div`
-  visibility: ${({vType}) => (vType !== '2' ? 'visible' : 'hidden')};
-  width: 50%;
-  height: 100%;
-  background-color: ${
-  ({
-    vApprovalFlag, theme
-  }) => (vApprovalFlag === 1 ? theme.colorSet.ATTENDANCE_STATUS.VACATION : theme.colorSet.SECONDARY.GRAY_CC)};
-`;
-
-const AfternoonItem = styled.div`
-  visibility: ${({vType}) => (vType !== '1' ? 'visible' : 'hidden')};
-  width: 50%;
-  height: 100%;
-  background-color: ${
-  ({
-    vApprovalFlag, theme
-  }) => (vApprovalFlag === 1 ? theme.colorSet.ATTENDANCE_STATUS.VACATION : theme.colorSet.SECONDARY.GRAY_CC)};
-`;
+import VacationItem from 'components/VacationItem';
 
 const getFindMonth = (date) => {
   const findYear = (date.year()).toString();
@@ -130,15 +104,6 @@ const getListData = (value, infos) => {
     );
   }
   return listData || [];
-};
-
-const VacationItem = ({vType, vApprovalFlag}) => {
-  return (
-    <Container>
-      <EveningItem vType={vType} vApprovalFlag={Number(vApprovalFlag)}/>
-      <AfternoonItem vType={vType} vApprovalFlag={Number(vApprovalFlag)}/>
-    </Container>
-  );
 };
 
 export const AtdcCalendar2 = ({selectEmpl, onClickDetail, onClickEadDetail}) => {
@@ -245,9 +210,4 @@ CustomHeader.propTypes = {
     PropTypes.oneOfType([PropTypes.bool, PropTypes.string, PropTypes.func])
   ).isRequired,
   onChange: PropTypes.func.isRequired,
-};
-
-VacationItem.propTypes = {
-  vType: PropTypes.string.isRequired,
-  vApprovalFlag:PropTypes.string.isRequired,
 };

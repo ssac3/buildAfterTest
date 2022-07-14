@@ -49,10 +49,17 @@ const CustomHeader = ({value, onChange}) => {
     <div
       style={{
         display       : 'flex',
-        justifyContent: 'flex-end',
-        padding       : 8
+        justifyContent: 'space-between',
+        padding       : 10
       }}
     >
+      <div style={{width:'230px', display:'flex', justifyContent:'space-around'}} >
+        <Badge status={'success'} text={'정상'}/>
+        <Badge status={'warning'} text={'지각'}/>
+        <Badge status={'error'} text={'결근'}/>
+        <Badge color={'#0FC6C2'} text={'휴가'}/>
+        <Badge color={'#CCCCCC'} text={'요청'}/>
+      </div>
       <Row gutter={8}>
         <Col>
           <Select
