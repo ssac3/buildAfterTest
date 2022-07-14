@@ -144,16 +144,27 @@ export const AtdcCalendar2 = ({selectEmpl, onClickDetail, onClickEadDetail}) => 
       return result;
     };
 
-    const cnvrtTime = (time) => {
-      return time?.substring(0, 5);
+    const convertTime = (startTime, endTime) => {
+      let result;
+      if(startTime === null && endTime === null) {
+        result = '';
+      } else if(startTime === null && endTime !== null) {
+        result = ' '.concat(' / ').concat(endTime);
+      } else if(startTime !== null && endTime === null) {
+        result = startTime.concat(' / ');
+      } else {
+        result = startTime.concat(' / ').concat(endTime);
+      }
+      return result;
     };
+
     return (
       <ul className="events">
         {listData.map((item, index) => (
           <li key={index}>
             <Badge
               status={item.status && getStatus(item.status)}
-              text={cnvrtTime(item.startTime)?.concat(' / ').concat(cnvrtTime(item.endTime))}
+              text={convertTime(item.startTime, item.endTime)}
             />
             {item.vType !== null &&
               <VacationItem
