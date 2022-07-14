@@ -31,6 +31,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 };
 
 const VacInfoPiChart = ({data}) => {
+  console.log(data);
   const COLORS = [
     theme.colorSet.ATTENDANCE_STATUS.OK,
     theme.colorSet.SECONDARY.GRAY_CC,
@@ -38,8 +39,8 @@ const VacInfoPiChart = ({data}) => {
     theme.colorSet.ATTENDANCE_STATUS.VACATION,
   ];
   const convertData = [
-    {name: '출근', value: Number(LOCAL_STORAGE.get('depTotal')) - data},
-    {name: '휴가', value: data},
+    {name: '출근', value: ((Number(LOCAL_STORAGE.get('depTotal')) - data) / Number(LOCAL_STORAGE.get('depTotal'))) * 100},
+    {name: '휴가', value: (data / Number(LOCAL_STORAGE.get('depTotal'))) * 100},
   ];
   return (
     <PieChart width={250} height={190}>
@@ -213,9 +214,10 @@ export const VacationMngment = () => {
   });
   useEffect(() => {
     dispatch(SwpVavReq(LOCAL_STORAGE.get('depId')));
-  }, []);
+  }, [findDate]);
 
   useEffect(() => {
+    console.log(selector);
     if(selector.data?.length > 0 && selector.data[0]?.vId !== undefined) {
       setData(selector.data);
       setCopyData(selector.data);
@@ -233,7 +235,8 @@ export const VacationMngment = () => {
       .concat(formatter((findDate.getMonth() + 1).toString()))
       .concat('-')
       .concat(formatter((findDate.getDate()).toString()));
-    const filter = data?.filter((v) => (v.date === date) && v);
+    const filter = data?.filter((v) => (v.date === date && v.approvalFlag === '1') && v);
+    console.log(filter);
     setFilterData(filter);
   }, [data, findDate]);
 
@@ -280,7 +283,6 @@ export const VacationMngment = () => {
     setFindDate(newDate);
   };
   const onChangeFilter = (e) => {
-    console.log(e.target.value);
     setFilterItem({...filterItem, [e.target.id]: e.target.value});
   };
 
@@ -362,11 +364,9 @@ export const VacationMngment = () => {
           {copyData?.slice(offset, offset + limit).map((item) => (
             <ListItemComponent key={item.vId} item={item} onClickDetail={onClickDetail}/>
           ))}
-
-
           <Pagination
             total={copyData?.length}
-            limit={8}
+            limit={limit}
             page={page}
             setPage={setPage}
           />

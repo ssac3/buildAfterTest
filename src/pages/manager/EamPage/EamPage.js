@@ -39,7 +39,7 @@ export const EamPage = ({openEamDetail, onClickEamDetail, findYear}) => {
   }, []);
 
   useEffect(() => {
-    if(reducer?.result?.length > 0) {
+    if(reducer?.result) {
       setInfos(reducer.result);
     }
   }, [reducer]);
@@ -88,11 +88,3 @@ MyChart.propTypes = {
     PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
   ).isRequired,
 };
-
-// CustomTooltip.propTypes = {
-//   active: PropTypes.bool.isRequired,
-//   payload: PropTypes.objectOf(
-//     PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-//   ).isRequired,
-//   label: PropTypes.number.isRequired,
-// };
