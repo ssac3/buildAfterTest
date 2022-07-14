@@ -74,12 +74,11 @@ const MonthlyOverTime = ({data}) => {
         barSize={20}
       >
         <XAxis
-          dy={10}
+          dy={5}
           type="category"
           dataKey={'name'}
           tickLine={false}
           axisLine={false}
-          minTickGap={15}
         />
 
         <Bar
