@@ -75,7 +75,7 @@ const InputComponent = ({id, type, item, onChange}) => {
   return(
     <SearchContainer>
       {type === 'text' &&
-        <MdSearch size={25} color={'white'}/> }
+        <MdSearch size={25}/> }
       <SearchInput id={id} onChange={onChange} value={item.id}/>
       {type === 'date' &&
         <MdCalendarToday

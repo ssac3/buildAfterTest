@@ -72,8 +72,8 @@ export const EmpDetail = ({emp, onClickDetailEmp}) => {
   };
   const [selectItem, setSelectItem] = useState({
     gender: GENDER_TYPE[emp.gender].title,
-    location: LOCATION_TYPE[emp.depId - 1].title,
-    position: POSITION_TYPE[emp.depId - 1].title,
+    location: LOCATION_TYPE[emp.depId - 1]?.title,
+    position: POSITION_TYPE[emp.depId - 1]?.title,
     role: ROLE_TYPE[emp.role].title,
     depName: DEPARTMENT_NAME_TYPE[emp.depId - 1].title,
     // manager: ATTENDENCE_MANAGER_TYPE[(emp.role > 1) - 1].title,

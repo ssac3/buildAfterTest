@@ -24,6 +24,7 @@ const SchContainer = styled.div`
   height: 40px;
   border: 1px solid black;
   border-radius: 5px;
+  background-color: white;
 `;
 const SchBtnContainer = styled.div`
   ${({theme}) => theme.flexSet()};
