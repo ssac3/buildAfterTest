@@ -15,7 +15,7 @@ export const Dropbox = ({
   return (
     <Container onClick={onClickDropBox}>
       <ItemName id={id} readOnly={readOnly} value={select} onChange={onChangeFilter}/>
-      <MdKeyboardArrowDown size={24} color={'white'} onClick={onClickDropBox} style={{cursor:'pointer'}}/>
+      <MdKeyboardArrowDown size={24} color={'black'} onClick={onClickDropBox} style={{cursor:'pointer'}}/>
 
       {open ? (
         <DropContainer>

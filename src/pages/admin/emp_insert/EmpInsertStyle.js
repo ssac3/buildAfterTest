@@ -72,7 +72,7 @@ const UserInfoLayout = styled.div`
 `;
 const UserProfileLayout = styled.div`
   border: 1px solid ${({theme}) => theme.colorSet.SECONDARY.GRAY_79};
-  ${({theme}) => theme.flexSet('flex-end')};
+  ${({theme}) => theme.flexSet('center', 'center', 'column')};
   width: 180px;
   height:100%;
   //background-color: #7A7A7A;
@@ -80,11 +80,11 @@ const UserProfileLayout = styled.div`
 const UserProfileLayoutBtn = styled.input`
   //display: none;
   ${({theme}) => theme.flexSet()};
-  width: 150px;
+  width: 90%;
   height: 100%;
   color: white;
-  border-radius: 2px;
   background-color: white;
+  border-radius: 2px;
   font-weight: bold;
   font-size: 13px;
   &::file-selector-button {

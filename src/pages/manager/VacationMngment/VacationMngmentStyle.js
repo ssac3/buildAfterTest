@@ -71,7 +71,7 @@ const SearchContainer = styled.div`
   height: 40px;
   padding: 10px;
   border-radius: 5px;
-  background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_E1};
+  background-color: white;
 `;
 
 const SearchInput = styled.input`
@@ -149,7 +149,7 @@ const InfoInputContainer = styled.div`
   width: 100%;
   border-radius: 5px;
   padding:10px;
-  background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_E1};
+  background-color: ${({theme}) => theme.colorSet.SECONDARY.GRAY_CC};
 `;
 
 const StoreBtn = styled.button`
