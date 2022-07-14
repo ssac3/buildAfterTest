@@ -11,7 +11,7 @@ import theme from 'styles/theme';
 const AttendaceBarChart = ({data, total}) => {
   const tmp = [];
   if(data !== undefined || total !== undefined) {
-    tmp.push({name: '출근', aCount: (total - data.vCount)});
+    tmp.push({name: '출근', aCount: data.aCount});
     tmp.push({name: '휴가', vCount: data.vCount});
   }
   return (
