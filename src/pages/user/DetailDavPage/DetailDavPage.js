@@ -20,13 +20,19 @@ const RearrangeEnrollComponent = ({start, end, detailInfo, onClickDavDetail}) =>
   const [reqETime, setReqETime] = useState();
   const [contents, setContents] = useState(detailInfo[0]?.rContents);
   const onReaReq = () => {
-    dispatch(SwpAarReq(
-      detailInfo[0].aId,
-      detailInfo[0].aDate.concat(' ') + reqSTime,
-      detailInfo[0].aDate.concat(' ') + reqETime,
-      contents
-    ));
-    onClickDavDetail([]);
+    if(contents !== null) {
+      if(window.confirm('근태 조정 요청을 하시겠습니까?')) {
+        dispatch(SwpAarReq(
+          detailInfo[0].aId,
+          detailInfo[0].aDate.concat(' ') + reqSTime,
+          detailInfo[0].aDate.concat(' ') + reqETime,
+          contents
+        ));
+        onClickDavDetail([]);
+      }
+    } else {
+      alert('조정 요청 사유를 입력하세요');
+    }
   };
   console.log(start + end);
   const onChangeConText = (e) => {

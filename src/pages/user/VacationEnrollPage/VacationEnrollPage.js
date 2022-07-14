@@ -33,8 +33,14 @@ export const VacationEnrollPage = ({openVaeDetail, onClickVaeDetail}) => {
   };
 
   const onReqVac = () => {
-    dispatch(SwpVaReq(aId, clickDate, vacationType, contents));
-    onClickVaeDetail('');
+    if(clickDate !== null && vacationType !== '' && contents !== '') {
+      if(window.confirm('정말로 휴가를 신청하시겠습니까.')) {
+        dispatch(SwpVaReq(aId, clickDate, vacationType, contents));
+        onClickVaeDetail('');
+      }
+    } else {
+      alert('휴가 정보를 정확히 입력해 주세요');
+    }
   };
 
   const onChangeContents = (e) => {
