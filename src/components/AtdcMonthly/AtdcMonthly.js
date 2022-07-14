@@ -149,6 +149,7 @@ const MonthlyWorkDetail = ({data}) => {
 };
 
 const MonthlyWorkTime = ({data}) => {
+  console.log(data);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const handleChangePage = (event, newPage) => {
@@ -291,8 +292,11 @@ export const AtdcMonthly = () => {
       setMonthlyWorkDetail(selector.data.timeMap);
     }
 
-    if(selector?.data?.startList) {
-      setMonthlyWorkTime(selector.data.startList);
+    if (selector?.data?.startList) {
+      const cnvrtStartList = selector?.data?.startList.map((v) => {
+        return ({...v, workTime: v.workTime === undefined ? '-' : convertTime(v.workTime)});
+      });
+      setMonthlyWorkTime(cnvrtStartList);
     }
 
     if(selector?.data?.restTime !== undefined && selector?.data?.totalUseVac !== undefined) {

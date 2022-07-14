@@ -127,16 +127,12 @@ export const ReportEavDetailPage = ({openEavDetail, onClickEavDetail, findDate})
     }
     return result;
   };
-
-  const calculateUsedTime = (x) => {
-    return Number.isNaN(7200 - x) ? '00시간 00분' : convertTime2(7200 - x);
-  };
-
   useEffect(() => {
     dispatch(SwpEavReq(openEavDetail[0], date));
   }, []);
 
   useEffect(() => {
+    console.log(selector.result);
     if (selector.result?.okCount !== undefined) {
       setInfo(selector.result);
     } else {
@@ -145,7 +141,6 @@ export const ReportEavDetailPage = ({openEavDetail, onClickEavDetail, findDate})
   }, [selector]);
 
   useEffect(() => {
-    console.log(info);
     const convertData = [
       {name: '정상', value: info.okCount},
       {name: '이상', value: info.failCount},
@@ -169,10 +164,6 @@ export const ReportEavDetailPage = ({openEavDetail, onClickEavDetail, findDate})
     setRearrangeData(convertData2);
     setVacationData(convertData3);
     setRestVacData(convertData4);
-  }, [info]);
-
-  useEffect(() => {
-    console.log(info);
   }, [info]);
   return (
     <Wrap onClick={onCloseModal}>
@@ -289,7 +280,7 @@ export const ReportEavDetailPage = ({openEavDetail, onClickEavDetail, findDate})
                   전체 <div id={'value'}>120시간 00분</div>
                 </div>
                 <div id={'text'}>
-                  사용 <div id={'value'}>{calculateUsedTime(info?.restTime)}</div>
+                  사용 <div id={'value'}>{convertTime2(info?.vTime)}</div>
                 </div>
                 <div id={'text'}>
                   잔여 <div id={'value'}>{convertTime2(info?.restTime)}</div>

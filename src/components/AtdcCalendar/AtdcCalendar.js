@@ -158,11 +158,18 @@ export const AtdcCalendar = ({
       return result;
     };
 
-    const cnvrtTime = (time) => {
-      if (time === null) {
-        return '       ';
+    const convertTime = (startTime, endTime) => {
+      let result;
+      if(startTime === null && endTime === null) {
+        result = '';
+      } else if(startTime === null && endTime !== null) {
+        result = ' '.concat(' / ').concat(endTime);
+      } else if(startTime !== null && endTime === null) {
+        result = startTime.concat(' / ');
+      } else {
+        result = startTime.concat(' / ').concat(endTime);
       }
-      return time?.substring(0, 5);
+      return result;
     };
     return (
       <ul className="events">
@@ -170,7 +177,7 @@ export const AtdcCalendar = ({
           <li key={item?.aDate}>
             <Badge
               status={item.aStatus && getStatus(item.aStatus)}
-              text={(item.aStartTime !== '' || item.aEndTime !== '') ? cnvrtTime(item?.aStartTime)?.concat(' / ').concat(cnvrtTime(item?.aEndTime)) : ''}
+              text={convertTime(item.aStartTime, item.aEndTime)}
             />
             {(item.vType !== null && item.vApprovalFlag !== '3') &&
               <VacationItem

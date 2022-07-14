@@ -390,6 +390,7 @@ function* postSwpEmpReq() {
     const data = yield select((state) => state.MangerReducer);
     const packedMsg = {depId: data.depId};
     const result = yield call(empReq, packedMsg);
+    console.log(result);
     if(result.resCode === 0) {
       yield put(SwpEmpRes(result.data));
     } else {

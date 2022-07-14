@@ -31,7 +31,6 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 };
 
 const VacInfoPiChart = ({data}) => {
-  console.log(data);
   const COLORS = [
     theme.colorSet.ATTENDANCE_STATUS.OK,
     theme.colorSet.SECONDARY.GRAY_CC,
@@ -236,7 +235,6 @@ export const VacationMngment = () => {
       .concat('-')
       .concat(formatter((findDate.getDate()).toString()));
     const filter = data?.filter((v) => (v.date === date && v.approvalFlag === '1') && v);
-    console.log(filter);
     setFilterData(filter);
   }, [data, findDate]);
 
@@ -288,6 +286,7 @@ export const VacationMngment = () => {
 
   useEffect(() => {
     let result = [];
+    console.log(data);
     if(filterItem.username === '' &&
       filterItem.name === '' &&
       filterItem.vacation === '' &&
@@ -314,6 +313,7 @@ export const VacationMngment = () => {
         result = temp;
       });
     }
+    console.log(result);
     setCopyData(result);
   }, [filterItem]);
 
